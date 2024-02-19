@@ -143,7 +143,7 @@ the integer division, you can use the function `quotient`.
 :::
 -->
 
-## Task 2
+### Task 2
 Write a function `(num->str n [radix 10])` taking as input an integer `n` together
 with `radix` denoting the number of symbols used to represent the number `n` (for example 2,10,16
 for binary, decimal, hexadecimal representation respectively). This function returns a string

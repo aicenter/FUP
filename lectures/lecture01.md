@@ -3,7 +3,7 @@ outline: deep
 ---
 
 
-## Introduction
+# Introduction
 
 Functional programming is a declarative style of programming where we structure programs as
 compositions of functions. 

@@ -46,14 +46,15 @@ export default defineConfig({
           { text: '01: ASCII Art', link: '/homeworks/hw01' },
         ]
       },
-
-
-
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/aicenter/FUP' }
     ],
+
+    editLink: {
+      pattern: 'https://github.com/aicenter/FUP/edit/main/:path'
+    },
 
     search: {
       provider: 'local'
