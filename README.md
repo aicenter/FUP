@@ -1,6 +1,6 @@
 # Functional Programming
 
-To read the lecture notes head to the [course homepage](aicenter.github.io/FUP/)
+To read the lecture notes head to the [course homepage](https://aicenter.github.io/FUP/).
 
 
 ## Build the page
