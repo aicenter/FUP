@@ -4,9 +4,10 @@
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
   },
-  "devDependencies": {
+  "dependencies": {
     "markdown-it": "^14.0.0",
     "markdown-it-footnote": "^4.0.0",
-    "markdown-it-mathjax3": "^4.3.2"
+    "markdown-it-mathjax3": "^4.3.2",
+    "vitepress": "^1.0.0-rc.44"
   }
 }
