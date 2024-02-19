@@ -1,0 +1,4 @@
+package-lock.json
+.vitepress/cache
+.vitepress/dist
+node_modules
