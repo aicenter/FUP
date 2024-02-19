@@ -24,7 +24,7 @@ features:
 
   - title: Homeworks
     details: Four homework assignments to be solved during the course
-    link: /homeworks
+    link: /homeworks/
 
   - title: Exams
     details: Practice exercises which will also be part of your examination.

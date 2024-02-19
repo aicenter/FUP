@@ -38,13 +38,13 @@ output. Consult also your local documentation in DrRacket to get more details on
 
 ## Racket
 
-### Homework assignment 1
+### 01: ASCII Art
 
 ::: danger Important
 Submit your solution as a zip archive containing a single file with the name **`hw1.rkt`**.
 :::
 
-The description of the assignment can be found [here](https://drive.google.com/file/d/1cyfLDtlBvXgthCQU4mM6I3pmUi8ZnNOl/view?usp=sharing).
+The description of the assignment can be found [here](hw01).
 
 <!--
 /*
