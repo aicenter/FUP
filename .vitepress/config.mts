@@ -7,7 +7,7 @@ export default defineConfig({
   title: "Functional Programming",
   description: "Course materials for the functional programming course at the Czech Technical University.",
   themeConfig: {
-    base: "/FUP/",
+    base: "./FUP/",
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Organization', link: '/organization' },
