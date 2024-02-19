@@ -6,7 +6,7 @@ hero:
   name: "Functional Programming (FUP)"
   text: "Course materials"
   tagline: Taught at the Czech Technical University.
-  image: /img/lambda.png
+  image: /lambda.png
 
 features:
   - title: Organization
