@@ -6,8 +6,10 @@ import markdownItFootnote from 'markdown-it-footnote'
 export default defineConfig({
   title: "Functional Programming",
   description: "Course materials for the functional programming course at the Czech Technical University.",
+
+  base: "/FUP/",
+
   themeConfig: {
-    base: "./FUP/",
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Organization', link: '/organization' },
