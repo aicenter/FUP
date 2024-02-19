@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import markdownItMathjax3 from 'markdown-it-mathjax3'
+import markdownItFootnote from 'markdown-it-footnote'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -8,25 +9,38 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Lecutres', link: '/lectures' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Organization', link: '/organization' },
+      { text: 'Lectures', link: '/lectures/' },
+      { text: 'Labs', link: '/labs/' },
+      { text: 'Homeworks', link: '/homeworks' },
+      { text: 'Exams', link: '/exams/' },
     ],
 
     sidebar: [
+
+      { text: 'Organization', link: '/organization' },
+
       {
         text: 'Lectures',
+        link: '/organization#lectures',
         items: [
-          { text: '01: Introduction', link: '/lectures'}
+          { text: '01: Introduction', link: '/lectures/lecture01'}
         ]
       },
+
       {
-        text: 'Examples',
+        text: 'Labs',
+        link: '/labs/',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: '01: Introduction to Racket', link: '/labs/lab01' },
         ]
-      }
+      },
+
+      { text: 'Homeworks', link: '/homeworks' },
+
+      { text: 'Exams', link: '/exams/' },
+
+
     ],
 
     socialLinks: [
@@ -39,6 +53,9 @@ export default defineConfig({
   },
 
   markdown: {
-    config: (md) => {md.use(markdownItMathjax3)}
+    config: (md) => {
+      md.use(markdownItMathjax3);
+      md.use(markdownItFootnote)
+    }
   }
 })

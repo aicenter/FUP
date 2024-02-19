@@ -3,7 +3,7 @@ outline: deep
 ---
 
 
-# Introduction
+## Introduction
 
 Functional programming is a declarative style of programming where we structure programs as
 compositions of functions. 
@@ -163,7 +163,7 @@ I hope the above example gave you a flavor of functional programming. Next, I wi
 consequences it has using the functional programming style.
 
 
-## Pure functions
+### Pure functions
 
 In the example above, we have seen that functional programming structures programs as function
 compositions in the mathematical sense. Thus we cannot use a state (i.e., a data structure keeping
@@ -218,7 +218,7 @@ anything real, like printing to the screen. Fortunately, this is not true, as we
 Let me first explain why it is a good idea to use pure functions and eliminate state and side
 effects.
 
-## Troublesome state
+### Troublesome state
 
 The critical issue caused by the mutable shared state is that it creates implicit connections
 between all parts of the program. Changing something in the code might influence seemingly unrelated
@@ -266,7 +266,7 @@ the state mutation is protected. Moreover, the methods can check if the updated 
 consistent. However, it only partially resolves the issues. Functional programming goes even
 further. It restricts the mutable state to the bare minimum.
 
-## State separation
+### State separation
 
 Functional programming promotes pure functions as much as possible. Ideally, it is reasonable to
 compose our programs using only pure functions because it has the following advantages:
@@ -419,3 +419,434 @@ view model =
 
 You can test the app by yourself. If you want to play with code, go to this
 [site](https://elm-lang.org/examples/hello), erase the code there, and enter the code above.
+
+### Immutability
+
+I want to finish this introductory text with a common misconception regarding functional
+programming. The usage of pure functions has several consequences. I already pointed out some of
+their advantages. However, there is a price one has to pay, namely a lower performance in comparison
+with the imperative languages. Nevertheless, the price is not as high as it might look at first
+sight. 
+
+Since pure functions cannot mutate any data structure, all the data processed by a purely functional
+program must be immutable. We must create a new copy with the required modifications to update a
+data structure. This seems to be pretty inefficient. For example, to modify a single element in a
+big array, a naive implementation would be to copy the whole array and change one element.
+Fortunately, a much more efficient way to deal with this issue involves using [persistent data
+structures](https://en.wikipedia.org/wiki/Persistent_data_structure). Roughly speaking, to most of
+the standard imperative data structures, there is a purely functional equivalent whose performance
+is slower at most by a logarithmic factor. By **persistent** we mean that we try to reuse and share
+the data among data structures as much as possible. Thus we do not copy the whole array, but only a
+tiny part of it, and the remaining elements are shared across both arrays. The sharing is possible
+because all the data are immutable until the garbage collector removes them. The persistent analogs
+of common imperative data structures are usually implemented in libraries distributed with
+functional languages, so an everyday coder can rely on them without knowing the details. The topic
+of persistent data structures is quite advanced. Those who are interested in details might check the
+book by Okasaki[^book]. 
+
+[^book]: Chris Okasaki: Purely functional data structures. Cambridge University Press 1999, ISBN 978-0-521-66350-2, pp. I-X, 1-220
+
+
+## Racket
+
+The first programming language we are going to explore is [Racket](https://racket-lang.org/). It is
+a dialect of [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), one of the oldest
+high-level programming languages (it was invented right after Fortran). "Lisp" stands for **LISt
+Processor**, suggesting the lists are the primary data structures in Lisp and Racket. Racket is not
+a purely functional programming language as it allows defining functions that may cause side
+effects. It has a simple syntax and a [dynamic
+type-checking](https://en.wikipedia.org/wiki/Type_system#DYNAMIC) mechanism. This means that types
+of objects are checked during the runtime. 
+
+An exciting property of Racket and other Lisp-like languages is so-called
+[**homoiconicity**](https://en.wikipedia.org/wiki/Homoiconicity) (a.k.a. *code as data*). Programs
+written in such a language form an intrinsic data structure in that language. Consequently,
+metaprogramming is more straightforward as one can manipulate programs with other programs. For
+example, Racket's powerful macro system allows us to define syntactical transformations of our
+program that are executed before the program is compiled or interpreted. We will use the
+homoiconicity later to implement an interpreter for a language with a Lisp-like syntax.
+
+For writing Racket programs, we will use DrRacket distributed with
+[Racket](https://racket-lang.org/). It is an IDE where we can implement and run a program using the
+provided read-eval-print loop (REPL). Nevertheless, you can develop your programs in any text
+editor, e.g., VS Code. In the case of VS Code, I recommend installing the [Magic
+Racket](https://marketplace.visualstudio.com/items?itemName=evzen-wybitul.magic-racket) extension.
+
+### Syntax
+
+Racket's syntax more-or-less extends the syntax of Lisp. Each Racket source file must start with the
+following line:
+
+```scheme
+#lang racket
+```
+
+It specifies what language should be used to interpret the source code. The Racket system provides
+compilers for several other languages. It was actually designed as a language for so-called
+*language-oriented programming*[^manifest]. This means the Racket system allows easy development of
+new programming languages. 
+
+[^manifest]: Felleisen, M.; Findler, R.B.; Flatt, M.; Krishnamurthi, S.; Barzilay, E.; McCarthy, J.;
+    Tobin-Hochstadt, S. (2015). [The Racket
+    Manifesto](https://www2.ccs.neu.edu/racket/pubs/manifesto.pdf). Proceedings of the First Summit
+    on Advances in Programming Languages: 113–128.
+
+
+Racket programs consist of four types of syntactical forms:
+
+1. *Primitive expressions* are either literals like numbers or strings, e.g., 
+```scheme
+"Hello World!"
+```
+or built-in functions, e.g.,
+```scheme
+cos
+```
+2. *Compound expressions* are built up from primitive expressions using the function composition, e.g.,
+```scheme
+(cos (+ 1 2))
+```
+The compound expressions are formed by so-called **S-expressions**. They look as follows:
+```scheme
+(fn arg1 arg2 ... argN)
+```
+where `fn` is a function and `arg1`,...,`argN` are its arguments.  This prefix notation is also used
+for the usual infix arithmetic operations like addition or multiplication. For example, the
+expression $\frac{xy^2+3}{x-1}$ would be written as
+```scheme
+(/ (+ (* x y y) 3) (- x 1))
+```
+The prefix notation has the advantage that we can avoid dealing with operators' precedence.
+Moreover, operations like + or * can take an arbitrary number of arguments.
+
+3. *Definitions* allow us to name an expression or define new functions, e.g.,
+```scheme
+(define a 1)
+(define (square x) (* x x))
+```
+More precisely, if we want to name an expression, we use the following construction:
+```scheme
+(define id exp)
+```
+where `id` is the name/identifier for the expression `exp`. If we want to define a function, we do it as follows: 
+```scheme
+(define (fn a1 ... aN)
+  exp)
+```
+where `fn` is the name of the defined function and `a1`,...,`aN` are its parameters.
+The body of the function consists of an expressions `exp` depending on the parameters.[^def-syntax]
+
+[^def-syntax]: I simplified the syntax of definitions for explanatory purposes. Further
+    possibilities, like default parameters, variable numbers of parameters, etc., will be discussed
+    later on.
+
+4. Finally, we have *line comments* and *block comments*, e.g.,
+```scheme
+; This is a one-line comment
+#|
+  This is
+  a block comment
+|#  
+```
+
+### Semantics
+
+The previous section shortly presented the syntax of Racket, i.e., how to write grammatically
+correct programs. Next, we need to discuss the semantics, i.e., the meaning of programs and their
+parts. Here it becomes interesting if we compare it with imperative programming. Recall that
+imperative programs are sequences of commands/instructions. The computation process executes the
+instructions consecutively in the given order. 
+
+On the other hand, a Racket program is an expression[^seq-exp]. It represents a computation process
+evaluating the expression. The evaluation resembles simplifying expressions we know from math. More
+precisely, we subsequently evaluate subexpressions until we end up with the expression's value
+(i.e., the expression's meaning).
+
+[^seq-exp]: More generally, it might be a sequence of expressions evaluated in the given order. 
+
+Now let me discuss the evaluation process in more detail. Recall that expressions are built from
+primitive expressions using function composition. The values/meanings of primitive expressions are
+determined directly by Racket. For instance, the value/meaning of the literal `3.14` is the number
+$3.14$, or `cos` denotes the cosine function. 
+
+To see the evaluation of a compound expression, consider the following simple Racket program. It
+defines a function square that, to every $x$, assigns $x^2$ and consists of a single expression.
+```scheme
+(define (square x) (* x x))
+
+(square (+ 3 4))
+```
+
+The evaluation of the expression might start by evaluating the subexpression `(+ 3 4)`. It consists
+only of primitive expressions with a given meaning. Thus its resulting value is $3+4=7$. Next, we
+can expand the function square definition, i.e., replace `(square 7)` with `(* 7 7)`. The final
+value is $7*7=49$.
+```scheme
+(square (+ 3 4)) => (square 7) => (* 7 7) => 49
+```
+
+Note that this is not the only possible way to evaluate the program. Alternatively, we could proceed as follows:
+```scheme
+(square (+ 3 4)) => (* (+ 3 4) (+ 3 4)) => (* 7 7) => 49
+```
+In other words, we can first expand the definition and  then evaluate the subexpressions `(+ 3 4)`. This leads to the conclusion that the evaluation process is not uniquely determined. Consequently, each functional programming language comes with its  *evaluation strategy*. There are two prominent families of strategies.
+
+1. **Strict** strategies evaluate the function's arguments before the function definition is expanded. This corresponds to the first evaluation example above.
+2. **Non-strict** strategies might postpone the evaluation of the function arguments until they are needed. This corresponds to the second evaluation example above.
+
+The advantage of strict strategies is that we evaluate each argument only once. On the other hand, a strict strategy may evaluate an argument that is not needed. Racket's evaluation strategy is strict. 
+
+Non-strict strategies avoid evaluating unnecessary arguments but might duplicate the argument expressions (as in the example above). This problem is usually compensated by caching, i.e., the values of evaluated expressions are cached and reused). Haskell is a typical example of a language with a non-strict evaluation strategy referred to as *lazy*.
+
+### Conditional expressions
+
+Although Racket's evaluation strategy is strict, there are a few exceptions, particularly conditional expressions. Two basic approaches to branching a program based on a Boolean test exist. The first is the if-then-else expression.
+
+```scheme
+(if test-exp then-exp else-exp)
+```
+As the if-then-else expression must have a value, both `then-exp` and `else-exp` are required. This contrasts with imperative programming, where the else branch is often optional. 
+
+The evaluation process of the if-then-else expression first computes the value of `test-exp`. If the
+result is `#f`, then `else-exp` is evaluated, and its value is also the value of the if-then-else
+expression. If the result is not `#f` [^true-values], the value of `then-exp` is the value of the
+if-then-else expression.  Thus only one of the branching expressions gets evaluated. For example,
+the following expression gets evaluated without throwing an error even if `n` is bound to zero.
+
+[^true-values]: Any value different from `#f` is considered true for Boolean tests.
+
+```scheme
+(if (zero? n) 0 (/ 1 n))
+```
+Thus if `n` is zero, the resulting value is $0$ and $1/n$ otherwise.
+
+If we need to branch the evaluation to more than two branches, we can use the cond-expression.[^brackets]
+```scheme
+(cond [test-exp1 exp1]
+      [test-exp2 exp2] 
+      ...
+      [else else-exp])
+```
+
+[^brackets]: Note the use of square brackets `[]`. They are semantically equivalent to parentheses
+    `()`. Thus you can freely replace them. In Racket, coders use them to make the code better
+    readable.
+
+The test expressions `test-exp1`, `test-exp2`, ... get evaluated in the given order. Once any of them is evaluated as true (i.e., its value does not equal `#f`),  the corresponding expression on the right-hand side gets evaluated, and its value is the value of the cond-expression. If all the test expressions are evaluated as false, the `else-exp` gets evaluated, and its value is returned. For example, the following expression:
+```scheme
+(cond [(odd? 12) 1]
+      [(even? 12) 2]
+      [else 3])
+```
+is evaluated as $2$.
+
+### Data types
+The expressions' values are categorized into types (either built-in or user-defined). Let me mention some of the 
+[built-in types](https://docs.racket-lang.org/guide/datatypes.html?q=type):
+
+- **Boolean**: This type consists of logical values true `#t` and false `#f`. 
+- **Number**: There are two kinds of numbers, either exact or inexact. The exact support of the infinite precision arithmetic, e.g., `31456/98`. The inexact represent the standard IEEE floating-point numbers with limited precision. 
+- **Character**: Characters are the standard Unicode characters. Literals representing characters are preceded with `#\`, e.g., `#\A` or `#\λ`.
+- **String**: Strings are arrays of characters. The string values are surrounded by double quotes, e.g., `"Hello!"`.
+- **Symbol**: Symbols are symbolic values, e.g., `'blue` or `'red`.  
+- There are many more built-in types, particularly those representing functions or complex data structures like lists or trees. I will discuss some of them in the following lectures. 
+
+### Recursion
+
+Finally, I will discuss recursive functions and how to program them. However, let me stress that functional programming languages offer a lot of high-level constructs allowing us to avoid writing recursive functions in many cases. Such constructs are preferred because they make the code shorter, more transparent, and optimized. We will meet some of them later in the following lectures.
+
+Recursion is the key tool in functional programming. We must use recursion whenever we need to make a chain of function compositions whose length depends on the input. 
+
+::: tip Definition
+A function $f$ is said to be *recursive*, if it calls itself. In other words, $f$ occurs in the body of $f$.
+:::
+
+The most straightforward recursive function is the parameterless function that calls just itself. It is an infinite functional loop as the function recurs indefinitely.
+
+```scheme
+(define (loop) (loop))
+```
+
+A more practical simple example is the function computing the factorial of a natural number.
+```scheme
+(define (f n)
+  (if (= n 0)
+      1
+      (* n (f (- n 1)))))
+```
+Note that the code follows the standard recursive definition of factorial from math.
+$$
+f(n) = \begin{cases}
+1 & \text{if}\ n=0,\\
+n*f(n-1) & \text{otherwise.}
+\end{cases}
+$$
+
+We categorize recursive functions into several classes depending on the number of self-referential calls and their locations.
+
+1. If the function calls itself only once, it is called a **linear-recursive function**. This type of recursion is also called **single recursion**.
+2. If there is more than one self-referential call, we call the function **tree-recursive function**. This type of recursion is also called **multiple recursion**.
+
+Among linear-recursive functions, we further distinguish a subclass called **tail-recursive functions**. Tail-recursive functions are essential for optimization reasons.
+
+::: tip Definition
+A recursive function is *tail recursive* if the final result of the recursive call is the final
+result of the function itself. If the result of the recursive call must be further processed (say,
+by adding 1), it is not tail recursive.
+:::
+
+If we check the example above with the function `f` computing the factorial, we see that `f` is not tail recursive because the result returned by the recursive call 
+```scheme
+(f (- n 1))
+```
+is further multiplied by `n` to get the final result:
+```scheme
+(* n (f (- n 1)))
+```
+Consequently, the function `f` is less efficient. To see that, consider an example of its evaluation:
+```scheme
+(f 4) => (* 4 (f 3))
+      => (* 4 (* 3 (f 2)))
+      => (* 4 (* 3 (* 2 (f 1))))
+      => (* 4 (* 3 (* 2 (* 1 (f 0)))))
+      => (* 4 (* 3 (* 2 (* 1 1)))) => 24
+```
+Note that if we want to evaluate $f(n)$, we need to keep in memory the growing uncompleted expression $n*((n-1)*((n-2)*\cdots$ until the base case of the recursion. Only then can we start to evaluate the particular multiplications. Thus the function needs $O(n)$ space.
+
+However, the constant space is sufficient to compute the factorial function. It suffices to remember an intermediate result $n*(n-1)*\cdots*(n-k)$. In an imperative language like Python, we would use a loop to update the intermediate result as follows:
+```python
+def fac(n):
+  acc = 1
+  for k in range(n,1,-1):
+    acc *= k
+  return acc
+```
+We cannot do that in a purely functional language as we cannot update the intermediate result `acc`. Instead, we can pass `acc` to the recursive call.[^square-brackets2]
+```scheme
+(define (fac n [acc 1])
+  (if (<= n 1)
+      acc
+      (fac (- n 1) (* n acc))))
+```
+[^square-brackets2]: The square brackets in the function definition `fac` allow us to set up a
+    default value for a parameter. So our function `fac` has two parameters, but we can call with a
+    single one like `(fac 10)`. In that case, the `acc` value is $1$.
+
+Note that `fac` is tail recursive because the value of the recursive call
+```scheme
+(fac (- n 1) (* n acc))
+```
+is, in fact, the final value returned by the function `fac`. Compare also the evaluation process of
+`fac`. We can see that only the counter `n` and the intermediate result `acc` need to be kept in
+memory.[^tail]
+
+[^tail]: Someone might argue that this is false because the function arguments are stored on the
+    stack for every function call. That is generally true, but compilers/interpreters of functional
+    languages can detect tail recursion and clean the stack because we know that the parameters from
+    the previous calls will no longer be needed. This trick is called *tail call elimination* or
+    *tail call optimization* and allows tail-recursive functions to recur indefinitely.
+
+```scheme
+(fac 4) =  (fac 4 1)
+        => (fac 3 4)
+        => (fac 2 12)
+        => (fac 1 24)
+        => 24
+```
+
+A linear-recursive function creates a chain of recursive calls. Thus its time complexity is given by
+the number of recursive calls multiplied by the time needed for a single call. On the other hand,
+tree-recursive functions generate a tree of recursive calls. Thus the number of recursive calls
+grows exponentially in the recursion depth. So one should be careful when designing a tree-recursive
+function. Still, tree-recursive functions are natural and powerful when dealing with tree-structured
+data like algebraic expressions or tree-generative processes like fractals.
+
+As an example of the tree recursion, consider a tree-like fractal of a given size $n$ and direction
+$d$ in degrees generated according to the following rules:
+
+1. Draw a stick of size $n/2$ in the direction $d$.
+2. Draw the fractal of size $n/2$ in the direction $d+60$.
+3. Draw the fractal of size $n/2$ in the direction $d-60$.
+4. Draw a stick of size $n/2$ in the direction $d$.
+5. Draw the fractal of size $n-1$ in the direction $d+5$.
+
+This infinite recursive process is shown in the figure below. First, we draw `stick1`. Second, we
+recursively draw two half-sized fractals, one in the direction heading to the left and one heading
+right. Next, we draw `stick2`. Finally, we recursively draw a smaller fractal in the direction
+slightly tilted to the left. Thus this procedure is tree recursive because it contains three
+recursive calls.
+
+![Recursive generation of a tree-like fractal](../img/fractal.svg){ style="width: 100%; margin: auto;" }
+
+Now, let us see how to program this procedure in Racket. First, we need a drawing library if we want to draw something. Racket contains a simple library called 
+[value-turtles](https://docs.racket-lang.org/turtles/Value_Turtles.html). 
+Functions in this library update an image containing "a turtle" with a position and direction. For example, we can draw a line of a given length in the turtle's direction or turn the turtle by an angle. Further, we can extract the turtle's state from a given image and restore the state later on. The code of the program is below.
+
+```scheme:line-numbers
+#lang racket
+(require graphics/value-turtles)
+
+(define init (turtles 600 600 450 500 (* 1.5 pi)))
+(define stick-size 2)
+
+(define (tree n [img init])
+  (cond [(<= n 1) img]
+        [else
+         (define stick1 (draw (/ (* stick-size n) 2) img))
+         (define state (turtle-state stick1))
+         (define left (tree (/ n 2) (turn 60 stick1)))
+         (define right (tree (/ n 2) (turn -60 (restore-turtle-state left state))))
+         (define stick2 (draw (/ (* stick-size n) 2) 
+                              (restore-turtle-state right state)))
+         (tree (- n 1) (turn 5 stick2))]))
+
+(tree 25)
+```
+Line 2 is just loading the drawing library. [Line 4](#cb38-4) creates the initial empty image `init`
+of size 600x600 with the turtle heading up and its position $(450,500)$. [Line 5](#cb38-5) defines a
+multiplicative parameter so that we can modify the size of the drawn sticks. 
+
+[Lines 7-16](#cb38-7) define the recursive function `tree` of two arguments. The first is the size,
+and the second is the image keeping the intermediate result. Its default value is the empty image
+`init`. As we do not want the function `tree` to recur infinitely, we must stop the recursion if the
+tree is too small. That happens on [Line 8](#cb38-8). If $n\leq 1$, we no longer recur and return
+just the intermediate result `img`. 
+
+[Lines 10-16](#cb38-10) form the core functionality. As it is a more complex function composition,
+it would be hardly readable if we wrote it in a single expression. Thus we introduce local
+definitions[^local-def] to name several intermediate values. To get a better picture of the
+composition, check the picture below.
+
+[^local-def]: Definitions in Racket using `define` can be nested. However, they are not allowed
+    everywhere in the code. For example, we cannot place them into the then-expression of an
+    if-then-else expression. In such cases, one can make local definitions by the
+    [let-expression](https://docs.racket-lang.org/guide/let.html), which I will discuss in the
+    following lecture.
+
+![Function composition generating the tree fractal](../img/fractal-composing.svg){ style="width: 100%; margin: auto;" }
+
+So we first take the input image `img` and draw `stick1` ([Line 10](#cb38-10)). Next, we extract the
+turtle's state ([Line 11](#cb38-11)) and call it `state`. In the image containing `stick1`, we turn
+the turtle by 60 degrees counter-clockwise and make a recursive call drawing the half-sized fractal
+([Line 12](#cb38-12)). The resulting image is called `left`. Next, we must restore the turtle's
+state, so its position is on top of `stick1`. Consequently, we turn the turtle by 60 degrees
+clockwise and make the recursive call again ([Line 13](#cb38-13)). The resulting image is named
+`right`. Afterward, we restore the state and draw `stick2` ([Line 14-15](#cb38-14)). Finally, we
+turn the turtle by 5 degrees counter-clockwise and make the last recursive call ([Line
+16](#cb38-16)).
+
+[Line 18](#cb38-18) contains the main program's expression that gets evaluated when we run the
+program. The resulting image is shown below.
+
+![Resulting fractal](../img/tree.png){ style="width: 60%; margin: auto;" }
+
+## Summary
+
+- A pure function always returns the same output on a fixed input and has no side effects.
+- Functional programmers make the pure part of their program as large as possible, keeping the code handling the application state transparent and small.
+- There are several evaluation strategies. Strict ones evaluate all the function's arguments before the function's definition is expanded. Non-strict strategies postpone the evaluation until the actual values are needed.
+- Functional languages handle iterative computations by recursion, unlike imperative languages that use loops.
+- We classify recursive functions according to the number of recursive calls in their body on linear-recursive and tree-recursive functions. 
+- Tail recursive functions are space efficient as they do not consume memory by making recursive calls.
+- The tree recursion might generate an exponential computational process.
+-->

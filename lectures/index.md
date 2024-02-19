@@ -1,20 +1,17 @@
----
-outline: deep
----
+# Lectures
+
+As we proceed through the lectures, I will try to write down lecture notes so that you have most of
+the course material in a single place. However, I am unsure if I will manage to be on time with them
+due to other obligations.
+
+## [Lecture 01](lecture01): Introduction
+Discusses the key ideas behind functional programming. It further
+introduces the programming language [Racket](https://racket-lang.org/).
+[Slides](https://drive.google.com/file/d/1e1aw5Mf5qts0DxLJFDZUWDbGlwI0hdeM/view?usp=drive_link).
+[Log](https://drive.google.com/file/d/1I3uoTART5UmWsWLRR_bYuNrzolTl2cO5/view?usp=share_link).
 
 
-This is a collection of my lecture notes on functional programming. 
-It is based on the content of the introductory course *Functional Programming* I lecture at 
-[Czech Technical University in Prague](https://www.cvut.cz).
-The course introduces two programming languages, namely 
-and 
-One lecture focuses on lambda calculus.
-
-# Lecture notes
-
-1. [Lecture 1](lecture01) discusses the key ideas behind functional programming. It further
-   introduces the programming language [Racket](https://racket-lang.org/).
-
+<!--
 2. [Lecture 2](lecture02) focuses on Racket lists and trees. Further, it introduces the unit testing
    library [Rackunit](https://docs.racket-lang.org/rackunit/index.html).
 
@@ -29,4 +26,10 @@ One lecture focuses on lambda calculus.
 6. [Lecture 6](lecture06) introduces lambda calculus.
 
 For the interested read there is a [bonus lecture](lecture-bonus) on immutable datastructures.
+-->
+
+### Old recorded lectures
+
+Old recorded lectures from 2021 can be found [here](https://cw.fel.cvut.cz/b202/courses/fup/lectures/start).
+
 

@@ -1,0 +1,27 @@
+\documentclass[border=0pt]{standalone}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{pgf}
+\usepackage{tikz}
+
+
+\definecolor{myGray}{rgb}{0.85,0.85,0.85}
+
+\begin{document}
+
+\begin{tikzpicture}[level/.style = {level distance = 1.5cm, sibling distance = 1cm},
+                    level 1/.style={sibling distance=2cm}]
+    \node {$1$}
+    child {node {$2$}
+      child {node {$3$}}
+      child {node {$4$}
+        child {node {$5$}}
+        child {node {$6$}}}}
+    child {node {$7$}
+      child {node {$8$}}
+      child {node {$9$}}};
+\end{tikzpicture}
+
+\end{document}
