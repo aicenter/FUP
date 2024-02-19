@@ -22,7 +22,7 @@ export default defineConfig({
 
       {
         text: 'Lectures',
-        link: '/organization#lectures',
+        link: '/lectures/',
         items: [
           { text: '01: Introduction', link: '/lectures/lecture01'}
         ]
@@ -38,7 +38,6 @@ export default defineConfig({
 
       { text: 'Homeworks', link: '/homeworks' },
 
-      { text: 'Exams', link: '/exams/' },
 
 
     ],
