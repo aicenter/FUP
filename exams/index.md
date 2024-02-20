@@ -1,10 +1,24 @@
 # Exam
 
-In order to come to the exam, the student should have fulfilled the conditions for passing the labs.
+## Requirements
+
+In order to come to the exam, the student should have fulfilled the conditions for passing the
+[homeworks](/homeworks/#requirements).
+
+The programming exam consists of a Racket assignment and a Haskell assignment, which you have to
+finish in 3 hours.
+
+You can reach a total of **30 points** in the *programming* exam (15 points for each task).
+You have to reach at least **16 points** to pass the exam.
+
+We offer an *optional, oral* exam for an additional **20 points** which you can take if you passed
+the programming exam.
 
 ::: danger Important
 Please make sure you know your lab password. You can [change it here](https://www.felk.cvut.cz/labpass/).
 :::
+
+## Exam tasks
 
 The exam will consist of solving two of the tasks listed below - without access to their solutions. We
 suggest not looking at the text of the assignments before you have time to attempt to solve it. You

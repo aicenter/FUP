@@ -28,7 +28,7 @@ introduces the programming language [Racket](https://racket-lang.org/).
 For the interested read there is a [bonus lecture](lecture-bonus) on immutable datastructures.
 -->
 
-### Old recorded lectures
+## Old recorded lectures
 
 Old recorded lectures from 2021 can be found [here](https://cw.fel.cvut.cz/b202/courses/fup/lectures/start).
 

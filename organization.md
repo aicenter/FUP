@@ -3,83 +3,100 @@ outline: deep
 ---
 # Organization
 
-The course consists of weekly [lectures](lectures/) and [labs](labs/).
+This course introduces students to the techniques of _**functional programming**_, the advantages
+and disadvantages of this programming paradigm, and its use in practice.
+This approach is **declarative** in the sense that the programmer symbolically describes the problem to be solved
+rather than specifying the exact sequence of operations required to solve it. It allows focusing on
+the essence of the solved problem and implementing even more complex algorithms compactly.
+Functional programming has notable advantages for **parallelization** and **automated verification**
+of algorithms, and the most useful functional programming concepts are increasingly often introduced
+to standard programming languages. Because of the focus of functional programming on symbols rather
+than numbers, functional programming has been heavily used in artificial intelligence fields, such
+as agent systems or symbolic machine learning.
+
+The course consists of weekly [lectures](lectures/) and [labs](labs/) which will be published
+as we go along the course.
+
+## Course outline
+
+* **Lisp/Scheme/Racket**
+    * simple syntax (directly matches $\lambda$-calculus)
+    * dynamically typed
+    * code-as-data (easy to write interpreters, ...)
+    * allows mutable data
+* **$\lambda$-calculus**
+* **Haskell**
+    * pure functional language
+    * statically typed
+    * rich type system
+    * strictly separates the pure core from the mutable shell
+
+## Homework
 
 You will have to solve four homework assignments (for **50 points** in total):
 * 2 assignments in Racket
 * 2 assignments in Haskell
+More on the details of the homeworks [here](homeworks/).
 
-Final programming exam for **30 points**.
-The programming exam consists of 2 Racket assignments and 2 Haskell assignments, which you have to
-finish in 3 hours.  One Racket and one Haskell assignment are actually the same but implemented in
-both programming languages.
+## Exam
+The final *programming* exam has **30 points**.
+Final, optional *oral* exam for **20 points**.
+More on the details of the exam [here](exams/).
 
-Final theoretical oral exam for **20 points**.
-
+## Grading
 The grading is the standard grading scale:
-|Grade| Points|
-|-----|-------|
-|A    |91-100 |
-|B    |81-90  |
-|C    |71-80  |
-|D    |61-70  |
-|E    |51-60  |
-|F    |0-50   |
+|  A   |  B  |  C  |  D  |  E  |  F  |
+|------|-----|-----|-----|-----|-----|
+|91-100|81-90|71-80|61-70|51-60| 0-50|
 
 
 ## Teachers
 
-| Name              | Consulting hours       | E-mail                           | Room    | Role                 |
-|-------------------|------------------------|----------------------------------|---------|----------------------|
-| Rostislav Horčík  | appointment by email   | <xhorcik@fel.cvut.cz>           | KN:E-322| Lecturer             |
-| Niklas Heim       | appointment by email   | <niklas.heim@aic.fel.cvut.cz>   |         | Lecturer & Instructor|
-| Tomáš Votroubek   | appointment by email   | <votroto1@fel.cvut.cz>          |         | Instructor           |
-| Matěj Zorek       | appointment by email   | <zorekmat@fel.cvut.cz>          |         | Instructor           |
-| Jiří Němeček      | appointment by email   | <nemecj38@fel.cvut.cz>          |         | Instructor           |
+| Name             | Consulting hours     | E-mail                        | Room    | Role                 |
+|------------------|----------------------|-------------------------------|---------|----------------------|
+| Rostislav Horčík | appointment by email | <xhorcik@fel.cvut.cz>         | KN:E-322| Lecturer             |
+| Niklas Heim      | appointment by email | <niklas.heim@aic.fel.cvut.cz> |         | Lecturer & Instructor|
+| Tomáš Votroubek  | appointment by email | <votroto1@fel.cvut.cz>        |         | Instructor           |
+| Matěj Zorek      | appointment by email | <zorekmat@fel.cvut.cz>        |         | Instructor           |
+| Jiří Němeček     | appointment by email | <nemecj38@fel.cvut.cz>        |         | Instructor           |
 
 
 ## Other resources
 
-* Harold Abelson and Gerald Jay Sussman and Julie Sussman: Structure and Interpretation of Computer Programs, MIT Press, 1996.
-https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html 
+* Harold Abelson and Gerald Jay Sussman and Julie Sussman: [Structure and Interpretation of Computer
+  Programs](https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html), MIT Press,
+  1996. 
 
-* R. Kent Dybvig: The Scheme Programming Language, Fourth Edition, MIT Press, 2009.
-https://www.scheme.com/tspl4/
+* R. Kent Dybvig: [The Scheme Programming Language](https://www.scheme.com/tspl4/), Fourth Edition, MIT Press, 2009.
 
-* Raul Rojas: A Tutorial Introduction to the Lambda Calculus. http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf
+* Raul Rojas: [A Tutorial Introduction to the Lambda Calculus](http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf)
 
 * Greg Michaelson: An Introduction to Functional Programming Through Lambda Calculus, Dover edition, 2011. 
 
 * Graham Hutton: Programming in Haskell, Cambridge University Press, 2016.
 
-* Functors, Applicatives, and Monads In Pictures: https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
 
-* Lexical scopes: https://docs.racket-lang.org/guide/eval.html
+* Scheme/Racket:
+    * [Lexical scopes](https://docs.racket-lang.org/guide/eval.html)
+    * [Lazy evaluation](https://sites.ualberta.ca/~jhoover/325/CourseNotes/section/Scheme_3.htm )
+    * [Side effects in scheme](https://courses.cs.washington.edu/courses/cse341/05au/lectures/scheme-side-effects.html)
+    * [*Objects* in scheme](http://sarabander.github.io/sicp/html/3_002e1.xhtml)
 
-* Lazy evaluation: https://sites.ualberta.ca/~jhoover/325/CourseNotes/section/Scheme_3.htm 
+* Haskell:
+    * https://haskell.org/documentation/
+    * [Creating types](http://learnyouahaskell.com/making-our-own-types-and-typeclasses)
+    * [Pattern matching](https://www.haskell.org/tutorial/patterns.html)
+    * [Modules](https://www.haskell.org/tutorial/modules.html)
+    * [Functors, Applicatives, and Monads In Pictures](https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
+    * [Introduction to `IO`](https://wiki.haskell.org/Introduction_to_IO)
+    * [`IO` inside](https://wiki.haskell.org/IO_inside)
+    * [Monads](https://www.schoolofhaskell.com/user/bartosz/basics-of-haskell/10_Error_Handling)
+    * [Functors](http://learnyouahaskell.com/functors-applicative-functors-and-monoids)
 
+
+
+<!--
+broken links
 * Streams: https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-24.html
-
-* Side effects in scheme: https://courses.cs.washington.edu/courses/cse341/05au/lectures/scheme-side-effects.html
-
-* "Objects" in scheme: http://sarabander.github.io/sicp/html/3_002e1.xhtml
-
-* All sorts of materials on Haskell: https://haskell.org/documentation/
-
-* Creating Haskell types: http://learnyouahaskell.com/making-our-own-types-and-typeclasses
-
-* Haskell pattern matching: https://www.haskell.org/tutorial/patterns.html
-
-* Haskell modules: https://www.haskell.org/tutorial/modules.html
-
-* Haskell IO: https://wiki.haskell.org/Introduction_to_IO
-
-* Haskell IO: https://wiki.haskell.org/IO_inside
-
-* Haskell Monads: https://www.schoolofhaskell.com/user/bartosz/basics-of-haskell/10_Error_Handling
-
-* Haskell Functors: http://learnyouahaskell.com/functors-applicative-functors-and-monoids
-
-
-
+-->
 

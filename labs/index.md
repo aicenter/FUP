@@ -35,16 +35,13 @@ There are also online communities where you can get in touch with your peers. Ke
 academic principles - no plagiarism, avoid sharing code snippets directly, and try to come up with a
 solution by yourself first.
 
-* Faculty Discord
-  * link: https://discord.gg/cvutfel
+* [Faculty Discord](https://discord.gg/cvutfel)
   * Primarily in Czech
   * After authenticating with a faculty account, you can select which course's channels you want to
-    see in #volba-předmětů (check #fup)
-* Functional Programming Discord
-  * link: https://discord.gg/7C3RPWZcYg
+    see in `#volba-předmětů` (check `#fup`)
+* [Functional Programming Discord](https://discord.gg/7C3RPWZcYg)
   * Primarily in English
-  * Has channels not only for Racket (#racket) and Haskell (#haskell-beginners,
-    #haskell-beginners-more, #haskell, #haskell-tooling), but also for all kinds of FP and math
+  * Has channels not only for Racket (`#racket`) and Haskell (`#haskell-beginners`,
+    `#haskell-beginners-more`, `#haskell`, `#haskell-tooling`), but also for all kinds of FP and math
     topics
-* Student forum
-  * link: https://cw.felk.cvut.cz/forum/forum-1867.html
+* [Student forum](https://cw.felk.cvut.cz/forum/forum-1867.html)

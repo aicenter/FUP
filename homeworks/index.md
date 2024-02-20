@@ -4,6 +4,13 @@ outline: deep
 
 # Homework assignments
 
+## Requirements
+
+We will publish 4 homework assignments for **50 points** in total.
+* In total, from all homeworks, you have to reach at least **25 points**
+* You need at least **one point from every homework**
+* Late submissions: We deduct one point per day until +1 point is left on your score.
+
 ## Note on the private test data
 
 A part of any programming assignment is generating test cases and testing the produced algorithm. It

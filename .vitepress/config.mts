@@ -46,6 +46,15 @@ export default defineConfig({
           { text: '01: ASCII Art', link: '/homeworks/hw01' },
         ]
       },
+
+      {
+        text: 'Exams',
+        link: '/exams/',
+        items: [
+          { text: 'Manhattan distance', link: '/exams/manhattan-distance/' },
+        ]
+      },
+
     ],
 
     socialLinks: [
