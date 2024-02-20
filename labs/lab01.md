@@ -4,19 +4,17 @@ outline: deep
 
 # Lab 1: Introduction to Racket
 
-This lab aims to familiarize the students with the IDE we will use for Racket and help them write
-simple programs.
+In this lab you will familiarize yourself with the IDE we will use to write Racket  programs.
 
 ## Dr. Racket IDE
 
-The IDE can be downloaded for free for Linux, Windows, and MAC from:
-https://racket-lang.org/
+The IDE can be downloaded for free for Linux, Windows, and MAC from: https://racket-lang.org/
 
-The students can use the one installed in the lab computers. The teacher may help the students (to a
-reasonable degree) to get the IDE running on students’ laptops.
+You can use the one installed in the lab computers or install it on your own laptop. Don't hesitate
+to ask for help!
 
-Get familiar with the definition window and REPL in DrRacket. The documentation of implemented
-functions is accessible via Help Desk in the menu.
+To get familiar with the definition window and REPL in DrRacket you can:
+* Read documentation of implemented functions which is accessible via **Help Desk** in the menu.
 
 DrRacket allows writing programs in several languages. We focus on Racket, so your first line in the
 code should be:
@@ -25,7 +23,7 @@ code should be:
 ```
 
 ## Exercises - Racket basics
-Start interaction in REPL. Racket uses prefix notation for all functions. Let students compute
+Start interaction in REPL. Racket uses prefix notation for all functions. Try and compute a
 simple formulas, e.g.,  $2+3/5$.
 
 ### Exercise 1
@@ -80,7 +78,7 @@ consisting of a sequence of consecutive characters starting with `fst`, ending w
 following the order in the ASCII table.
 For example `(consecutive-chars #\A #\D) => "ABCD"` or  `(consecutive-chars #\z #\u) => "zyxwvu"`.
 For converting characters into positions in the ASCII table, use functions
-`<nowiki>char->integer</nowiki>` and `<nowiki>integer->char</nowiki>`. To convert a character into a
+`char->integer` and `integer->char`. To convert a character into a
 string, apply the function `string`.
 
 ::: details Solution
@@ -98,9 +96,11 @@ string, apply the function `string`.
         (iter (+ k step)
               (string-append acc (integer->string k)))))
   (iter first-index ""))
+```
 
-; alternatively:
-#|
+Alternatively, and maybe slightly more elegantly, you can define two helper functions `char+1` and
+`char-1` and use an accumulator:
+```scheme
 (define (char+1 c) (integer->char (add1 (char->integer c))))
 (define (char-1 c) (integer->char (sub1 (char->integer c))))
 
@@ -111,8 +111,6 @@ string, apply the function `string`.
      (consecutive-chars (char+1 fst) lst (string-append acc (string fst)))]
     [(char>? fst lst)
      (consecutive-chars (char-1 fst) lst (string-append acc (string fst)))]))
-|#
-
 ```
 :::
 
