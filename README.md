@@ -9,6 +9,7 @@ To read the lecture notes head to the [course homepage](https://aicenter.github.
 You need `npm` to build the page. Once you have that it should be enough to:
 
 ```bash
+npm install
 npm run docs:dev
 ```
 
