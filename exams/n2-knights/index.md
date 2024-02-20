@@ -17,7 +17,7 @@ looks like the letter "L".
 The $N^2$-knights puzzle concerns placing $O(N^2)$ knights on an $n \times n$ chessboard so that no
 two knights can attack each other.  Below, you can see a valid configuration for a 8x8 board.
 
-<img src="../../img/n2-knights-max.png" style="max-width: 50%; display: block; margin: 0 auto;">
+<img src="/img/n2-knights-max.png" style="max-width: 50%; display: block; margin: 0 auto;">
 
 Determine the validity of $N^2$-knights board configurations.
 

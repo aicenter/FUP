@@ -1,0 +1,47 @@
+\documentclass[border=0pt]{standalone}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,positioning}
+
+\definecolor{myGray}{rgb}{0.85,0.85,0.85}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \node (1) {$1$};
+
+  \node[right=of 1] (12) {$1$}
+    child {node {$2$}};
+
+  \node[right=1.5cm of 12] (123) {$1$}
+    child {node {$2$}}
+    child {node {$3$}};
+
+  \node[right=2cm of 123] (123') {$1$}
+    child {node {$2$}}
+    child {node {$3$}};
+
+  \node[right=2cm of 123'] (1234) {$1$}
+    child {node {$2$}
+      child {node {$4$}}}
+    child {node {$3$}};
+
+    \node[right=2cm of 1234] (12345) {$1$}
+    child {node {$2$}
+      child {node {$4$}
+        child {node {$5$}}}}
+    child {node {$3$}};
+
+    \node[right=2cm of 12345] {$1$}
+    child {node {$2$}
+      child {node {$4$}
+        child {node {$5$}}}}
+    child {node {$3$}
+      child {node {$6$}}};
+
+\end{tikzpicture}
+\end{document}
