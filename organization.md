@@ -52,13 +52,13 @@ The grading is the standard grading scale:
 
 ## Teachers
 
-| Name             | Consulting hours     | E-mail                        | Room    | Role                 |
-|------------------|----------------------|-------------------------------|---------|----------------------|
-| Rostislav Horčík | appointment by email | <xhorcik@fel.cvut.cz>         | KN:E-322| Lecturer             |
-| Niklas Heim      | appointment by email | <niklas.heim@aic.fel.cvut.cz> |         | Lecturer & Instructor|
-| Tomáš Votroubek  | appointment by email | <votroto1@fel.cvut.cz>        |         | Instructor           |
-| Matěj Zorek      | appointment by email | <zorekmat@fel.cvut.cz>        |         | Instructor           |
-| Jiří Němeček     | appointment by email | <nemecj38@fel.cvut.cz>        |         | Instructor           |
+| Name             | Consulting hours     | E-mail                 | Room    | Role                 |
+|------------------|----------------------|------------------------|---------|----------------------|
+| Rostislav Horčík | appointment by email | <xhorcik@fel.cvut.cz>  | KN:E-322| Lecturer             |
+| Niklas Heim      | appointment by email | <heimnikl@fel.cvut.cz> | KN:E-406| Lecturer & Instructor|
+| Tomáš Votroubek  | appointment by email | <votroto1@fel.cvut.cz> |         | Instructor           |
+| Matěj Zorek      | appointment by email | <zorekmat@fel.cvut.cz> |         | Instructor           |
+| Jiří Němeček     | appointment by email | <nemecj38@fel.cvut.cz> |         | Instructor           |
 
 
 ## Other resources
