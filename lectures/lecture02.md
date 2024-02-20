@@ -505,7 +505,7 @@ recursive evaluation process:
    subexpressions `e1`,... and then combine the resulting values by the operation `op`.
 
 The resulting code in Racket might look as follows:
-```scheme
+```scheme:line-numbers
 (define (eval-expr e)
   (if (number? e)
       e
@@ -637,15 +637,15 @@ contains an unnecessary dependency on Rackunit. There are two solutions to this 
 
 The first method can be implemented as follows. Suppose we have a Racket file `square.rkt` defining
 the function `square`:
-```scheme
+```scheme:line-numbers
 #lang racket
 (provide square)
 
 (define (square x) (* x x))
 ```
-Note [Line 2](#cb60-2) exporting the definition of `square` so that we can import it in the test
+Note Line 2, which is exporting the definition of `square` so that we can import it in the test
 module. Next, we design a test module in a separate file, e.g., `square-tests.rkt`.
-```scheme
+```scheme:line-numbers
 #lang racket
 (require rackunit 
          "square.rkt")
@@ -654,14 +654,14 @@ module. Next, we design a test module in a separate file, e.g., `square-tests.rk
            (check-equal? (square 10) 100)
            (check-equal? (square -10) 100))
 ```
-[Lines 2-3](#cb61-2) imports Rackunit and our file `square.rkt`. 
+Lines 2-3 import Rackunit and our file `square.rkt`. 
 
 This way, the tests are entirely separated from the actual code. It suffices to execute the test
 module `square-tests.rkt` whenever we need to run tests.
 
 The second approach defines a submodule `test` within the actual code. To introduce the tests and
 further test dependencies, use `module+` as follows:
-```scheme
+```scheme:line-numbers
 #lang racket
 (provide square)
 
