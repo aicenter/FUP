@@ -11,6 +11,15 @@ We will publish 4 homework assignments for **50 points** in total.
 * You need at least **one point from every homework**
 * Late submissions: We deduct one point per day until +1 point is left on your score.
 
+
+## 01: ASCII Art (Racket)
+
+::: danger Important
+Submit your solution as a zip archive containing a single file with the name **`hw1.rkt`**.
+:::
+
+The description of the assignment can be found [here](hw01).
+
 ## Note on the private test data
 
 A part of any programming assignment is generating test cases and testing the produced algorithm. It
@@ -18,12 +27,10 @@ is a very important skill each programmer has to master, regardless of the progr
 Please, take the result of the automatic evaluation as a hint that you should continue this process.
 Do not ask for the private test data and do not ask what is wrong with your output in the evaluation
 system. In the real world, no one will give you even this feedback and if you release a product with
-serious mistakes, you will suffer losses in money and reputation. A more realistic evaluation of
-your work would be to run the automated evaluation only once, after the deadline, to score your
-submissions.
+serious mistakes, you will suffer losses in money and reputation. 
 
-On the other hand, if you spend a long time (at least 4 hours) without any progress and you have
-created a decent set of your own test cases that pass without any problems. I encourage you to write
+However, if you spend a long time (at least 4 hours) without any progress and you have
+created a decent set of your own test cases that pass without problems - I encourage you to write
 to your lab teachers to help you design additional test cases or possibly help to identify the
 mistakes in your code.
 
@@ -43,15 +50,6 @@ output. Consult also your local documentation in DrRacket to get more details on
   (check-equal? (only-numbers '(1 a 2 3)) '(1 2) "You made an error!"))
 ```
 
-## Racket
-
-### 01: ASCII Art
-
-::: danger Important
-Submit your solution as a zip archive containing a single file with the name **`hw1.rkt`**.
-:::
-
-The description of the assignment can be found [here](hw01).
 
 <!--
 /*
