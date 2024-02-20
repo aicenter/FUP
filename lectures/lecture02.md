@@ -297,7 +297,7 @@ Note that lists can contain lists as members.
 ## Local definitions
 
 In the previous lecture, we saw that sometimes it is helpful to name intermediate results.  In the
-fractal [example](lecture01/#cb38-1), we composed a not-so-small number of functions.  It was
+fractal [example](lecture01#drawing-trees), we composed a not-so-small number of functions.  It was
 better to break the composition and bind identifiers to intermediate results to make the code more
 readable. There is another situation when local definitions are indispensable. When a subexpression
 occurs more than once within an expression, it is reasonable to make a local definition. Doing so

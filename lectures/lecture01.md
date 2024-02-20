@@ -761,6 +761,9 @@ grows exponentially in the recursion depth. So one should be careful when design
 function. Still, tree-recursive functions are natural and powerful when dealing with tree-structured
 data like algebraic expressions or tree-generative processes like fractals.
 
+
+#### Drawing trees
+
 As an example of the tree recursion, consider a tree-like fractal of a given size $n$ and direction
 $d$ in degrees generated according to the following rules:
 
@@ -778,9 +781,13 @@ recursive calls.
 
 ![Recursive generation of a tree-like fractal](../img/fractal.svg){ style="width: 100%; margin: auto;" }
 
-Now, let us see how to program this procedure in Racket. First, we need a drawing library if we want to draw something. Racket contains a simple library called 
+Now, let us see how to program this procedure in Racket. First, we need a drawing library if we want
+to draw something. Racket contains a simple library called 
 [value-turtles](https://docs.racket-lang.org/turtles/Value_Turtles.html). 
-Functions in this library update an image containing "a turtle" with a position and direction. For example, we can draw a line of a given length in the turtle's direction or turn the turtle by an angle. Further, we can extract the turtle's state from a given image and restore the state later on. The code of the program is below.
+Functions in this library update an image containing "a turtle" with a position and direction. For
+example, we can draw a line of a given length in the turtle's direction or turn the turtle by an
+angle. Further, we can extract the turtle's state from a given image and restore the state later on.
+The code of the program is below.
 
 ```scheme:line-numbers
 #lang racket
