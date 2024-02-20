@@ -802,17 +802,17 @@ Functions in this library update an image containing "a turtle" with a position 
 
 (tree 25)
 ```
-Line 2 is just loading the drawing library. [Line 4](#cb38-4) creates the initial empty image `init`
-of size 600x600 with the turtle heading up and its position $(450,500)$. [Line 5](#cb38-5) defines a
+Line 2 is just loading the drawing library. Line 4 creates the initial empty image `init`
+of size 600x600 with the turtle heading up and its position $(450,500)$. Line 5 defines a
 multiplicative parameter so that we can modify the size of the drawn sticks. 
 
-[Lines 7-16](#cb38-7) define the recursive function `tree` of two arguments. The first is the size,
+Lines 7-16 define the recursive function `tree` of two arguments. The first is the size,
 and the second is the image keeping the intermediate result. Its default value is the empty image
 `init`. As we do not want the function `tree` to recur infinitely, we must stop the recursion if the
-tree is too small. That happens on [Line 8](#cb38-8). If $n\leq 1$, we no longer recur and return
+tree is too small. That happens on Line 8. If $n\leq 1$, we no longer recur and return
 just the intermediate result `img`. 
 
-[Lines 10-16](#cb38-10) form the core functionality. As it is a more complex function composition,
+Lines 10-16 form the core functionality. As it is a more complex function composition,
 it would be hardly readable if we wrote it in a single expression. Thus we introduce local
 definitions[^local-def] to name several intermediate values. To get a better picture of the
 composition, check the picture below.
@@ -825,17 +825,16 @@ composition, check the picture below.
 
 ![Function composition generating the tree fractal](../img/fractal-composing.svg){ style="width: 100%; margin: auto;" }
 
-So we first take the input image `img` and draw `stick1` ([Line 10](#cb38-10)). Next, we extract the
-turtle's state ([Line 11](#cb38-11)) and call it `state`. In the image containing `stick1`, we turn
+So we first take the input image `img` and draw `stick1` (Line 10). Next, we extract the
+turtle's state (Line 11) and call it `state`. In the image containing `stick1`, we turn
 the turtle by 60 degrees counter-clockwise and make a recursive call drawing the half-sized fractal
-([Line 12](#cb38-12)). The resulting image is called `left`. Next, we must restore the turtle's
+(Line 12). The resulting image is called `left`. Next, we must restore the turtle's
 state, so its position is on top of `stick1`. Consequently, we turn the turtle by 60 degrees
-clockwise and make the recursive call again ([Line 13](#cb38-13)). The resulting image is named
-`right`. Afterward, we restore the state and draw `stick2` ([Line 14-15](#cb38-14)). Finally, we
-turn the turtle by 5 degrees counter-clockwise and make the last recursive call ([Line
-16](#cb38-16)).
+clockwise and make the recursive call again (Line 13). The resulting image is named
+`right`. Afterward, we restore the state and draw `stick2` (Line 14-15). Finally, we
+turn the turtle by 5 degrees counter-clockwise and make the last recursive call (Line 16).
 
-[Line 18](#cb38-18) contains the main program's expression that gets evaluated when we run the
+Line 18 contains the main program's expression that gets evaluated when we run the
 program. The resulting image is shown below.
 
 ![Resulting fractal](../img/tree.png){ style="width: 60%; margin: auto;" }
@@ -849,4 +848,3 @@ program. The resulting image is shown below.
 - We classify recursive functions according to the number of recursive calls in their body on linear-recursive and tree-recursive functions. 
 - Tail recursive functions are space efficient as they do not consume memory by making recursive calls.
 - The tree recursion might generate an exponential computational process.
--->
