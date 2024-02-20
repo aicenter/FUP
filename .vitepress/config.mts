@@ -27,7 +27,8 @@ export default defineConfig({
         text: 'Lectures',
         link: '/lectures/',
         items: [
-          { text: '01: Introduction', link: '/lectures/lecture01'}
+          { text: '01: Introduction', link: '/lectures/lecture01'},
+          { text: '02: Lists & Trees', link: '/lectures/lecture02'},
         ]
       },
 
