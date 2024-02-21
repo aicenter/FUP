@@ -3,7 +3,7 @@
 ## Requirements
 
 In order to come to the exam, the student should have fulfilled the conditions for passing the
-[homeworks](/homeworks/#requirements).
+[homework](/homework/#requirements).
 
 The programming exam consists of a Racket assignment and a Haskell assignment, which you have to
 finish in 3 hours.

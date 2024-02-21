@@ -36,7 +36,7 @@ as we go along the course.
 You will have to solve four homework assignments (for **50 points** in total):
 * 2 assignments in Racket
 * 2 assignments in Haskell
-More on the details of the homeworks [here](homeworks/).
+More on the details of the homework [here](homework/).
 
 ## Exam
 The final *programming* exam has **30 points**.
