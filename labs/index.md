@@ -5,11 +5,9 @@ the last lecture and shows students how to use them. In the second part, student
 that they try to solve individually.
 The solutions to the given tasks will be available after the last lecture of the week.
 
-* [Lab 01](lab01): Introduction to Racket
-
 <!--
-/*
 
+* [Lab 01](lab01): Introduction to Racket
 | [[courses:fup:tutorials:lab_02_-_lists|Lab 2 - Lists]]|
 | [[courses:fup:tutorials:lab_03_-_higher-order_functions|Lab 3 - Higher-order functions]] |
 | [[courses:fup:tutorials:lab_04_-_higher-order_functions_and_tree_recursion|Lab 4 - Higher-order functions and tree recursion]] |
@@ -23,7 +21,6 @@ The solutions to the given tasks will be available after the last lecture of the
 | [[Lab 12 - Monads in action]] |
 | [[Lab 13 - State monad]] |
 
-*/
 -->
 
 ## Where to get help
