@@ -19,10 +19,10 @@ features:
     details: Lab tutorials with pratical exercises including solutions.
     link: /labs/
 
-  - title: Homeworks
+  - title: Homework
     icon: ϑ
     details: Four homework assignments to be solved during the course
-    link: /homeworks/
+    link: /homework/
 
   - title: Exams
     icon: ξ
