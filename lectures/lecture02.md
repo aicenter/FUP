@@ -315,7 +315,7 @@ value of a list.
 ```
 It consists of two nested conditions. The first condition tests if the list is empty. In that case,
 the negative infinity `-inf.0` is returned. Otherwise, we recursively compute the maximum of `(cdr
-lst)` and compare it with the first element. We return either the first element of the maximum of
+lst)` and compare it with the first element. We return either the first element or the maximum of
 `(cdr lst)` depending on the result. 
 
 Note that the recursive call appears twice in the body, i.e., the function `bad-maxlist` is tree

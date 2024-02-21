@@ -37,6 +37,7 @@ export default defineConfig({
         link: '/labs/',
         items: [
           { text: '01: Introduction to Racket', link: '/labs/lab01' },
+          { text: '02: Lists & Trees', link: '/labs/lab02' },
         ]
       },
 
