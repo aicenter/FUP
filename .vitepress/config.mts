@@ -15,7 +15,7 @@ export default defineConfig({
       { text: 'Organization', link: '/organization' },
       { text: 'Lectures', link: '/lectures/' },
       { text: 'Labs', link: '/labs/' },
-      { text: 'Homework', link: '/homeworks/' },
+      { text: 'Homework', link: '/homework/' },
       { text: 'Exams', link: '/exams/' },
     ],
 
@@ -42,9 +42,9 @@ export default defineConfig({
 
       {
         text: 'Homework',
-        link: '/homeworks/',
+        link: '/homework/',
         items: [
-          { text: '01: ASCII Art', link: '/homeworks/hw01' },
+          { text: '01: ASCII Art', link: '/homework/hw01' },
         ]
       },
 
