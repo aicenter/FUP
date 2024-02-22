@@ -8,14 +8,14 @@ due to other obligations.
 Discusses the key ideas behind functional programming. It further
 introduces the programming language [Racket](https://racket-lang.org/).
 
-[Slides](https://github.com/aicenter/FUP/blob/main/slides/lecture01.pdf).
-[Log](https://github.com/aicenter/FUP/blob/main/slides/lecture01.rkt).
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture01.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture01.rkt).
 
 ## [Lecture 02](lecture02): Lists & Trees
 Focuses on Racket lists and trees. Further, it introduces the unit testing library
 [Rackunit](https://docs.racket-lang.org/rackunit/index.html).
 
-[Slides](https://github.com/aicenter/FUP/blob/main/slides/lecture02.pdf).
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture02.pdf).
 
 <!--
 3. [Lecture 3](lecture03) deals with higher-order functions, function closures and Racket structures.
