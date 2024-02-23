@@ -130,16 +130,13 @@ The number of digits can be computed by successive dividing the input number by 
 the integer division, you can use the function `quotient`.
 :::
 
-<!--
 ::: details Solution
 ```scheme
 (define (num-of-digits n [acc 1])
-  (cond [(< n 0) (num-of-digits (- n))]
-        [(< n 10) acc]
-        [else (num-of-digits (quotient n 10) (+ acc 1))]))
+  (define q (quotient n 10))
+  (if (= q 0) acc (num-of-digits q (+ acc 1))))
 ```
 :::
--->
 
 ### Task 2
 Write a function `(num->str n [radix 10])` taking as input an integer `n` together
@@ -159,7 +156,6 @@ remainders. The remainder after integer division can be computed by the function
 :::
 
 
-<!--
 ::: details Solution
 ```scheme
 (define (num->str n [radix 10])
@@ -176,7 +172,6 @@ remainders. The remainder after integer division can be computed by the function
                      rem-str)))
 
 ; Alternative
-#|
 (define numeric-alphabet "0123456789ABCDEF")
 (define (num->char n [radix 10])
   (string-ref numeric-alphabet (remainder n radix)))
@@ -185,7 +180,5 @@ remainders. The remainder after integer division can be computed by the function
     [(negative? n) (num->str (- n) radix '(#\-))]
     [(< n radix) (list->string (cons (num->char n radix) acc))]
     [else (num->str (quotient n radix) radix (cons (num->char n radix) acc))]))
-|#
 ```
-:::-->
-
+:::
