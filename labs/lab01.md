@@ -136,6 +136,7 @@ the integer division, you can use the function `quotient`.
   (define q (quotient n 10))
   (if (= q 0) acc (num-of-digits q (+ acc 1))))
 ```
+Thank you for the improved solution <u>@Denis Pak</u>!
 :::
 
 ### Task 2
@@ -170,11 +171,17 @@ remainders. The remainder after integer division can be computed by the function
       rem-str
       (string-append (num->str (quotient n radix) radix)
                      rem-str)))
+```
 
-; Alternative
+Alternatively, you can use `string-ref` to pick out the correct character from `numeric-alphabet`
+given an index, and instead of `string-append`ing you can construct a list of characters which is
+converted to a string in the end:
+```scheme
 (define numeric-alphabet "0123456789ABCDEF")
+
 (define (num->char n [radix 10])
   (string-ref numeric-alphabet (remainder n radix)))
+
 (define (num->str n [radix 10] [acc '()])
   (cond
     [(negative? n) (num->str (- n) radix '(#\-))]
