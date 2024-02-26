@@ -24,8 +24,11 @@ The exam will consist of solving two of the tasks listed below - without access 
 suggest not looking at the text of the assignments before you have time to attempt to solve it. You
 should be able to solve each of them in roughly 90 minutes to get a perfect score in the exam.
 
+You can find the exam tasks in the side bar on the left.
+
+<!--
 1.  [Manhattan Distance](manhattan-distance/)
-2.  Cheap Flights
+2.  [Cheap Flights](cheap-flights/)
 3.  $N^2$-Knights
 4.  Filetree
 5.  Minesweeper
@@ -44,4 +47,4 @@ should be able to solve each of them in roughly 90 minutes to get a perfect scor
 18. Pretty Printing Binary Numbers
 19. Fermat Primality Test
 20. Convex Hull
-
+-->

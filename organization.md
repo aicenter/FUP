@@ -77,6 +77,7 @@ The grading is the standard grading scale:
 
 
 * Scheme/Racket:
+    * [Beautiful Racket](https://beautifulracket.com/)
     * [Lexical scopes](https://docs.racket-lang.org/guide/eval.html)
     * [Lazy evaluation](https://sites.ualberta.ca/~jhoover/325/CourseNotes/section/Scheme_3.htm )
     * [Side effects in scheme](https://courses.cs.washington.edu/courses/cse341/05au/lectures/scheme-side-effects.html)
