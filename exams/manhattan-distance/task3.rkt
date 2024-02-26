@@ -20,3 +20,11 @@
     (for/list ((y (add1 h)))
       (for/list ((x (add1 w)))
         (get-symb pts (list x y))))))
+
+(define groups
+ '((#\A 1 1)
+   (#\B 1 6)
+   (#\C 8 3)
+   (#\D 3 4)
+   (#\E 5 5)
+   (#\F 8 9)))

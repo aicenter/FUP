@@ -24,9 +24,9 @@ In Racket, the exmeplary graph is represented as shown in the code snippet below
 
 ```scheme
 ; list of nodes
-(define ns '(123456)) ; listofnodes
+(define ns '(1 2 3 4 5 6)) ; listofnodes
 ; list of edges where each edge contains (start end cost)
-(define es '((120.5) (131.0) (232.0) (251.0) (344.0) (451.0)))
+(define es '((1 2 0.5) (1 3 1.0) (2 3 2.0) (2 5 1.0) (3 4 4.0) (4 5 1.0)))
 ; the graph; a list of nodes and edges
 (define gr (list ns es))
 
