@@ -2,3 +2,5 @@
 .vitepress/dist
 .DS_Store
 node_modules
+*.rkt~
+*compiled*
