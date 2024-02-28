@@ -321,7 +321,7 @@ To visualize this sequence, we define the turning angles as follows:
 $$\alpha_1(0)=\frac{7}{9}\pi,\quad\alpha_1(1)=-\frac{2}{9}\pi$$
 The visualization for $w_{15}$ is depicted below:
 
-![](../img/ex1.png){ style="width: 60%; margin: auto;" }
+![](/img/morphic-sequence1.png){ style="width: 60%; margin: auto;" }
 
 For the second example, we consider the morphism $\phi_2$ defined by
 $$\phi(0) = 00,\quad \phi(1) = 101.$$
@@ -331,9 +331,11 @@ To visualize this sequence, we define the turning angles as follows:
 $$\alpha_2(0)=\frac{5}{16}\pi,\quad\alpha_2(1)=-\frac{29}{60}\pi$$
 The visualization for $w_{10}$ is depicted below:
 
-![](../img/ex2.png){ style="width: 60%; margin: auto;" }
+![](/img/morphic-sequence2.png){ style="width: 60%; margin: auto;" }
 
-Now I will discuss generating these images in Racket using higher-order functions and currying. We will use the same turtle library as [before](../lecture01/#cb38-1) to draw the pictures. Thus our code starts with the following line:
+Now I will discuss generating these images in Racket using higher-order functions and currying. We
+will use the same turtle library as [before](lecture01#drawing-trees) to draw the pictures. Thus our
+code starts with the following line:
 ```scheme
 (require graphics/value-turtles)
 ```
