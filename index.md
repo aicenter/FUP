@@ -33,6 +33,7 @@ features:
 
 ---
 
-
-<!--
--->
+Lecture notes, lab material and slides are almost exclusively created by _**Rostislav Horčík**_.
+This website is merely a combining the [notes](https://xhorcik.gitlab.io/fup-lecture-notes/)
+and course materials from [CourseWare](https://cw.fel.cvut.cz/b222/courses/fup/start) in one
+*searchable* place.
