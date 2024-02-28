@@ -29,6 +29,7 @@ export default defineConfig({
         items: [
           { text: '01: Introduction', link: '/lectures/lecture01'},
           { text: '02: Lists & Trees', link: '/lectures/lecture02'},
+          { text: '03: Higher Order Functions', link: '/lectures/lecture03'},
         ]
       },
 
