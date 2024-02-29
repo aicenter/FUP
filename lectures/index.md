@@ -16,6 +16,7 @@ Focuses on Racket lists and trees. Further, it introduces the unit testing libra
 [Rackunit](https://docs.racket-lang.org/rackunit/index.html).
 
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture02.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture02.rkt).
 
 <!--
 3. [Lecture 3](lecture03) deals with higher-order functions, function closures and Racket structures.
