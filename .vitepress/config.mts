@@ -39,6 +39,7 @@ export default defineConfig({
         items: [
           { text: '01: Introduction to Racket', link: '/labs/lab01' },
           { text: '02: Lists & Trees', link: '/labs/lab02' },
+          { text: '03: Higher Order Functions', link: '/labs/lab03' },
         ]
       },
 
