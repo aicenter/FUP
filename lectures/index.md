@@ -22,6 +22,7 @@ Deals with higher-order functions like (`map`, `filter`, `foldl`), function clos
 structures.
 
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.rkt).
 
 <!--
 4. [Lecture 4](lecture04) introduces pattern matching, and explains how to implement lazy
