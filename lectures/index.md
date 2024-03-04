@@ -16,6 +16,14 @@ Focuses on Racket lists and trees. Further, it introduces the unit testing libra
 [Rackunit](https://docs.racket-lang.org/rackunit/index.html).
 
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture02.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture02.rkt).
+
+## [Lecture 3](lecture03): Higher Order Functions
+Deals with higher-order functions like (`map`, `filter`, `foldl`), function closures and Racket
+structures.
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.rkt).
 
 ## [Lecture 3](lecture03): Higher Order Functions
 Deals with higher-order functions like (`map`, `filter`, `foldl`), function closures and Racket
