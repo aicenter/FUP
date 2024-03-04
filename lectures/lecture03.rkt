@@ -101,13 +101,13 @@
 ;  (cond
 ;    [(= x 0) ang0]    
 ;    [(= x 1) ang1]))   
-(define alpha phi)
+(define alpha (phi '(0 1 1) '(0)))
 
 (define morphic-seq (generate-seq (phi '(0 1 1) '(0)) '(0) 15))
-(define angle-seq (map (alpha (/ (* 7 pi) 9) (/ (* -2 pi) 9)) morphic-seq))
+(define angle-seq (map (phi (/ (* 7 pi) 9) (/ (* -2 pi) 9)) morphic-seq))
 
 (define morphic-seq2 (generate-seq (phi '(0 0) '(1 0 1)) '(1) 10))
-(define angle-seq2 (map (alpha (/ (* 5 pi) 16) (/ (* -29 pi) 60)) morphic-seq2))
+(define angle-seq2 (map (phi (/ (* 5 pi) 16) (/ (* -29 pi) 60)) morphic-seq2))
 
 (define init (turtles 800 800))
 
