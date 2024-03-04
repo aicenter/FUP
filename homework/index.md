@@ -11,6 +11,15 @@ We will publish 4 homework assignments for **50 points** in total.
 * You need at least **one point from every homework**
 * Late submissions: We deduct one point per day until +1 point is left on your score.
 
+Dates for opening of the assignment / deadlines are:
+
+| Homework Nr. | Opening | Deadline |
+| ------------ | ------- | -------- |
+| 1            | 05.03.  | 25.03.   |
+| 2            | 19.03.  | 08.04.   |
+| 3            | 09.04.  | 29.04.   |
+| 4            | 23.04.  | 13.05.   |
+
 
 ## 01: ASCII Art (Racket)
 
@@ -19,6 +28,8 @@ Submit your solution as a zip archive containing a single file with the name **`
 :::
 
 The description of the assignment can be found [here](hw01).
+
+The assignment will open on the **05.03.**
 
 ## Note on the private test data
 
