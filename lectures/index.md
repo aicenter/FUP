@@ -44,6 +44,11 @@ structures.
 For the interested read there is a [bonus lecture](lecture-bonus) on immutable datastructures.
 -->
 
+## [Lecture 7](lecture07): Introduction to Haskell
+
+[Slides]
+[Log]
+
 ## Old recorded lectures
 
 Old recorded lectures from 2021 can be found [here](https://cw.fel.cvut.cz/b202/courses/fup/lectures/start).
