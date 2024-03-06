@@ -77,6 +77,9 @@ The most important commands you can use in the REPL are
 
 ### Basic Syntax
 
+This section covers some of the important features of Haskell including some notable differences of
+Haskell to Racket.  It is not a complete description of the whole syntax of Haskell.
+
 ```haskell
 -- this is a comment
 
@@ -92,8 +95,11 @@ Above we defined a variable `x` with the `Int` and assigned the value `3` to it.
 *Every* well-formed expression `e` has a well-formed type `t` written like `e :: t`:
 ```haskell
 𝝺> "a" ++ "b"
-"ab" :: String
+"ab"
+it :: String
 ```
+In the output above we concatenated two strings. The `it` is just haskells way of referring to the
+lastest unnamed expression.
 
 ::: details Custom REPL
 To get the lambda prompt instead of `Prelude>` and also output type information automatically, you 
@@ -128,13 +134,38 @@ factorial 0 = 1
 factorial n = n * factorial (n-1)
 ```
 
-In the first line above we are defining the function type signature. `factorial` is a function that
-accepts an `Int` and outputs an `Int`. Then we have two clauses (which are checked in the order they
-are written in and the first clause that matches a given input is used).  Calling `factorial 2` does
-not match the first clause, so the second one is used, because a variable (in this case `n`) matches
-anything. Hence, we end up with `2 * factorial (2-1)`, which can be further evaluated until we
-arrive at `2 * 1 * factorial 0`, where we match the base case and end up with the final expression
-that is evaluated as soon as we want to print it.
+::: tip Workflow
+You can run the function above by copying the snippet above into a file (e.g. `fact.hs`),
+starting a REPL, and loading the file:
+```bash
+$ ghci
+GHCi, version 9.8.1: https://www.haskell.org/ghc/  :? for help
+𝝺> :load fact.hs
+[1 of 2] Compiling Main             ( fact.hs, interpreted )
+Ok, one module loaded.
+```
+Now the `factorial` function is available and we can call it
+```haskell
+𝝺> factorial 5
+120
+it :: Int
+```
+:::
+
+Note, that we _**do not need parenthesis**_ to make a function call. In fact, in Haskell, function
+application is denoted by a space `␣`, so *whenever* you see expression like the following
+```haskell
+f a b c
+```
+it describes a call to a function `f` that accepts three arguments `a`, `b`, and `c`.
+
+In the first line of the `factorial` definition we are writing the function type signature.
+`factorial` is a function that accepts an `Int` and outputs an `Int`. Then we have two clauses
+(which are checked in the order they are written in and the first clause that matches a given input
+is used).  Calling `factorial 2` does not match the first clause, so the second one is used, because
+a variable (in this case `n`) matches anything. Hence, we end up with `2 * factorial (2-1)`, which
+can be further evaluated until we arrive at `2 * 1 * factorial 0`, where we match the base case and
+end up with the final expression that is evaluated as soon as we want to print it.
 
 We can define *infix operators* consisting only of special symbols, e.g. `+/+` can be defined in
 infix notation:
@@ -145,7 +176,7 @@ A prefix function turns infix by ` ` and infix turns prefix by `( )`:
 - `` `mod` ``, `` `elem` ``
 - `(+)`, `(+/+)`
 
-#### `let` / `where`
+#### Local variables via `let` & `where`
 
 Like in Racket we can use `let`:
 ```haskell
@@ -165,3 +196,141 @@ discr a b c = x - y
 
 
 #### Layout rule
+
+In Haskell, *indentation matters*, for example
+```haskell
+a = b + c where
+            b = 1
+            c = 2
+```
+means
+```haskell
+a = b + c where {b=1; c=2}
+```
+Keywords (such as `where`, `let`, etc.) start a *block*.  The first word after the keyword defines
+the *pivot column*.  Lines *exactly* on the pivot define a new entry in the block.  You can start a
+line to the *left* of the pivot to continue the previous lines.  Start a line to the *right* of the
+pivot to end the block.
+
+
+#### Conditionals & Guards
+
+Haskell has two way of express branching, the first is the classic `if-then-else`-clause:
+```haskell
+abs n = if n>=0 then n else -n
+```
+You can of course nest these conditionals:
+```haskell
+signum n = if n<0 then -1 else
+             if n==0 then 0 else 1
+```
+You *always* have to provide an `else` branch.
+Additionally, the then-clause and the else-clause must have the *same type*!
+::: details `𝝺> if True then 1 else "0"` will throw an error.
+```haskell
+𝝺> if True then 1 else "0"
+
+<interactive>:1:14: error: [GHC-39999]
+    • No instance for ‘Num String’ arising from the literal ‘1’
+    • In the expression: 1
+      In the expression: if True then 1 else "0"
+      In an equation for ‘it’: it = if True then 1 else "0"
+```
+The error message above might seem a little daunting at first, but you will learn to handle them
+once you undestand Haskell's type system a bit better. For now we can explain it as follows:
+```haskell
+𝝺> if True then 1 else 2
+1
+it :: Num a => a
+```
+So Haskell expects the output type of the conditional to be some `Num`ber[^typeclasses] (could be `Int`, or
+`Float`, or something different).  Now it received a `String` in the else-clause, so it tries to
+construct a `Num String` which is not possible.
+:::
+
+[^typeclasses]: `Num` is a *typeclass* which encompasses all numeric types of Haskell such as `Int`,
+    `Float`, `Double`, etc. It defines e.g. how to add (`+`) and multiply (`*`) numbers. We will go
+    into much more depth on typeclasses in future lectures.
+
+As an alternative to conditionals, functions can also be defined using *guards* (which are similar
+to Racket's `cond`).
+```haskell
+abs n | n >= 0 = n
+      | otherwise = -n
+```
+Definitions with multiple conditions are then easier to read:
+```haskell
+signum n | n < 0     = -1
+         | n == 0    = 0
+         | otherwise = 1
+```
+`otherwise` is defined in the prelude by `otherwise = True`.
+
+
+#### Lists
+
+Lists in Haskell, are very similar to Racket. They are singly linked lists, which are constructed
+via the operator `:` (equivalent to `cons`). They end with the empty list `[]`.
+The important difference is that list elements have to have the _**same type**_, e.g. `[Int]`.
+
+::: details Example lists
+You can try an evaluate the following list expressions one by one and see what GHCi spits out:
+```haskell
+𝝺> 1:2:3:4:5:[]
+...
+
+𝝺> [1..10]
+...
+
+𝝺> ['a'..'z']
+...
+
+𝝺> [10,9..1]
+...
+
+𝝺> [10,9..1]
+...
+
+𝝺> [1,3..]
+...
+```
+:::
+
+Lists come with tons of predefined functions like
+[`take`](https://hackage.haskell.org/package/base-4.19.1.0/docs/Prelude.html#v:take),
+[`length`](https://hackage.haskell.org/package/base-4.19.1.0/docs/Prelude.html#v:length),
+[`++`](https://hackage.haskell.org/package/base-4.19.1.0/docs/Prelude.html#v:-43--43-),
+[`reverse`](https://hackage.haskell.org/package/base-4.19.1.0/docs/Prelude.html#v:reverse), etc.
+
+::: warning Hoogλe
+Go an check out [Hoogle](https://hoogle.haskell.org/) in which you can search for all important
+Haskell functions. (You can even search for type signatures! - But more on those later.)
+:::
+
+Functions on lists can be defined using `x:xs` patterns, for example:
+```haskell
+𝝺> head (x:_) = x
+𝝺> head [1,2,3]
+1
+it :: Num a => a
+
+𝝺> tail (_:xs) = xs
+𝝺> tail [1,2,3]
+[2,3]
+it :: Num a => [a]
+```
+We will see later it works similarly for other composite data types. The `x:xs` pattern matches only
+non-empty lists:
+```haskell
+> head []
+*** Exception: Non-exhaustive patterns in function head
+```
+The `x:xs` patterns must be parenthesised, because function application
+has higher precedence than `(:)`. The following definition throws an error:
+```haskell
+head x:_ = x
+```
+A part of the pattern can be assigned a name
+```haskell
+copyfirst s@(x:xs) = x:s -- same as x:x:xs
+```
