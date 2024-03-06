@@ -130,7 +130,6 @@ your implementation function can return precise rational numbers like `(average-
 1/2`. If you want to have the usual floating-point representation, use the function
 `exact->inexact`, transforming the result into the imprecise floating-point representation.
 
-<!--
 ::: details Solution
 ```scheme
 (define (average-list lst)
@@ -141,7 +140,6 @@ your implementation function can return precise rational numbers like `(average-
   (exact->inexact (/ (iter lst 0) (length lst))))      
 ```
 :::
--->
 
 
 ## Task 2
@@ -166,7 +164,6 @@ numbers and returns a list of averages of these `n`-tuples. E.g. `(n-block-avera
 built segment of consecutive elements. The second tracks how many elements we must read from the
 list to complete the `n`-tuple of consecutive elements.
 
-<!--
 ::: details Solution
 ```scheme
 (define (split-list n lst)
@@ -181,4 +178,3 @@ list to complete the `n`-tuple of consecutive elements.
   (map average-list (split-list n lst)))
 ```
 :::
--->
