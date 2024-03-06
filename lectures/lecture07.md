@@ -167,14 +167,43 @@ a variable (in this case `n`) matches anything. Hence, we end up with `2 * facto
 can be further evaluated until we arrive at `2 * 1 * factorial 0`, where we match the base case and
 end up with the final expression that is evaluated as soon as we want to print it.
 
+To define functions of multiple variables, we just add them to the definition, for example
+```haskell
+power :: Int -> (Int -> Int)
+power _ 0 = 1
+power n k = n * power n (k-1)
+```
+Note, that the type signature here hints at the fact that functions in Haskell are by default
+_**always curried**_!
+
 We can define *infix operators* consisting only of special symbols, e.g. `+/+` can be defined in
 infix notation:
 ```haskell
 x +/+ y = 2*x + y
 ```
-A prefix function turns infix by ` ` and infix turns prefix by `( )`:
-- `` `mod` ``, `` `elem` ``
-- `(+)`, `(+/+)`
+
+An infix function can be turned into a prefix function by `( )`:
+```haskell
+𝝺> 2 +/+ 3
+7
+it :: Num a => a
+
+𝝺> (+/+) 2 3
+7
+it :: Num a => a
+```
+
+We can also turn a prefix function into an infix function via `` ` ``:
+```haskell
+𝝺> elem 1 [2,1,3]
+True
+it :: Bool
+
+𝝺> 1 `elem` [2,1,3]
+True
+it :: Bool
+```
+
 
 #### Local variables via `let` & `where`
 
