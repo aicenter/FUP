@@ -143,7 +143,7 @@ case, the list of coefficients and the list of vectors).  This results in a list
 multiplied by respective coefficients. Then it suffices to sum them component by component.
 :::
 
-<!--
+
 ::: details Solution
 ```scheme
 (define (scalar-mult coef vec)
@@ -154,7 +154,7 @@ multiplied by respective coefficients. Then it suffices to sum them component by
     (apply map + (map scalar-mult coefs vectors))))
 ```
 :::
--->
+
 
 ## Task 2
 Use the function from the previous task to define a function `(matrix-mult m1 m2)` computing the
@@ -185,7 +185,7 @@ To define the matrix power, use the `foldl` function applied to a list composed 
 (el el ... el)
 ```
 
-<!--
+
 ::: details Solution
 ```scheme
 (define (matrix-mult m1 m2)
@@ -195,4 +195,3 @@ To define the matrix power, use the `foldl` function applied to a list composed 
   (foldl matrix-mult mat (make-list (- k 1) mat)))
 ```
 :::
--->

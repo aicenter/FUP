@@ -14,8 +14,9 @@ permutations. For example
 
 Suppose that we have all permutations of a list of length $n$, and we want to build all
 permutations of its extension by an element. To do that, it suffices to take the element and
-interleave it in all possible ways into all the permutations of length $n$. For instance,
-`((2 3) (3 2))`
+interleave it in all possible ways into all the permutations of length $n$.
+
+For instance, `((2 3) (3 2))`
 are all permutations of the list `(2 3)`. If
 we want to compute all permutations of `(1 2 3)`, we take each permutation of length 2 and
 interleave the element `1` into it as follows:
@@ -63,7 +64,7 @@ internal node $x_i$ goes to the left, the variable $x_i$ is evaluated by $0$. If
 evaluated by $1$. The leaf in the path represents the value $f(x_1,\ldots,x_n)$ for the evaluation
 defined by the path. Example of a Boolean function and its binary decision tree:
 
-![](/img/bdd.png)
+![](/img/bdd.png){ style="width: 70%; margin: auto;" }
 
 We will represent the inner variable nodes as Racket structures:
 ```scheme
@@ -110,7 +111,7 @@ An evaluation is a list of assignments for all variables occurring in the tree. 
 
 We devise two versions of `evaluate`. The first is the recursive function consuming consecutively values of $x_1,\ldots,x_n$ and, based on its value, recursively evaluates either the left or right subtree. Once all the values are consumed, we should be in a leaf specifying the value of $f(x_1,\ldots,x_n)$.
 
-::: details `evaluate` #1
+::: details Soluiton: `evaluate` #1
 ```scheme
 (define (evaluate tree vals)
   (match vals
@@ -126,7 +127,7 @@ into the list of functions `node-left`,
 `vals`.
 Finally, it applies their composition to `tree`.
 
-::: details `evaluate` #2
+::: details Solution: `evaluate` #2
 ```scheme
 (define (evaluate2 tree vals)
   (define (left-right x)                         ; define function 0 -> node-left, 1 -> node-right
@@ -140,7 +141,7 @@ function using an accumulator `ev`,
 keeping partial evaluation as we traverse the tree.
 It recursively finds all satisficing evaluations of the left and right subtree, extends them by $0$ (resp. $1$) if they come from left (resp. right), and append them together. 
 
-::: details Solution
+::: details Solution `satisficing-evaluations`
 ```scheme
 (define (satisficing-evaluations tree [ev '()])
   (match tree
