@@ -32,7 +32,7 @@ structures.
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.rkt).
 
-## [Lecture 4](lecture04)
+## [Lecture 4](lecture04): Lazy Evaluation
 Introduces pattern matching, and explains how to implement lazy evaluation and streams in Racket.
 
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture04.pdf).
