@@ -30,6 +30,7 @@ export default defineConfig({
           { text: '01: Introduction', link: '/lectures/lecture01'},
           { text: '02: Lists & Trees', link: '/lectures/lecture02'},
           { text: '03: Higher Order Functions', link: '/lectures/lecture03'},
+          { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04'},
         ]
       },
 
@@ -39,7 +40,8 @@ export default defineConfig({
         items: [
           { text: '01: Introduction to Racket', link: '/labs/lab01' },
           { text: '02: Lists & Trees', link: '/labs/lab02' },
-          { text: '03: Higher Order Functions', link: '/labs/lab03' },
+          { text: '03: Higher Order Functions I', link: '/labs/lab03' },
+          { text: '04: Higher Order Functions II', link: '/labs/lab04' },
         ]
       },
 

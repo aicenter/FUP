@@ -32,10 +32,13 @@ structures.
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.rkt).
 
-<!--
-4. [Lecture 4](lecture04) introduces pattern matching, and explains how to implement lazy
-   evaluation and streams in Racket.
+## [Lecture 4](lecture04)
+Introduces pattern matching, and explains how to implement lazy evaluation and streams in Racket.
 
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture04.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture04.rkt).
+
+<!--
 5. [Lecture 5](lecture05) briefly introduces syntactic macros, and shows how to implement
    interpreters (the latter is remains to be written).
 
