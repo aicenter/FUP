@@ -52,6 +52,13 @@ using the recursion on the length of `lst`.
 ```
 :::
 
+::: tip Note
+The `permutations` function is a great candidate for an application of
+[`stream`](/lectures/lecture04#streams)s.  If you try to run `(permutations (range 10))` you will
+run out of memory with the default DrRacket settings, while you can easily construct a stream of
+permutations with the (builtin) `in-permutations` function.
+:::
+
 ## Exercise 2
 Binary decision trees represent Boolean functions, i.e., functions from $\{0,1\}^n$ to $\{0,1\}$.
 Let $f(x_1,\ldots,x_n)$ be a Boolean function. The corresponding binary decision tree is created as
