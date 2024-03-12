@@ -379,7 +379,12 @@ Let us see some examples of this approach. Consider the Newton-Ralphson method f
 
 $$g_{i+1}=\frac{1}{2}\left(g_i + \frac{n}{g_i}\right).$$ 
 
-A terminating condition could be $|1-\frac{g_i}{g_{i+1}}|\leq\varepsilon$ for a sufficiently small $\varepsilon>0$.
+A terminating condition could be $|1-\frac{g_i}{g_{i+1}}|\leq\varepsilon$ for a sufficiently small
+$\varepsilon>0$. [^termination]
+
+[^termination]: Instead of $|1-\frac{g_i}{g_{i+1}}|\leq\varepsilon$, we could also use e.g.
+    $|g_i-g_{i+1}|\leq\varepsilon$. However the accuracy of the latter depends on the size of `g_i`,
+    while the former is accurate for all values of $g_i$.
 
 Now, we compare the code that mixes the generating code with the terminating condition and the modular code utilizing streams.
 
