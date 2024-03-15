@@ -51,6 +51,7 @@ export default defineConfig({
         link: '/homework/',
         items: [
           { text: '01: ASCII Art', link: '/homework/hw01' },
+          { text: '02: SVGen Interpreter', link: '/homework/hw02' },
         ]
       },
 
