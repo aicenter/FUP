@@ -165,8 +165,9 @@ with zeros at the start of the program) and a *pointer* to the current position 
 0 0 0 0 0 0 0 ...
   ↑
 ```
-Additionally, the user can also provide data to a program via a list of
-inputs. The full list of operations can be found in the table below:
+Additionally, the user can also provide data to a program via a list of inputs
+(not the similarity to the Turing Machine). The full list of operations can be
+found in the table below:
 
 | Character  | Meaning                                                                      |
 | ---------- | ---------------------------------------------------------------------------- |
@@ -178,12 +179,105 @@ inputs. The full list of operations can be found in the table below:
 | ,          | Accept one byte of input, storing its value in the byte at the data pointer. |
 | [ `code` ] | While the number at the data pointer is not zero, execute `code`.            |
 
-More formally, Brainf*ck is a minimalistic, esoteric programming
-language that defines computations over a fixed-size tape of numbers. The syntax
-grammar of the language is given by
+With the table above we can decipher the first example program `,>,[-<+>]<.` and realize that
+it adds two numbers from a user provided input.
+
+More formally, Brainf*ck is a minimalistic, esoteric programming language that
+defines computations over a fixed-size tape of numbers. The syntax grammar of
+the language is given by
 ```
 <program> -> <term>*
-   <term> -> <cmd> | <cycle>
-  <cycle> -> [<program>]
-    <cmd> -> + | - | < | > | . | ,
+<term>    -> <cmd> | <cycle>
+<cycle>   -> [<program>]
+<cmd>     -> + | - | < | > | . | ,
 ```
+
+which means that a `<program>` is a sequence of `<term>`s. Each term is either a
+command (`<cmd>`) or a `<cycle>`. We already listed the six possible commands
+above. Inside cycles we can nest whole programs which gives us the ability to
+write arbitrary loops. Thus, we can write a well-formed expression simply with
+arbitrary sequence of commands. The only things we have to take care of is to
+match parentheses appropriately.
+
+We will represent Brainf\*ck programs simply as lists of terms. Cycles will form
+nested lists.  To make things more convenient for us we will slightly alter the
+syntax of Brainf\*ck, because `.` and `,` are already taken in Racket (for pairs
+and quoting). We will substitute them by `@` and `*`, respectively:
+
+| Character  | Substitue | Meaning                                                                      |
+| ---------- | --------- | ---------------------------------------------------------------------------- |
+| >          | >         | Increment the data pointer by one (to point to the next cell to the right).  |
+| <          | <         | Decrement the data pointer by one (to point to the next cell to the left).   |
+| +          | +         | Increment the byte at the data pointer by one.                               |
+| -          | -         | Decrement the byte at the data pointer by one.                               |
+| .          | @         | Output the byte at the data pointer.                                         |
+| ,          | *         | Accept one byte of input, storing its value in the byte at the data pointer. |
+| [ `code` ] | [`code`]  | While the number at the data pointer is not zero, execute `code`.            |
+
+With the substitutions we can define our addition program as
+```scheme
+(define add-prg '(@ > @ [- < + >] < *))
+```
+
+Our final implementation will define a function `run-prg` which accepts a
+program and some input, for example:
+```scheme
+> (run-prg add-prg '(12 34))
+46
+```
+
+### Mutable Tape
+
+During the lecture we will use a *gobal*, *mutable* tape to implement our
+interpreter (you will modify this implementation to use an immutable tape during
+the labs).
+
+Our tape will be represented by a mutable vector of numbers which we can initialize with
+```scheme
+> (define SIZE 10)
+> (define t (make-tape SIZE 0))
+'#(0 0 0 0 0 0 0 0 0 0)
+```
+And mutate via the `vector-set!` function.
+```
+> (vector-set! t 2 5)
+> t
+'#(0 0 5 0 0 0 0 0 0 0)
+```
+
+We will implement the tape and the possible operations on the tape by defining a
+closure.  The closure will hold the tape itself, a pointer `ptr` to the current
+position, and will accept a number of messages `msg` that trigger operations on
+the tape:
+
+```scheme
+(define (make-tape size)
+  (define tape (make-vector size 0))
+  (define ptr 0)
+
+  (lambda (msg)
+    (cond
+      [(eqv? msg 'tape) (list tape ptr)]
+      [(eqv? msg 'plus) (vector-set! tape ptr (+ 1 (vector-ref tape ptr)))])))
+```
+
+The tape can then be used like this:
+```scheme
+> (define tp (make-tape SIZE))
+> (tp 'tape)
+'(#(0 0 0 0 0 0 0 0 0 0) 0)
+
+> (tp 'plus)
+
+> (tp 'tape)
+'(#(1 0 0 0 0 0 0 0 0 0) 0)
+```
+
+### Command Implementation
+
+Implementing the operations for the commands `<`, `>`, `+`, `-`, `@`, and `.` is now straightforward:
+
+<<< @/lectures/lecture05-brainfuck.rkt#make-tape{scheme}
+
+
+### Program evaluation
