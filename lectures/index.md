@@ -34,10 +34,18 @@ Introduces pattern matching, and explains how to implement lazy evaluation and s
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture04.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture04.rkt).
 
-<!--
-5. [Lecture 5](lecture05) briefly introduces syntactic macros, and shows how to implement
-   interpreters (the latter is remains to be written).
 
+## [Lecture 5](lecture05): Macros & Interpreters
+
+Briefly introduces syntactic macros, and shows how to implement interpreters
+(the latter is remains to be written).
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture05.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture05.rkt).
+[Brainf*ck.rkt](https://github.com/aicenter/FUP/blob/main/lectures/lecture05-brainfuck.rkt).
+
+
+<!--
 6. [Lecture 6](lecture06) introduces lambda calculus.
 
 For the interested read there is a [bonus lecture](lecture-bonus) on immutable datastructures.
