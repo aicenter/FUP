@@ -16,9 +16,6 @@
 (define SIZE 10)
 
 ; constructor of the object tape of a given size
-#|
-// #region make-tape
-|#
 (define (make-tape size)
   (define tape (make-vector size 0))   ; initialize fresh tape
   (define ptr 0)                       ; pointer points to the first element
@@ -42,9 +39,6 @@
       ['dot (vector-ref tape ptr)]
       ['comma (lambda (val) (vector-set! tape ptr val))]
       ['reset (vector-fill! tape 0) (set! ptr 0)])))
-#|
-// #endregion make-tape
-|#
 
 ; defines a global tape used by the interpreter
 (define tape (make-tape SIZE))
@@ -73,8 +67,14 @@
       (let ([new-input (eval-prg cycle input)]) ; otherwise evaluate cycle code
         (eval-cycle cycle prg new-input))))     ; and execute the cycle again       
 
+(define (log prg input [iwidth 5])
+  (displayln (format "tape: ~a  input: ~a  cmd: ~a"
+                     (tape 'tape)
+                     (~a  input #:min-width iwidth #:align 'right #:left-pad-string " ")
+                     (if (empty? prg) "" (car prg)))))
+
 (define (eval-prg prg input)
-  ;(displayln (tape 'tape))
+  (log prg input)
   (match prg
     [(list) input]                ; are all commands processed? if yes, return remaining input
     [(list '@ rest ...) (eval-comma rest input)]

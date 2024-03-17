@@ -110,33 +110,32 @@ We must define a macro with two syntax rules to make the new syntax work—one f
 
 ## Interpreters
 
-The next homework with be about interpreters, so lets talk a little bit about
-what they are/how they work.
-
-Generally, programming lanuages are composed of two parts:
-
+Interpreters are programs that *directly*[^compilers] execute instructions of a
+programming language (in our case that means evaluating S-expressions).
+Before we can create an interpreter for a given programming language we need to define the language
+itself. Generally, programming lanuages are composed of two parts:
 - **Syntax**: Tells you what kind of expressions you can write to obtain a valid program.
+  The syntax is often defined via a *grammar* that defines how the language
+  primitives from larger expressions.
 - **Semantics**: Assigns *meaning* of certain primitives. For example, it
-  defines what the operation `+` does.
+  can define what the operation `+` does.
 
-```
-.
-└── Programming Languages
-    ├── Syntax
-    │   └── Grammar
-    └── Semantics
-        └── Meaning of primitives
-```
+[^compilers]: Interpreters *directly* execute programs, while [compilers](https://en.wikipedia.org/wiki/Compiler)
+    translate one language into another (typically a from a higher-level to a lower level language).
 
-Interpreters usually work in a two major phases. After you provide the course code,
-the interpreter first **parses** the text into an AST (this can include an initial
-lexing phase which generates tokens from your code without creating a tree
-structure, and only then outputting an AST).
-Then the AST is **evaluated** to produce the final output.
+Based on a well defined language interpreters usually work in two major phases.
+After you provide the course code, the interpreter first **parses**[^lexing] the
+text into an abstract syntax tree (AST).  Then the AST is **evaluated** to
+produce the final output.
+
+[^lexing]: Parsing can include an initial lexing phase which generates tokens
+    from your code without creating a tree structure, and only then outputting an
+    AST.
 
 In the case of LISP-like languages we already wrote our code in terms of
 S-expressions, which means that *we don't have to worry about parsing our code*
 at all! Parsing is provided for free by the racket language, because it is *homoiconic*[^homoiconic].
+Menaing, our source code is already written as a nested list.
 Hence, we will only have to worry about the evaluation of given S-expressions.[^monadic-parsing]
 
 [^homoiconic]: [Homoiconicity](https://en.wikipedia.org/wiki/Homoiconicity)
@@ -154,7 +153,7 @@ Hence, we will only have to worry about the evaluation of given S-expressions.[^
 
 Interpreting a full-fledged programming language is quite tricky, so we will choose a very simple
 language to interpret, called [Brainf*ck](https://en.wikipedia.org/wiki/Brainfuck).
-Here is an example of a valid Brainf*ck program:
+Here is an example of a valid Brainf*ck program (we will see what it does in a little while):
 ```
 ,>,[-<+>]<.
 ```
@@ -165,9 +164,9 @@ with zeros at the start of the program) and a *pointer* to the current position 
 0 0 0 0 0 0 0 ...
   ↑
 ```
-Additionally, the user can also provide data to a program via a list of inputs
-(not the similarity to the Turing Machine). The full list of operations can be
-found in the table below:
+The different operations can e.g. increment the number at the current pointer position, or move the
+pointer. The full list of operations can be found in the table below.
+In addition to the tape, the user can also provide data to a program via a list of inputs.
 
 | Character  | Meaning                                                                      |
 | ---------- | ---------------------------------------------------------------------------- |
@@ -179,8 +178,60 @@ found in the table below:
 | ,          | Accept one byte of input, storing its value in the byte at the data pointer. |
 | [ `code` ] | While the number at the data pointer is not zero, execute `code`.            |
 
-With the table above we can decipher the first example program `,>,[-<+>]<.` and realize that
-it adds two numbers from a user provided input.
+With the table above we can decipher the first example program `,>,[-<+>]<.`:
+Let's assume we have two numbers waiting in our input list and a fresh tape:
+```
+input: '(2 3)
+tape:
+↓
+0 0 0 0 0 0 0 ...
+↑
+```
+
+1. `,`: Read a number from the input and store it at the pointer position. Now
+   input and tape look like this:
+```
+input: '(3)
+tape:
+↓
+2 0 0 0 0 0 0 ...
+↑
+```
+
+2. `>`: Move pointer to right.
+3. `,`: Read a second number from the input. Now the input is empty and the tape
+   contains the two number we read:
+```
+input: '()
+tape:
+  ↓
+2 3 0 0 0 0 0 ...
+  ↑
+```
+4. `[-<+>]`: Is a cycle, which we will keep executing until the number at the current pointer is zero.
+   Currently, it is `3`, so we run the cycle. The cycle itself contains four operations which decrement
+   the number at the current position, move the pointer to the left, increment the number there, and
+   finally moves the pointer back to the right. 
+```
+input: '()
+tape:
+  ↓
+3 2 0 0 0 0 0 ...
+  ↑
+```
+5. The cycle is repeated another two times until the current pointer is zero:
+```
+input: '()
+tape:
+  ↓
+5 0 0 0 0 0 0 ...
+  ↑
+```
+6. `<.`: Finally, we move the pointer to the left again, and output the current value.
+
+**We just added two numbers!**
+
+---
 
 More formally, Brainf*ck is a minimalistic, esoteric programming language that
 defines computations over a fixed-size tape of numbers. The syntax grammar of
@@ -195,11 +246,11 @@ the language is given by
 which means that a `<program>` is a sequence of `<term>`s. Each term is either a
 command (`<cmd>`) or a `<cycle>`. We already listed the six possible commands
 above. Inside cycles we can nest whole programs which gives us the ability to
-write arbitrary loops. Thus, we can write a well-formed expression simply with
-arbitrary sequence of commands. The only things we have to take care of is to
+write arbitrary loops. Thus, we can write a *syntactically* well-formed expression simply with
+arbitrary sequence of commands. The only thing we have to take care of is to
 match parentheses appropriately.
 
-We will represent Brainf\*ck programs simply as lists of terms. Cycles will form
+For our interpreter, we will represent Brainf\*ck programs simply as lists of terms. Cycles will form
 nested lists.  To make things more convenient for us we will slightly alter the
 syntax of Brainf\*ck, because `.` and `,` are already taken in Racket (for pairs
 and quoting). We will substitute them by `@` and `*`, respectively:
@@ -238,7 +289,7 @@ Our tape will be represented by a mutable vector of numbers which we can initial
 > (define t (make-tape SIZE 0))
 '#(0 0 0 0 0 0 0 0 0 0)
 ```
-And mutate via the `vector-set!` function.
+And mutate via the [`vector-set!`](https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._vector-set%21%29%29) function.
 ```
 > (vector-set! t 2 5)
 > t
@@ -264,7 +315,7 @@ the tape:
 The tape can then be used like this:
 ```scheme
 > (define tp (make-tape SIZE))
-> (tp 'tape)
+> (tp 'tape) ; output tape and pointer
 '(#(0 0 0 0 0 0 0 0 0 0) 0)
 
 > (tp 'plus)
@@ -277,7 +328,141 @@ The tape can then be used like this:
 
 Implementing the operations for the commands `<`, `>`, `+`, `-`, `@`, and `.` is now straightforward:
 
-<<< @/lectures/lecture05-brainfuck.rkt#make-tape{scheme}
+```scheme
+(define (make-tape size)
+  (define tape (make-vector size 0))   ; initialize fresh tape
+  (define ptr 0)                       ; pointer points to the first element
+
+  (define (change op ptr)
+    (vector-set! tape ptr (op (vector-ref tape ptr) 1)))
+
+  (define (move op ptr)
+    (let ([new-ptr (op ptr 1)])
+      (if (or (< new-ptr 0) (> new-ptr size))
+          (error "Moving outside tape")
+          new-ptr)))
+
+  (lambda (msg)
+    (match msg
+      ['tape (list tape ptr)]
+      ['plus (change + ptr)]
+      ['minus (change - ptr)]
+      ['left (set! ptr (move - ptr))]
+      ['right (set! ptr (move + ptr))]
+      ['dot (vector-ref tape ptr)]
+      ['comma (lambda (val) (vector-set! tape ptr val))]
+      ['reset (vector-fill! tape 0) (set! ptr 0)])))
+```
+
+
+Wit the code above we can already manually run instructions on our tape that resemble Brainf*ck
+programms:
+```scheme
+> (define t (make-tape SIZE))
+> (t 'tape)
+'(#(0 0 0 0 0 0 0 0 0 0) 0)
+
+> ((t 'comma) 2)  ; read the number 2 from an input
+> (t 'tape)
+'(#(2 0 0 0 0 0 0 0 0 0) 0)
+
+> (t 'right)
+> ((t 'comma) 3) ; read the number 3 from an input
+> (t 'tape)
+'(#(2 3 0 0 0 0 0 0 0 0) 1)
+```
 
 
 ### Program evaluation
+
+In order to evaluate whole Brainf*ck programs we now just have to implement a function that accepts
+a program (as a nested list of operations) and a list of inputs. The user-facing function of our
+interpreter, `run-prg` will look very simple:
+```scheme
+(define (run-prg prg input)
+  (tape 'reset)              ; fill tape by zeros
+  (eval-prg prg input)       ; evaluate program
+  (displayln "done"))
+```
+
+With pattern matching the `eval-prg` function can conveniently be split into four cases:
+1. If we end up with an empty `prg` we are at the end of our programm and simply output the current `input`.
+2. When encountering an `'@`-symbol we want to read from the `input`. This is the only time we directly work with the input list, so this case deserves its own function.
+3. If the current element in the `prg` list is again a list, we execute a separate cycle function.
+4. Otherwise we call our tape operations according to the current symbol.
+
+```scheme
+(define (eval-prg prg input)
+  (log prg input)
+  (match prg
+    [(list) input]  ; are all commands processed? if yes, return remaining input
+    [(list '@ rest ...) (eval-comma rest input)]
+    [(list (? list? cycle) rest ...) (eval-cycle cycle rest input)]
+    [(list cmd rest ...) (eval-cmd cmd rest input)]))
+```
+
+
+The last case where we just need to translate symbols to tape operations is the simplest to implement:
+```scheme
+(define (eval-cmd cmd prg input)
+  (match cmd
+    ['+ (tape 'plus)] 
+    ['- (tape 'minus)]
+    ['< (tape 'left)]
+    ['> (tape 'right)]
+    ['* (printf "~a " (tape 'dot))]
+    [_ (error "Unknown command")])
+  (eval-prg prg input))   ; recursive call processing further commands
+```
+Note that we are mutating the global tape in the `match` clause and then do a mutually recursive call
+to `eval-prg` to continue processing the rest of the program.
+
+If we want to read from an input, we strip on element off the `input`, store it on the tape, and
+again continue the evaluation of the rest of `prg`.
+```scheme
+(define (eval-comma prg input)
+  (cond
+    [(null? input) (error "Empty input")]
+    [else ((tape 'comma) (car input))
+          (eval-prg prg (cdr input))]))  ; recursive call processing further commands
+```
+
+To run a cycle, we check that the current value is not zero, evaluate the cycle,
+and then call `eval-cycle` again (with potentially changed input list).  If the
+current value is zero at the beginning of the cycle, we skip its evaluation.
+```scheme
+(define (eval-cycle cycle prg input)
+  (if (= (tape 'dot) 0)                         ; is cycle is finished? 
+      (eval-prg prg input)                      ; if yes, recursive call preocessing further commands
+      (let ([new-input (eval-prg cycle input)]) ; otherwise evaluate cycle code
+        (eval-cycle cycle prg new-input))))     ; and execute the cycle again       
+```
+
+We are done! The complete implementation of our interpreter can be found
+[here](/lectures/lecture05-brainfuck.rkt). If we add Running our interpreter on the `add-prg` will produce
+the following output:
+```scheme
+> (run-prg add-prg '(2 3))
+tape: (#(0 0 0 0 0 0 0 0 0 0) 0)  input: (2 3)  cmd: @
+tape: (#(2 0 0 0 0 0 0 0 0 0) 0)  input:   (3)  cmd: >
+tape: (#(2 0 0 0 0 0 0 0 0 0) 1)  input:   (3)  cmd: @
+tape: (#(2 3 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: (- < + >)
+tape: (#(2 3 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: -
+tape: (#(2 2 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
+tape: (#(2 2 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: +
+tape: (#(3 2 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: >
+tape: (#(3 2 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: 
+tape: (#(3 2 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: -
+tape: (#(3 1 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
+tape: (#(3 1 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: +
+tape: (#(4 1 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: >
+tape: (#(4 1 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: 
+tape: (#(4 1 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: -
+tape: (#(4 0 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
+tape: (#(4 0 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: +
+tape: (#(5 0 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: >
+tape: (#(5 0 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: 
+tape: (#(5 0 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
+tape: (#(5 0 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: *
+5
+```
