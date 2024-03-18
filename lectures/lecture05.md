@@ -329,7 +329,7 @@ And mutate via the [`vector-set!`](https://docs.racket-lang.org/reference/vector
 ```
 
 We will implement the tape and the possible operations on the tape by defining a
-[closure](lectures/lecture03#closures).  The closure will hold the tape itself, a pointer `ptr` to the current
+[closure](lecture03#closures).  The closure will hold the tape itself, a pointer `ptr` to the current
 position, and will accept a number of messages `msg` that trigger operations on
 the tape:
 
@@ -471,7 +471,7 @@ current value is zero at the beginning of the cycle, we skip its evaluation.
 ```
 
 We are done! The complete implementation of our interpreter can be found
-[here](/lectures/lecture05-brainfuck.rkt). If we add Running our interpreter on the `add-prg` will produce
+[here](https://github.com/aicenter/FUP/blob/main/lectures/lecture05-brainfuck.rkt). If we add Running our interpreter on the `add-prg` will produce
 the following output:
 ```scheme
 > (run-prg add-prg '(2 3))
@@ -498,3 +498,7 @@ tape: (#(5 0 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
 tape: (#(5 0 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: *
 5
 ```
+
+For larger programs you can take a look at some more
+[examples](https://en.wikipedia.org/wiki/Brainfuck#Examples) or, of course, write your own Brainf*ck
+programs!
