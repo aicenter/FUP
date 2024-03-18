@@ -70,7 +70,8 @@ The macro defines a syntax rule whose pattern is `(macro-if c a b)`. Racket
 searches for a portion of AST being a list of length $4$ starting with a symbol
 `macro-if`. If such a list is found, it is rewritten into `(my-if c (thunk a)
 (thunk b))`.
-Thus we can use in our code `macro-if` instead of `my-if`. Racket automatically translates all occurrences of `macro-if` to `my-if` with the thunks injected.
+Thus we can use in our code `macro-if` instead of `my-if`. Racket automatically translates all
+occurrences of `macro-if` to `my-if` with the thunks injected.
 
 A macro can be composed of several syntax rules. We can specify several patterns
 to be matched against the AST and templates for each pattern. If any pattern
@@ -105,7 +106,11 @@ We must define a macro with two syntax rules to make the new syntax work—one f
      (map (lambda (<id>) <expr>)
           (filter (lambda (<id>) <cond>) <lst>))]))
 ```
-[Line 3](#cb55-3) defines a pattern for the comprehension term without an if clause. [Line 4](#cb55-4) specifies how to rewrite the comprehension term. The symbol `<id>` together with the expression `<exp>` define a function to be applied to each element of the list `<lst>`. [Line 6](#cb55-6) represents the second pattern containing the if clause. In that case, we must first filter the list `<lst>` based on the if clause ([Line 8](#cb55-8)) and then apply the function to each element of the filtered list ([Line 7](#cb55-7)).
+Line 3 defines a pattern for the comprehension term without an if clause. Line 4 specifies how to
+rewrite the comprehension term. The symbol `<id>` together with the expression `<exp>` define a
+function to be applied to each element of the list `<lst>`. Line 6 represents the second pattern
+containing the if clause. In that case, we must first filter the list `<lst>` based on the if clause
+(Line 8) and then apply the function to each element of the filtered list (Line 7).
 
 
 ## Interpreters
@@ -113,10 +118,9 @@ We must define a macro with two syntax rules to make the new syntax work—one f
 Interpreters are programs that *directly*[^compilers] execute instructions of a
 programming language (in our case that means evaluating S-expressions).
 Before we can create an interpreter for a given programming language we need to define the language
-itself. Generally, programming lanuages are composed of two parts:
+itself. Generally, programming languages are composed of two parts:
 - **Syntax**: Tells you what kind of expressions you can write to obtain a valid program.
-  The syntax is often defined via a *grammar* that defines how the language
-  primitives from larger expressions.
+  The *grammar* defines how larger expression are built from primitives.
 - **Semantics**: Assigns *meaning* of certain primitives. For example, it
   can define what the operation `+` does.
 
@@ -124,7 +128,7 @@ itself. Generally, programming lanuages are composed of two parts:
     translate one language into another (typically a from a higher-level to a lower level language).
 
 Based on a well defined language interpreters usually work in two major phases.
-After you provide the course code, the interpreter first **parses**[^lexing] the
+After you provide the source code, the interpreter first **parses**[^lexing] the
 text into an abstract syntax tree (AST).  Then the AST is **evaluated** to
 produce the final output.
 
@@ -135,18 +139,18 @@ produce the final output.
 In the case of LISP-like languages we already wrote our code in terms of
 S-expressions, which means that *we don't have to worry about parsing our code*
 at all! Parsing is provided for free by the racket language, because it is *homoiconic*[^homoiconic].
-Menaing, our source code is already written as a nested list.
+Meaning, our source code is already written as a nested list.
 Hence, we will only have to worry about the evaluation of given S-expressions.[^monadic-parsing]
 
 [^homoiconic]: [Homoiconicity](https://en.wikipedia.org/wiki/Homoiconicity)
   essentially means `code == data`, so that programs that are written in
-  homoiconic languages can immediately be used as datastructures (in our case:
+  homoiconic languages can immediately be used as data-structures (in our case:
   lists).
 
 [^monadic-parsing]: If you have been looking forward to a lecture on parsing and
   are now disappointed, do not despair, we will have a full lecture on [*monadic
   parsing*](https://www.cs.nott.ac.uk/~pszgmh/monparsing.pdf) in a few weeks
-  during tha Haskell part of this course.
+  during the Haskell part of this course.
 
 
 ### Brainf*ck
@@ -279,11 +283,39 @@ program and some input, for example:
 
 ### Mutable Tape
 
-During the lecture we will use a *gobal*, *mutable* tape to implement our
+During the lecture we will use a *global*, *mutable* tape (bad!) to implement our
 interpreter (you will modify this implementation to use an immutable tape during
 the labs).
 
+::: details Vectors: [`make-vector`](https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._make-vector%29%29), [`vector-ref`](https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._vector-ref%29%29), and [`vector-set!`](https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._vector-set%21%29%29).
+
+We are not discussing mutable data-structures in this course, but Racket does support them.
+Here we only briefly show you [Vectors](https://docs.racket-lang.org/reference/vectors.html)
+so that you can get rid of them again during the labs.
+Racket's vectors are fixed-length arrays with
+constant-time access and update of their elements numbered from 0.
+
+For the purposes of this initial interpreter implementation we only need the following functions:
+```scheme
+> (define v (vector 1 2 3))
+> v
+'#(1 2 3)
+
+> (vector-ref v 2)
+3
+
+> (vector-set! v 2 "hi")
+> v
+'#(1 2 "hi")
+
+> (make-vector 4 'a)
+'#(a a a a)
+```
+:::
+
 Our tape will be represented by a mutable vector of numbers which we can initialize with
+
+
 ```scheme
 > (define SIZE 10)
 > (define t (make-tape SIZE 0))
@@ -297,7 +329,7 @@ And mutate via the [`vector-set!`](https://docs.racket-lang.org/reference/vector
 ```
 
 We will implement the tape and the possible operations on the tape by defining a
-closure.  The closure will hold the tape itself, a pointer `ptr` to the current
+[closure](lectures/lecture03#closures).  The closure will hold the tape itself, a pointer `ptr` to the current
 position, and will accept a number of messages `msg` that trigger operations on
 the tape:
 
@@ -356,7 +388,7 @@ Implementing the operations for the commands `<`, `>`, `+`, `-`, `@`, and `.` is
 
 
 Wit the code above we can already manually run instructions on our tape that resemble Brainf*ck
-programms:
+programs:
 ```scheme
 > (define t (make-tape SIZE))
 > (t 'tape)
@@ -386,7 +418,7 @@ interpreter, `run-prg` will look very simple:
 ```
 
 With pattern matching the `eval-prg` function can conveniently be split into four cases:
-1. If we end up with an empty `prg` we are at the end of our programm and simply output the current `input`.
+1. If we end up with an empty `prg` we are at the end of our program and simply output the current `input`.
 2. When encountering an `'@`-symbol we want to read from the `input`. This is the only time we directly work with the input list, so this case deserves its own function.
 3. If the current element in the `prg` list is again a list, we execute a separate cycle function.
 4. Otherwise we call our tape operations according to the current symbol.
