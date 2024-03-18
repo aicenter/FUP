@@ -74,7 +74,7 @@
                      (if (empty? prg) "" (car prg)))))
 
 (define (eval-prg prg input)
-  (log prg input)
+  ; (log prg input)
   (match prg
     [(list) input]                ; are all commands processed? if yes, return remaining input
     [(list '@ rest ...) (eval-comma rest input)]
