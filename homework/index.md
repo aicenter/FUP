@@ -21,16 +21,6 @@ Dates for opening of the assignment / deadlines are:
 | 4            | 23.04.  | 13.05.   |
 
 
-## 01: ASCII Art (Racket)
-
-::: danger Important
-Submit your solution as a zip archive containing a single file with the name **`hw1.rkt`**.
-:::
-
-The description of the assignment can be found [here](hw01).
-
-The assignment will open on the **05.03.**
-
 ## Note on the private test data
 
 A part of any programming assignment is generating test cases and testing the produced algorithm. It
