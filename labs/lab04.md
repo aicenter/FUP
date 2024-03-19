@@ -219,7 +219,8 @@ represents the following tree:
 Write a function `(beaten-teams tree)` taking a binary tournament tree and outputting the list of
 beaten teams by the winner. E.g., `(beaten-teams tour) => (E G D)`.
 
-::: tip Hint Code it as a recursive function starting in the root defining the tournament winner. Then follow the path labelled by the winner and collects the beaten teams along the path to an accumulator. You can use nested patterns in pattern matching to find out the losers.
+::: tip Hint
+Code it as a recursive function starting in the root defining the tournament winner. Then follow the path labelled by the winner and collects the beaten teams along the path to an accumulator. You can use nested patterns in pattern matching to find out the losers.
 :::
 
 ::: details Solution

@@ -43,6 +43,7 @@ export default defineConfig({
           { text: '02: Lists & Trees', link: '/labs/lab02' },
           { text: '03: Higher Order Functions I', link: '/labs/lab03' },
           { text: '04: Higher Order Functions II', link: '/labs/lab04' },
+          { text: '05: Streams & Graphs', link: '/labs/lab05' },
         ]
       },
 
