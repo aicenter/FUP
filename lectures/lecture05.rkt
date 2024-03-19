@@ -21,7 +21,7 @@
 
 ; list comprehension
 (define-syntax list-comp
-  (syntax-rules (: <- if)
+  (syntax-rules (: <- if) ; these are treated as literals in the pattern matches
     [(list-comp <expr> : <id> <- <lst>)
      (map (lambda (<id>) <expr>) <lst>)]
 

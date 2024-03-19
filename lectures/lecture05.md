@@ -317,8 +317,6 @@ For the purposes of this initial interpreter implementation we only need the fol
 :::
 
 Our tape will be represented by a mutable vector of numbers which we can initialize with
-
-
 ```scheme
 > (define SIZE 10)
 > (define t (make-tape SIZE 0))
@@ -332,9 +330,8 @@ And mutate via the [`vector-set!`](https://docs.racket-lang.org/reference/vector
 ```
 
 We will implement the tape and the possible operations on the tape by defining a
-[closure](lecture03#closures).  The closure will hold the tape itself, a pointer `ptr` to the current
-position, and will accept a number of messages `msg` that trigger operations on
-the tape:
+[closure](lecture03#closures).  The closure will hold the tape itself, a pointer `ptr` to the
+current position, and will accept a number of messages `msg` that trigger operations on the tape:
 
 ```scheme
 (define (make-tape size)
@@ -361,7 +358,8 @@ The tape can then be used like this:
 
 ### Command Implementation
 
-Implementing the operations for the commands `<`, `>`, `+`, `-`, `@`, and `.` is now straightforward:
+Implementing the operations for the commands `<`, `>`, `+`, `-`, `@`, and `.` is now
+straightforward:
 
 ```scheme
 (define (make-tape size)
@@ -474,8 +472,8 @@ current value is zero at the beginning of the cycle, we skip its evaluation.
 ```
 
 We are done! The complete implementation of our interpreter can be found
-[here](https://github.com/aicenter/FUP/blob/main/lectures/lecture05-brainfuck.rkt). If we add Running our interpreter on the `add-prg` will produce
-the following output:
+[here](https://github.com/aicenter/FUP/blob/main/lectures/lecture05-brainfuck.rkt). Running our
+interpreter on the `add-prg` will produce the following output:
 ```scheme
 > (run-prg add-prg '(2 3))
 tape: (#(0 0 0 0 0 0 0 0 0 0) 0)  input: (2 3)  cmd: @
