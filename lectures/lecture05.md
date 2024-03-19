@@ -114,6 +114,13 @@ function to be applied to each element of the list `<lst>`. Line 6 represents th
 containing the if clause. In that case, we must first filter the list `<lst>` based on the if clause
 (Line 8) and then apply the function to each element of the filtered list (Line 7).
 
+::: tip More on Macros
+If you want to read more about Macros, good starting points are the *Beautiful Racket* explainers
+on [macros](https://beautifulracket.com/explainer/macros.html),
+[hygiene](https://beautifulracket.com/explainer/hygiene.html), [syntax
+patterns](https://beautifulracket.com/explainer/syntax-patterns.html), and of course the [Racket
+docs](https://docs.racket-lang.org/guide/macros.html).
+:::
 
 ## Interpreters
 
