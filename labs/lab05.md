@@ -5,6 +5,7 @@ outline: deep
 # Lab 5: Streams and graphs
 
 ## Exercise 1
+
 Define a function `(stream-add s1 s2)` adding two infinite streams together component-wise. For instance,
 ```scheme
   0 1 2 3 4 5 6 ....
@@ -19,7 +20,7 @@ Using `stream-add`, define the infinite stream `fib-stream` of all Fibonacci num
 ```
 
 Adding two infinite streams can be done recursively. Since the streams are infinite, we do not have to check the emptiness of any input streams. 
-::: details Solution
+::: details Solution: `stream-add`
 ```scheme
 (define (stream-add s1 s2)
   (stream-cons (+ (stream-first s1) (stream-first s2))
@@ -37,7 +38,7 @@ $F(0)=0$, $F(1)=1$, and $F(n)=F(n-1) + F(n-2)$ for $n>1$ can be reformulated as 
 ```
 
 This directly leads to the following code:
-::: details Solution
+::: details Solution: `fib-stream`
 ```scheme
 (define fib-stream
   (stream-cons 0
@@ -53,6 +54,7 @@ Alternatively one can use `stream*` as follows:
 ```
 :::
 
+## Exercise 2
 
 Apart from streams, this lab is also focused on graphs. A graph $G=(V,E)$ is a tuple consisting of a set of vertices $V$ (also called nodes) and a set of edges
 $E\subseteq\{\{u,v\}\mid u,v\in V, u\neq v\}$. We will represent a graph in Scheme as a struct with two fields. The first is a list of vertices, and the second is a list of edges. An edge $\{u,v\}$ is represented as a list `(u v)`. We define a structure for a graph:
@@ -65,10 +67,13 @@ The following graph
 
 is represented as follows:
 ```scheme
-(define gr (graph '(1 2 3 4 5 6) '((1 2) (1 5) (2 3) (2 5) (3 4) (4 5) (4 6))))
+(define gr
+  (graph
+    '(1 2 3 4 5 6)
+    '((1 2) (1 5) (2 3) (2 5) (3 4) (4 5) (4 6))))
 ```
 
-## Exercise 2
+
 Given a graph $G$, a [Hamiltonian path](https://en.wikipedia.org/wiki/Hamiltonian_path) is a path visiting each vertex of $G$ exactly once. We will represent a path as a list of consecutive nodes in the path. The above graph `gr` has a Hamiltonian path `(3 2 1 5 4 6)`. 
 
 Write a function `(find-hamiltonian-path g)` which takes a graph as its input and returns a Hamiltonian path, if it exists, and `#f` otherwise.
@@ -79,7 +84,7 @@ E.g.
 ```
 
 As a Hamiltonian path traverses each node exactly once, if it exists, it has to be represented by a permutation of the nodes. Thus, we can apply the function `permutations` from the previous lab to generate all node permutations and check whether each of them forms a Hamiltonian path. We start with a definition of a function checking if a given list of nodes is a path. For that, we need a function testing whether a pair of nodes is connected.
-::: details Solution
+::: details Solution: `edge?`
 ```scheme
 ; test whether a pair of nodes is connected
 (define (edge? g)
@@ -93,7 +98,7 @@ transformed to `((1 2) (2 3) (3 4))`. This is done
 by taking `(1 2 3)`
 and `(2 3 4)` and joining them by mapping `list` element-wise. Finally, we test whether all these pairs are connected.
 To do so, we use the function `(andmap f lst)`. This function is implemented in Racket. It behaves like `map` but aggregates the results of `f` by `and` function, i.e., once any of the results is `#f`, it returns `#f` and the last result otherwise. 
-::: details Solution
+::: details Solution: `check-path`
 ```scheme
 (define (check-path g)
   (lambda (lst)
@@ -104,7 +109,7 @@ To do so, we use the function `(andmap f lst)`. This function is implemented in 
 ```
 :::
 Now we can apply the above function to all permutations. The function `(check-path g)` for a graph `g` either returns `lst` if `lst` forms a path or `#f` otherwise. Thus we can map it over all permutations of nodes and filter those which form a path. If there is a permutation being a path simultaneously, we have a Hamiltonian path. Otherwise, we return `#f`.
-::: details Solution
+::: details Solution: `find-hamiltonian-path`
 ```scheme
 (define (find-hamiltonian-path g)
   (define perms (permutations (graph-nodes g)))
@@ -113,6 +118,9 @@ Now we can apply the above function to all permutations. The function `(check-pa
         #f
         (car paths))))
 ```
+
+If you are curious, try to use the function `in-permutations` to compute the `perms` lazily and
+compare the perfromance of the two implementations on a larger graph.
 :::
 
 ## Task 1
