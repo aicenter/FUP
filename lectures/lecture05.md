@@ -30,8 +30,7 @@ source.rkt` in a shell?
 ```scheme
 (if exp1
     (if exp2
-        (if exp3
-            #f)
+        exp3
         #f)
     #f)
 ```
