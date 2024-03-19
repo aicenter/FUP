@@ -65,6 +65,9 @@ before the compilation by a macro is possible.
 ```scheme
 (define-syntax-rule (macro-if c a b)
   (my-if c (thunk a) (thunk b)))
+
+(define (my-if c a b)
+  (if c (a) (b)))
 ```
 The macro defines a syntax rule whose pattern is `(macro-if c a b)`. Racket
 searches for a portion of AST being a list of length $4$ starting with a symbol
