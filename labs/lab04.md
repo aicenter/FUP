@@ -172,7 +172,6 @@ taking a list `lst` and returning a list of all its sublists/subsequences. E.g.
 Code it as a recursive function using the following facts. 1) There is only a single subsequence of the empty list, namely the empty list. 2) Subsequences of $(x_1,x_2,\ldots,x_n)$ are just subsequences of $(x_2,\ldots,x_n)$ together with subsequences starting with $x_1$ and following by a subsequence of $(x_2,\ldots,x_n)$.
 :::
 
-<!--
 ::: details Solution
 ```scheme
 (define (sub-seq lst)
@@ -184,7 +183,6 @@ Code it as a recursive function using the following facts. 1) There is only a si
                 (map ((curry cons) el) rest-sub-seq)))))
 ```
 :::
--->
 
 ## Task 2
 Consider a binary tree representing a tournament. Each internal node corresponds to a match. We represent it as the following structure:
@@ -224,7 +222,6 @@ beaten teams by the winner. E.g., `(beaten-teams tour) => (E G D)`.
 ::: tip Hint Code it as a recursive function starting in the root defining the tournament winner. Then follow the path labelled by the winner and collects the beaten teams along the path to an accumulator. You can use nested patterns in pattern matching to find out the losers.
 :::
 
-<!--
 ::: details Solution
 ```scheme
 (define (beaten-teams tree [acc '()])
@@ -235,4 +232,3 @@ beaten teams by the winner. E.g., `(beaten-teams tour) => (E G D)`.
     [(mtch win (mtch los _ _) (mtch win l r)) (beaten-teams (mtch win l r) (cons los acc))]))
 ```
 :::
--->
