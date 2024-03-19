@@ -63,7 +63,7 @@ $E\subseteq\{\{u,v\}\mid u,v\in V, u\neq v\}$. We will represent a graph in Sche
 ```
 
 The following graph
-![](/img/6n-graph.svg)
+![](/img/6n-graph.svg){ style="width: 50%; margin: auto;" }
 
 is represented as follows:
 ```scheme
