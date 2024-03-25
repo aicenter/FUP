@@ -81,6 +81,26 @@ consisting of numbers 1,2,3,4,5,6,7 with 4 being the active number.
 (move 'right t) => '((4 3 2 1) 5 (6 7))
 ```
 
+<!--
+::: details Solution
+```scheme
+(define (change op t)
+  (tape (tape-left t)
+        (op (tape-val t) 1)
+        (tape-right t)))
+
+(define (move dir t)
+  (match (cons dir t)
+    [(cons 'left (tape '() _ _)) (error "Outside tape")]
+    [(cons 'right (tape _ _ '())) (error "Outside tape")]
+    [(cons 'left (tape left val right)) 
+     (tape (cdr left) (car left) (cons val right))]
+    [(cons 'right (tape left val right))
+     (tape (cons val left) (car right) (cdr right))]))
+```
+:::
+-->
+
 ## Task 2
 Modify the implementation of the interpreter from the lecture so that it uses your purely functional tape.
 
