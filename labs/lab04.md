@@ -180,7 +180,7 @@ Code it as a recursive function using the following facts. 1) There is only a si
       (let ([el (car lst)]
             [rest-sub-seq (sub-seq (cdr lst))])
         (append rest-sub-seq
-                (map ((curry cons) el) rest-sub-seq)))))
+                (map (curry cons el) rest-sub-seq)))))
 ```
 :::
 
@@ -220,7 +220,9 @@ Write a function `(beaten-teams tree)` taking a binary tournament tree and outpu
 beaten teams by the winner. E.g., `(beaten-teams tour) => (E G D)`.
 
 ::: tip Hint
-Code it as a recursive function starting in the root defining the tournament winner. Then follow the path labelled by the winner and collects the beaten teams along the path to an accumulator. You can use nested patterns in pattern matching to find out the losers.
+Code it as a recursive function starting in the root defining the tournament winner. Then follow the
+path labelled by the winner and collects the beaten teams along the path to an accumulator. You can
+use nested patterns in pattern matching to find out the losers.
 :::
 
 ::: details Solution

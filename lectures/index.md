@@ -44,6 +44,10 @@ Briefly introduces syntactic macros, and shows how to implement interpreters
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture05.rkt).
 [Brainf*ck.rkt](https://github.com/aicenter/FUP/blob/main/lectures/lecture05-brainfuck.rkt).
 
+## [Lecture 6](lecture06): Lambda Calculus
+
+Describes the basics of lambda calculus to show you were most of the initial ideas for functional
+programming came from.
 
 <!--
 6. [Lecture 6](lecture06) introduces lambda calculus.

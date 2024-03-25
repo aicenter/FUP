@@ -6,20 +6,23 @@ outline: deep
 
 ## Exercise 1
 
-Define a function `(stream-add s1 s2)` adding two infinite streams together component-wise. For instance,
+Define a function `(stream-add s1 s2)` adding two infinite streams together component-wise. For
+instance,
 ```scheme
   0 1 2 3 4 5 6 ....
 + 1 1 1 1 1 1 1 ....
 --------------------
   1 2 3 4 5 6 7 ....
 ```
-Using `stream-add`, define the infinite stream `fib-stream` of all Fibonacci numbers. We can test it, for instance, as follows:
+Using `stream-add`, define the infinite stream `fib-stream` of all Fibonacci numbers. We can test
+it, for instance, as follows:
 ```scheme
 (stream->list (stream-take fib-stream 10)) =>
   (0 1 1 2 3 5 8 13 21 34)
 ```
 
-Adding two infinite streams can be done recursively. Since the streams are infinite, we do not have to check the emptiness of any input streams. 
+Adding two infinite streams can be done recursively. Since the streams are infinite, we do not have
+to check the emptiness of any input streams. 
 ::: details Solution: `stream-add`
 ```scheme
 (define (stream-add s1 s2)
@@ -56,8 +59,11 @@ Alternatively one can use `stream*` as follows:
 
 ## Exercise 2
 
-Apart from streams, this lab is also focused on graphs. A graph $G=(V,E)$ is a tuple consisting of a set of vertices $V$ (also called nodes) and a set of edges
-$E\subseteq\{\{u,v\}\mid u,v\in V, u\neq v\}$. We will represent a graph in Scheme as a struct with two fields. The first is a list of vertices, and the second is a list of edges. An edge $\{u,v\}$ is represented as a list `(u v)`. We define a structure for a graph:
+Apart from streams, this lab is also focused on graphs. A graph $G=(V,E)$ is a tuple consisting of a
+set of vertices $V$ (also called nodes) and a set of edges $E\subseteq\{\{u,v\}\mid u,v\in V, u\neq
+v\}$. We will represent a graph in Scheme as a struct with two fields. The first is a list of
+vertices, and the second is a list of edges. An edge $\{u,v\}$ is represented as a list `(u v)`. We
+define a structure for a graph:
 ```scheme
 (struct graph (nodes edges))
 ```
@@ -74,16 +80,22 @@ is represented as follows:
 ```
 
 
-Given a graph $G$, a [Hamiltonian path](https://en.wikipedia.org/wiki/Hamiltonian_path) is a path visiting each vertex of $G$ exactly once. We will represent a path as a list of consecutive nodes in the path. The above graph `gr` has a Hamiltonian path `(3 2 1 5 4 6)`. 
+Given a graph $G$, a [Hamiltonian path](https://en.wikipedia.org/wiki/Hamiltonian_path) is a path
+visiting each vertex of $G$ exactly once. We will represent a path as a list of consecutive nodes in
+the path. The above graph `gr` has a Hamiltonian path `(3 2 1 5 4 6)`. 
 
-Write a function `(find-hamiltonian-path g)` which takes a graph as its input and returns a Hamiltonian path, if it exists, and `#f` otherwise.
-E.g. 
+Write a function `(find-hamiltonian-path g)` which takes a graph as its input and returns a
+Hamiltonian path, if it exists, and `#f` otherwise. E.g. 
 ```scheme
 (find-hamiltonian-path gr) => (3 2 1 5 4 6)
 (find-hamiltonian-path (graph '(a b c d) '((a b) (a c) (a d)))) => #f
 ```
 
-As a Hamiltonian path traverses each node exactly once, if it exists, it has to be represented by a permutation of the nodes. Thus, we can apply the function `permutations` from the previous lab to generate all node permutations and check whether each of them forms a Hamiltonian path. We start with a definition of a function checking if a given list of nodes is a path. For that, we need a function testing whether a pair of nodes is connected.
+As a Hamiltonian path traverses each node exactly once, if it exists, it has to be represented by a
+permutation of the nodes. Thus, we can apply the function `permutations` from the previous lab to
+generate all node permutations and check whether each of them forms a Hamiltonian path. We start
+with a definition of a function checking if a given list of nodes is a path. For that, we need a
+function testing whether a pair of nodes is connected.
 ::: details Solution: `edge?`
 ```scheme
 ; test whether a pair of nodes is connected
@@ -93,11 +105,12 @@ As a Hamiltonian path traverses each node exactly once, if it exists, it has to 
      (or (member p edges) (member (reverse p) edges))))
 ```
 :::
-Given a list, we create a list of pairs of consecutive nodes. E.g. `(1 2 3 4)` is
-transformed to `((1 2) (2 3) (3 4))`. This is done
-by taking `(1 2 3)`
-and `(2 3 4)` and joining them by mapping `list` element-wise. Finally, we test whether all these pairs are connected.
-To do so, we use the function `(andmap f lst)`. This function is implemented in Racket. It behaves like `map` but aggregates the results of `f` by `and` function, i.e., once any of the results is `#f`, it returns `#f` and the last result otherwise. 
+Given a list, we create a list of pairs of consecutive nodes. E.g. `(1 2 3 4)` is transformed to
+`((1 2) (2 3) (3 4))`. This is done by taking `(1 2 3)` and `(2 3 4)` and joining them by mapping
+`list` element-wise. Finally, we test whether all these pairs are connected.  To do so, we use the
+function `(andmap f lst)`. This function is implemented in Racket. It behaves like `map` but
+aggregates the results of `f` by `and` function, i.e., once any of the results is `#f`, it returns
+`#f` and the last result otherwise. 
 ::: details Solution: `check-path`
 ```scheme
 (define (check-path g)
@@ -108,7 +121,10 @@ To do so, we use the function `(andmap f lst)`. This function is implemented in 
         #f)))
 ```
 :::
-Now we can apply the above function to all permutations. The function `(check-path g)` for a graph `g` either returns `lst` if `lst` forms a path or `#f` otherwise. Thus we can map it over all permutations of nodes and filter those which form a path. If there is a permutation being a path simultaneously, we have a Hamiltonian path. Otherwise, we return `#f`.
+Now we can apply the above function to all permutations. The function `(check-path g)` for a graph
+`g` either returns `lst` if `lst` forms a path or `#f` otherwise. Thus we can map it over all
+permutations of nodes and filter those which form a path. If there is a permutation being a path
+simultaneously, we have a Hamiltonian path. Otherwise, we return `#f`.
 ::: details Solution: `find-hamiltonian-path`
 ```scheme
 (define (find-hamiltonian-path g)
@@ -124,7 +140,9 @@ compare the perfromance of the two implementations on a larger graph.
 :::
 
 ## Task 1
-Write a function `(stream-mul s1 s2)` taking two infinite streams and multiplying them elements-wise. Using this function, define an infinite stream `factorial-stream` of factorials $0!, 1!, 2!, 3!,\ldots$. 
+Write a function `(stream-mul s1 s2)` taking two infinite streams and multiplying them
+elements-wise. Using this function, define an infinite stream `factorial-stream` of factorials $0!,
+1!, 2!, 3!,\ldots$. 
 
 ::: tip
 The recursive definition of factorial $f(0)=1$ and $f(n)=n\cdot f(n-1)$ for $n>0$ gives us
@@ -134,15 +152,20 @@ The recursive definition of factorial $f(0)=1$ and $f(n)=n\cdot f(n-1)$ for $n>0
 --------------------
   1 1 2 6 24 120 ...  ; f(n)
 ```
-In your definition, you can use the function `(in-naturals n)` implemented in Racket to define the stream of natural numbers starting from n.
+In your definition, you can use the function `(in-naturals n)` implemented in Racket to define the
+stream of natural numbers starting from n.
 :::
  
-Once you have the stream of factorials `factorial-stream`, the function `stream-mul` and the stream of natural numbers `(in-natural 0)` (or even simply `(in-naturals)`), you can define a function `(exp-stream x)` taking a number `x` and returning the power series representing $e^x$, i.e., $e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$. Then you can approximate the value $e^x$ by summing an initial segment of this stream. E.g., to approximate $e$, we can sum the first 100 elements:
+Once you have the stream of factorials `factorial-stream`, the function `stream-mul` and the stream
+of natural numbers `(in-natural 0)` (or even simply `(in-naturals)`), you can define a function
+`(exp-stream x)` taking a number `x` and returning the power series representing $e^x$, i.e., $e^x =
+1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$. Then you can approximate the value $e^x$ by
+summing an initial segment of this stream. E.g., to approximate $e$, we can sum the first 100
+elements:
 ```scheme
 (apply + (stream->list (stream-take (exp-stream 1) 100)))
 ```
 
-<!--
 ::: details Solution
 ```scheme
 (define (stream-mul s1 s2)
@@ -157,7 +180,6 @@ Once you have the stream of factorials `factorial-stream`, the function `stream-
   (stream-map exact->inexact (stream-mul powers recipr)))
 ```
 :::
--->
 
 ::: tip Note
 Some of you noticed that the stream elements returned by `exp-stream` having a
@@ -170,31 +192,38 @@ become infinite if evaluated on a float number. Compare the following calls:
 (expt 3 1000) =>
 1322070819480806636890455259752144365965422032752148167664920368226828597346704899540778313850608061963909777696872582355950954582100618911865342725257953674027620225198320803878014774228964841274390400117588618041128947815623094438061566173054086674490506178125480344405547054397038895817465368254916136220830268563778582290228416398307887896918556404084898937609373242171846359938695516765018940588109060426089671438864102814350385648747165832010614366132173102768902855220001
 ```
-So the above solution avoids this problem by working with precise arithmetic and finally translating the result into the decimal representation. To use it, one must call `exp-stream` with an exact number e.g. `3` or `(/ 35 10)`.
+So the above solution avoids this problem by working with precise arithmetic and finally translating
+the result into the decimal representation. To use it, one must call `exp-stream` with an exact
+number e.g. `3` or `(/ 35 10)`.
 :::
 
 
 ## Task 2
-Given a graph $G=(V,E)$, a subset of nodes $S\subseteq V$ is called a vertex cover, if for every edge $\{u,v\}\in E$, we have
-$u\in S$ or $v\in S$. If $S$ is smallest possible, it is called minimum vertex cover (see [wikipedia](https://en.wikipedia.org/wiki/Vertex_cover)).
+Given a graph $G=(V,E)$, a subset of nodes $S\subseteq V$ is called a vertex cover, if for every
+edge $\{u,v\}\in E$, we have $u\in S$ or $v\in S$. If $S$ is smallest possible, it is called minimum
+vertex cover (see [wikipedia](https://en.wikipedia.org/wiki/Vertex_cover)).
 
-Write a function `(min-vertex-cover g)` taking a graph `g` and returning a minimum vertex cover of `g`. E.g.
+Write a function `(min-vertex-cover g)` taking a graph `g` and returning a minimum vertex cover of
+`g`. E.g.
 ```scheme
 (min-vertex-cover gr) => (1 2 4)
 ```
 
 ::: tip Hint
-The idea is similar to Exercise 2. Instead of all permutations, we can take all subsets of nodes. Subsets can be generated by the function `sub-seq` from the previous lab. We can sort them by cardinality and starting from the smallest ones, we can check which of them form a vertex cover. In fact, it is computationally more efficient, if we create a stream of subsets so that subsets are computed lazily as they are needed.
+The idea is similar to Exercise 2. Instead of all permutations, we can take all subsets of nodes.
+Subsets can be generated by the function `sub-seq` from the previous lab. We can sort them by
+cardinality and starting from the smallest ones, we can check which of them form a vertex cover. In
+fact, it is computationally more efficient, if we create a stream of subsets so that subsets are
+computed lazily as they are needed.
 
-Thus we can test smaller subsets first without computing large ones. To create
-such a lazy stream, we can modify the function `sub-seq`. It is basically the
-same code where list functions are replaced by their stream equivalents.
-However, our original function `sub-seq` does not generate subsets ordered by
-their cardinality. To fix this, we have to modify the function merging together
-the result of the recursive call and the newly created subsets. Thus we define a
-function `(stream-merge s1 s2 cmp)` which takes two streams and a function
-`cmp` comparing two elements of these streams and returns a stream where the
-values are merged so that the smaller elements come first.  
+Thus we can test smaller subsets first without computing large ones. To create such a lazy stream,
+we can modify the function `sub-seq`. It is basically the same code where list functions are
+replaced by their stream equivalents.  However, our original function `sub-seq` does not generate
+subsets ordered by their cardinality. To fix this, we have to modify the function merging together
+the result of the recursive call and the newly created subsets. Thus we define a function
+`(stream-merge s1 s2 cmp)` which takes two streams and a function `cmp` comparing two elements of
+these streams and returns a stream where the values are merged so that the smaller elements come
+first.  
 :::
 ```scheme
 ; lazy subsequences
@@ -216,13 +245,15 @@ values are merged so that the smaller elements come first.
                 (lambda (x y) (< (length x) (length y)))))))
 ```
 
-<!--
 ::: details Solution
 ```scheme
-; minimum vertex cover = smallest subset of nodes such that each edge has one of its nodes in it
+; minimum vertex cover
+; -> smallest subset of nodes such that each edge has one of its nodes in it
 (define (check-cover g)
   (lambda (lst)
-    (if (andmap (lambda (e) (or (member (car e) lst) (member (cadr e) lst))) (graph-edges g))
+    (if (andmap
+          (lambda (e) (or (member (car e) lst) (member (cadr e) lst)))
+          (graph-edges g))
         lst
         #f)))
 
@@ -230,4 +261,3 @@ values are merged so that the smaller elements come first.
   (stream-first (stream-filter identity (stream-map (check-cover g) (sub-seq (graph-nodes g))))))
 ```
 :::
--->
