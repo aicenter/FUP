@@ -32,6 +32,7 @@ export default defineConfig({
           { text: '03: Higher Order Functions', link: '/lectures/lecture03'},
           { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04'},
           { text: '05: Macros & Interpreters', link: '/lectures/lecture05'},
+          { text: '06: Lambda Calculus', link: '/lectures/lecture06'},
         ]
       },
 
