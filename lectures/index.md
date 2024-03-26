@@ -49,11 +49,12 @@ Briefly introduces syntactic macros, and shows how to implement interpreters
 Describes the basics of lambda calculus to show you were most of the initial ideas for functional
 programming came from.
 
-<!--
-6. [Lecture 6](lecture06) introduces lambda calculus.
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture06.pdf).
+[Lambda-calculus.rkt](https://github.com/aicenter/FUP/blob/main/code/lambda-calculus.rkt).
 
-For the interested read there is a [bonus lecture](lecture-bonus) on immutable datastructures.
--->
+## [Bonus Lecture](bonus): Immutable datastructures
+For the interested read there is another lecture on immutable datastructures like random access
+lists.
 
 ## Old recorded lectures
 
