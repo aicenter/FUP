@@ -75,10 +75,10 @@ consisting of numbers 1,2,3,4,5,6,7 with 4 being the active number.
 ```scheme
 (define t (tape '(3 2 1) 4 '(5 6 7))) 
 
-(change - t) => '((3 2 1) 3 (5 6 7))
-(change + t) => '((3 2 1) 5 (5 6 7))
-(move 'left t) => '((2 1) 3 (4 5 6 7))
-(move 'right t) => '((4 3 2 1) 5 (6 7))
+(change - t) => '(tape (3 2 1) 3 (5 6 7))
+(change + t) => '(tape (3 2 1) 5 (5 6 7))
+(move 'left t) => '(tape (2 1) 3 (4 5 6 7))
+(move 'right t) => '(tape (4 3 2 1) 5 (6 7))
 ```
 
 <!--

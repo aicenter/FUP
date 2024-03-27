@@ -172,11 +172,12 @@ elements:
   (stream-cons (* (stream-first s1) (stream-first s2))
                (stream-mul (stream-rest s1) (stream-rest s2))))
 
-(define factorial-stream (stream-cons 1 (stream-mul (in-naturals 1) factorial-stream)))
+(define factorial-stream
+  (stream-cons 1 (stream-mul (in-naturals 1) factorial-stream)))
 
 (define (exp-stream x)
-  (define recipr (stream-map ((curry /) 1) factorial-stream))
-  (define powers (stream-map ((curry expt) x) (in-naturals)))
+  (define recipr (stream-map (curry / 1) factorial-stream))
+  (define powers (stream-map (curry expt x) (in-naturals)))
   (stream-map exact->inexact (stream-mul powers recipr)))
 ```
 :::
