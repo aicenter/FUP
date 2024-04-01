@@ -137,7 +137,7 @@ The results are collected in a list. Using quasiquoting, we can write it down as
 Note that a special case of the matrix transposition is the useful [zipping](https://en.wikipedia.org/wiki/Zipping_(computer_science)) of two (or more) lists. For two lists of the same length, their zipping is the list consisting of the pairs of respective elements. E.g.,
 ```scheme
 > (map list '(1 2 3) '(a b c)) 
-'((1 a) (2 b) (3 b))
+'((1 a) (2 b) (3 c))
 ```
 One more example of `map` extracts the diagonal of a matrix. It applies the function [`list-ref`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28quote._~23~25kernel%29._list-ref%29%29) that takes a list and a position and returns the element on that position. To extract the diagonal, we need to get the first element from the first row, the second element from the second row, etc. Note that lists are indexed from zero.
 ```scheme

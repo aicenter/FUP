@@ -11,6 +11,7 @@ introduces the programming language [Racket](https://racket-lang.org/).
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture01.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture01.rkt).
 
+
 ## [Lecture 02](lecture02): Lists & Trees
 Focuses on Racket lists and trees. Further, it introduces the unit testing library
 [Rackunit](https://docs.racket-lang.org/rackunit/index.html).
@@ -18,12 +19,6 @@ Focuses on Racket lists and trees. Further, it introduces the unit testing libra
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture02.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture02.rkt).
 
-## [Lecture 3](lecture03): Higher Order Functions
-Deals with higher-order functions like (`map`, `filter`, `foldl`), function closures and Racket
-structures.
-
-[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.pdf).
-[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.rkt).
 
 ## [Lecture 3](lecture03): Higher Order Functions
 Deals with higher-order functions like (`map`, `filter`, `foldl`), function closures and Racket
@@ -32,17 +27,34 @@ structures.
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture03.rkt).
 
-<!--
-4. [Lecture 4](lecture04) introduces pattern matching, and explains how to implement lazy
-   evaluation and streams in Racket.
 
-5. [Lecture 5](lecture05) briefly introduces syntactic macros, and shows how to implement
-   interpreters (the latter is remains to be written).
+## [Lecture 4](lecture04): Lazy Evaluation
+Introduces pattern matching, and explains how to implement lazy evaluation and streams in Racket.
 
-6. [Lecture 6](lecture06) introduces lambda calculus.
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture04.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture04.rkt).
 
-For the interested read there is a [bonus lecture](lecture-bonus) on immutable datastructures.
--->
+
+## [Lecture 5](lecture05): Macros & Interpreters
+
+Briefly introduces syntactic macros, and shows how to implement interpreters
+(the latter is remains to be written).
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture05.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture05.rkt).
+[Brainf*ck.rkt](https://github.com/aicenter/FUP/blob/main/lectures/lecture05-brainfuck.rkt).
+
+## [Lecture 6](lecture06): Lambda Calculus
+
+Describes the basics of lambda calculus to show you were most of the initial ideas for functional
+programming came from.
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture06.pdf).
+[Lambda-calculus.rkt](https://github.com/aicenter/FUP/blob/main/code/lambda-calculus.rkt).
+
+## [Bonus Lecture](bonus): Immutable datastructures
+For the interested read there is another lecture on immutable datastructures like random access
+lists.
 
 ## [Lecture 7](lecture07): Introduction to Haskell
 

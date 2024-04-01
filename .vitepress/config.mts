@@ -30,7 +30,11 @@ export default defineConfig({
           { text: '01: Introduction', link: '/lectures/lecture01'},
           { text: '02: Lists & Trees', link: '/lectures/lecture02'},
           { text: '03: Higher Order Functions', link: '/lectures/lecture03'},
+          { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04'},
+          { text: '05: Macros & Interpreters', link: '/lectures/lecture05'},
+          { text: '06: Lambda Calculus', link: '/lectures/lecture06'},
           { text: '07: Haskell', link: '/lectures/lecture07'},
+          { text: 'Bonus: Immutable datastructures', link: '/lectures/bonus'},
         ]
       },
 
@@ -40,7 +44,10 @@ export default defineConfig({
         items: [
           { text: '01: Introduction to Racket', link: '/labs/lab01' },
           { text: '02: Lists & Trees', link: '/labs/lab02' },
-          { text: '03: Higher Order Functions', link: '/labs/lab03' },
+          { text: '03: Higher Order Functions I', link: '/labs/lab03' },
+          { text: '04: Higher Order Functions II', link: '/labs/lab04' },
+          { text: '05: Streams & Graphs', link: '/labs/lab05' },
+          { text: '06: Brainf*ck', link: '/labs/lab06' },
         ]
       },
 
@@ -49,6 +56,7 @@ export default defineConfig({
         link: '/homework/',
         items: [
           { text: '01: ASCII Art', link: '/homework/hw01' },
+          { text: '02: SVGen Interpreter', link: '/homework/hw02' },
         ]
       },
 
