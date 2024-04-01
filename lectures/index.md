@@ -58,8 +58,8 @@ lists.
 
 ## [Lecture 7](lecture07): Introduction to Haskell
 
-[Slides]
-[Log]
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.hs).
 
 ## Old recorded lectures
 
