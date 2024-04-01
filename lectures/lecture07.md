@@ -54,15 +54,14 @@ is written in Haskell (apart from small parts of the runtime in
 C/[C--](https://en.wikipedia.org/wiki/C--)).
 
 We will mostly be working with the interpreter *GHCi*:
-```bash
+```haskell
 $ ghci
 GHCi, version 9.8.1: https://www.haskell.org/ghc/  :? for help
 𝝺>
 ```
 
-Like in the Racket REPL, you can evaluate Haskell expressions in this interpreter. (Don't yet worry
-about understanding the two lines below, we will get to it!)
-```scheme
+Like in the Racket REPL, you can evaluate Haskell expressions in this interpreter.
+```haskell
 𝝺> fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
 𝝺> take 20 fibs
 [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181]
@@ -75,6 +74,20 @@ The most important commands you can use in the REPL are
 - `:type <expr>` displays the type of and `expr`
 - `:info <name>` displays info on a function or type
 - `:quit` or `ctrl-d`
+
+::: details Custom REPL
+To get the lambda prompt instead of `Prelude>` and also output type information automatically, you 
+and use the following config:
+```bash
+$ cat ~/.ghc/ghci.conf
+-- Enables type display
+:set +t
+-- Sets the prompt to a lambda
+:set prompt "𝝺> "
+```
+:::
+
+
 
 
 ## Basic Syntax
@@ -100,20 +113,8 @@ Above we defined a variable `x` with the `Int` and assigned the value `3` to it.
 "ab"
 it :: String
 ```
-In the output above we concatenated two strings. The `it` is just haskells way of referring to the
-lastest unnamed expression.
-
-::: details Custom REPL
-To get the lambda prompt instead of `Prelude>` and also output type information automatically, you 
-and use the following config:
-```bash
-$ cat ~/.ghc/ghci.conf
--- Enables type display
-:set +t
--- Sets the prompt to a lambda
-:set prompt "𝝺> "
-```
-:::
+In the output above we concatenated two strings. The `it` is just Haskell's way of referring to the
+latest unnamed expression.
 
 Haskell has a number of basic types, including:
 - `Bool`: logical values `True`, `False`
@@ -268,7 +269,7 @@ Additionally, the then-clause and the else-clause must have the *same type*!
       In an equation for ‘it’: it = if True then 1 else "0"
 ```
 The error message above might seem a little daunting at first, but you will learn to handle them
-once you undestand Haskell's type system a bit better. For now we can explain it as follows:
+once you understand Haskell's type system a bit better. For now we can explain it as follows:
 ```haskell
 𝝺> if True then 1 else 2
 1
