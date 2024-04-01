@@ -14,8 +14,9 @@ system is very powerful in Haskell and we will spend a lot of time learning abou
 features/implications.
 
 **Lazy** means that expressions *are not evaluated until the are actually needed*. This has far
-reaching consequences, for example we can easily deal with infinite data structure which
-enables programming in a very different style wholemeal programming[^wholemeal].
+reaching consequences, for example we can easily deal with infinite data structures which
+enables programming in a very different style wholemeal programming[^wholemeal]. This approach
+enables *much more modular* code.
 
 [^wholemeal]:
     [A quote from Ralf Hinze](https://www.cis.upenn.edu/~cis1940/spring13/lectures/01-intro.html):
