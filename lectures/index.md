@@ -56,6 +56,11 @@ programming came from.
 For the interested read there is another lecture on immutable datastructures like random access
 lists.
 
+## [Lecture 7](lecture07): Introduction to Haskell
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.hs).
+
 ## Old recorded lectures
 
 Old recorded lectures from 2021 can be found [here](https://cw.fel.cvut.cz/b202/courses/fup/lectures/start).
