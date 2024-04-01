@@ -15,16 +15,18 @@ features/implications.
 
 **Lazy** means that expressions *are not evaluated until the are actually needed*. This has far
 reaching consequences, for example we can easily deal with infinite data structure which
-enables programming in a very different style (*wholemeal programming*)[^wholemeal].
+enables programming in a very different style wholemeal programming[^wholemeal].
 
-[^wholemeal]: [Wholemeal programming](https://www.cis.upenn.edu/~cis1940/spring13/lectures/01-intro.html):
-    A quote from Ralf Hinze: *Functional languages excel at wholemeal programming, a term coined by
+[^wholemeal]:
+    [A quote from Ralf Hinze](https://www.cis.upenn.edu/~cis1940/spring13/lectures/01-intro.html):
+     *Functional languages excel at wholemeal programming, a term coined by
     Geraint Jones. Wholemeal programming means to think big: work with an entire list, rather than a
     sequence of elements; develop a solution space, rather than an individual solution; imagine a
     graph, rather than a single path. The wholemeal approach often offers new insights or provides
     new perspectives on a given problem. It is nicely complemented by the idea of projective
     programming: first solve a more general problem, then extract the interesting bits and pieces by
     transforming the general program into more specialised ones.*
+    
     For example, consider this pseudocode in a C/Java-ish sort of language:
     ```c
     int acc = 0;
@@ -40,12 +42,11 @@ enables programming in a very different style (*wholemeal programming*)[^wholeme
     ```haskell
     sum (map (3*) lst)
     ```
-    This semester we’ll explore the shift in thinking represented by this way of programming, and
-    examine how and why Haskell makes this possible.
 
-## Basics
 
-### The interpreter - GHCi
+
+
+## The interpreter - GHCi
 
 The leading implementation of Haskell is the [Glasgow Haskell
 Compiler](https://www.haskell.org/ghc/) (GHC). It includes both a compiler and an interpreter. GHC
@@ -59,7 +60,8 @@ GHCi, version 9.8.1: https://www.haskell.org/ghc/  :? for help
 𝝺>
 ```
 
-Like in the Racket REPL, you can evaluate Haskell expressions in this interpreter
+Like in the Racket REPL, you can evaluate Haskell expressions in this interpreter. (Don't yet worry
+about understanding the two lines below, we will get to it!)
 ```scheme
 𝝺> fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
 𝝺> take 20 fibs
@@ -75,7 +77,7 @@ The most important commands you can use in the REPL are
 - `:quit` or `ctrl-d`
 
 
-### Basic Syntax
+## Basic Syntax
 
 This section covers some of the important features of Haskell including some notable differences of
 Haskell to Racket.  It is not a complete description of the whole syntax of Haskell.
@@ -123,7 +125,7 @@ Haskell has a number of basic types, including:
 - `Double`: double-precision floating-point numbers
 
 
-#### Functions
+### Functions
 
 Function definitions have to start with a **lower-case letter** (like `myFun`, `fun1`, `h'`, `g_2`,
 etc.) and we can do pattern matching on inputs (even integers):
@@ -205,7 +207,7 @@ it :: Bool
 ```
 
 
-#### Local variables via `let` & `where`
+### Local variables via `let` & `where`
 
 Like in Racket we can use `let`:
 ```haskell
@@ -224,7 +226,7 @@ discr a b c = x - y
 ```
 
 
-#### Layout rule
+### Layout rule
 
 In Haskell, *indentation matters*, for example
 ```haskell
@@ -242,7 +244,7 @@ line to the *left* of the pivot to continue the previous lines.  Start a line to
 pivot to end the block.
 
 
-#### Conditionals & Guards
+### Conditionals & Guards
 
 Haskell has two way of express branching, the first is the classic `if-then-else`-clause:
 ```haskell
@@ -296,7 +298,7 @@ signum n | n < 0     = -1
 `otherwise` is defined in the prelude by `otherwise = True`.
 
 
-#### Lists
+### Lists
 
 Lists in Haskell, are very similar to Racket. They are singly linked lists, which are constructed
 via the operator `:` (equivalent to `cons`). They end with the empty list `[]`.
@@ -363,3 +365,225 @@ A part of the pattern can be assigned a name
 ```haskell
 copyfirst s@(x:xs) = x:s -- same as x:x:xs
 ```
+
+
+
+### Tuples
+
+Tuples are fixed-size sequences of elements of arbitrary types, e.g. `(Int, Char)`:
+```haskell
+(1,2)
+('a','b')
+(1,2,'c',False)
+```
+
+Their element can be accessed by pattern matching
+```haskell
+first (x,_,_) = x
+second (_,x,_) = y
+third (_,_,x) = x
+```
+Pattern matching can be nested
+```haskell
+f :: (Int, [Char], (Int, Char)) -> [Char]
+f (1, (x:xs), (2,y)) = x:y:xs
+```
+
+
+### Comprehensions
+
+In Haskell, there is a list comprehension notation to construct new lists from existing lists.
+```haskell
+𝝺> [x^2 | x <- [1..5]]
+[1,4,9,16,25]
+```
+`x <- [1..5]` is called a generator.  Comprehensions can have multiple generators behaving like
+nested loops
+```haskell
+𝝺> [(x,y) | x <- [1,2,3], y <- [4,5]]
+[(1,4),(1,5),(2,4),(2,5),(3,4),(3,5)]
+```
+Generators can be infinite (almost everything is lazy)
+```haskell
+𝝺> [x^2 | x <- [1..]]
+```
+
+Later generators can depend on the variables that are
+introduced by earlier generators.
+```haskell
+𝝺> [(x,y) | x <- [1..3], y <- [x..3]]
+[(1,1),(1,2),(1,3),(2,2),(2,3),(3,3)]
+```
+Using a dependent generator, we can define a function that concatenates a list of lists:
+```haskell
+flatten :: [[Int]] -> [Int]
+flatten xss = [x | xs <- xss, x <- xs]
+
+𝝺> flatten [[1,2],[3,4],[5]]
+[1,2,3,4,5]
+```
+
+List comprehensions can use guards to restrict the values produced by earlier generators.
+
+```haskell
+[x | x <- [1..10], even x]
+```
+
+Using a guard we can define a function that maps a positive integer to its list of factors:
+
+```haskell
+factors :: Int -> [Int]
+factors n = [x | x <- [1..n], mod n x == 0]}
+```
+
+A prime’s only factors are 1 and itself
+
+```haskell
+prime :: Int -> Bool
+prime n = factors n == [1,n]
+```
+
+List of all primes
+
+```haskell
+[x | x <- [2..], prime x]
+```
+
+## Jarnik's Algorithm
+
+To demonstrate a small, but complete program/algorithm in Haskell, we can implement [Jarnik's
+Algorithm](https://en.wikipedia.org/wiki/Prim's_algorithm). It finds the minimum spanning tree of a
+weighted, undirected graph.
+
+::: tip Jarnik's Algorithm as described on Wikipedia
+
+1. Initialize a tree with a single vertex, chosen arbitrarily from the graph.
+2. Grow the tree by one edge: Of the edges that connect the tree to vertices not yet in the tree,
+   find the minimum-weight edge, and transfer it to the tree.
+3. Repeat step 2 (until all vertices are in the tree).
+
+![jarnik](/img/jarnik.gif){ style="width: 30%; margin: auto;" }
+:::
+
+To implement this algorithm we can first make use of Haskell's type system to define some type
+aliases that will make our code more readable:
+```haskell
+type Vertex = Char
+type Edge = (Vertex,Vertex)
+type Weight = Int
+type Graph = [(Edge,Weight)]
+
+graph :: Graph
+graph = [(('A','B'), 7)
+        ,(('A','D'), 5)
+        ,(('D','B'), 9)
+        ,(('C','B'), 8)
+        ,(('E','B'), 7)
+        ,(('C','E'), 5)
+        ,(('D','E'), 15)
+        ,(('D','F'), 6)
+        ,(('F','E'), 8)
+        ,(('F','G'), 11)
+        ,(('E','G'), 9)]
+```
+Before implementing the algorithm itself we will define a function `vertices :: Graph -> [Vertex]`
+which will give us all *unique* list of vertices in the graph. First, we collect all nodes from the graph
+```haskell
+𝝺> [[a,b] | ((a,b),_) <- graph]
+["AB","AD","DB","CB","EB","CE","DE","DF","FE","FG","EG"]
+```
+We `concat`enate all the strings into one and then `deduplicate` it:
+```haskell
+𝝺> deduplicate (concat [[a,b] | ((a,b),_) <- graph])
+"ABDCEFG"
+```
+`deduplicate` still has to be implemented:
+```haskell
+deduplicate :: [Vertex] -> [Vertex]
+deduplicate [] = []
+deduplicate (v:vs) = v:(deduplicate filtered)
+    where filtered = [ u | u <- vs, u /= v ]
+```
+where we used pattern matching to take out the first element of the list `v`, and filter the
+remaining list for `v` before consing (`:`). Now the `vertices` function can be written as:
+```haskell
+vertices :: Graph -> [Vertex]
+vertices g = deduplicate $ concat [ [a,b] | ((a,b), _) <- g ]
+```
+
+We will implement the algorithm based on a list of vertices to `visit` and a `tree` into which we
+will accumulate the edges of our spanning tree. For simplicity, this tree will just be a `Graph`
+again, but we will make sure it does not have any cycles.
+First, we will sort the `Graph` according to its `Weight`s with the `sortOn :: Ord b => (a -> b) -> [a] -> [a]
+` function:
+```haskell
+𝝺> sortOn snd graph
+[ (('A','D'),5)
+, (('C','E'),5)
+, (('D','F'),6)
+, (('A','B'),7)
+, ... ]
+```
+Given the nodes to `visit` we need to find the next edge we want to put into our tree.
+Assuming we already went from `A -> D`, we will removed `A` and `D` such that
+```haskell
+𝝺> vertices graph
+"ABDCEFG"
+𝝺> visit
+"BCEFG"
+```
+
+The next edge has to have *exactly one* node in the nodes to `visit`:
+```haskell
+checkEdge :: Edge -> [Vertex] -> Bool
+checkEdge (a,b) visit = p /= q
+    where p = a `elem` visit
+          q = b `elem` visit
+```
+where `` `elem` `` is the infix version of `elem :: a -> [a] -> Bool`.
+Now, given a `Graph` that is sorted according to `Weight`, we can find the next edge by filtering:
+```haskell
+𝝺> [(e,w) | (e,w) <- (sortOn snd graph), checkEdge e visit]
+[ (('D','F'),6)
+, (('A','B'),7)
+, (('D','B'),9)
+, (('D','E'),15) ]
+```
+Hence the next edge in the tree will be `D -> F`. We can wrap the above in a function:
+```haskell
+findEdge :: [Vertex] -> Graph -> (Edge, Weight)
+findEdge visit graph = head [(e,w) | (e,w) <- graph, checkEdge e visit]
+```
+Above we filter for the potential next edges and then take the first element with `head`.
+Now the only thing that remains to be done is iterate this function over the whole graph and
+maintain the `visit` and `tree` variables accordingly:
+```haskell
+jarnik :: Graph -> Graph
+jarnik graph = iter vs [] where
+  graph' = sortGraph graph  -- sort the graph once in the beginning
+  (_:vs) = vertices graph   -- all except first vertex (with lowest cost)
+
+  iter :: [Vertex] -> Graph -> Graph
+  iter [] tree = tree
+  iter visit tree = iter visit' tree' where
+    -- pattern match `edge@((a,b),_)` to assign
+    -- current nodes `a` and `b` and the whole `edge` (including the cost)
+    -- will also get first edge with lowest cost in initial iteration
+    edge@((a,b),_) = findEdge visit graph'
+    -- remove already visited nodes
+    visit'       = [ v | v <- visit, v /= a && v /= b ]
+    -- update spanning tree
+    tree'          = edge:tree
+```
+
+Now we can compute the minimum spanning tree:
+```haskell
+𝝺> jarnik graph
+[ (('E','G'), 9)
+, (('C','E'), 5)
+, (('E','B'), 7)
+, (('A','B'), 7)
+, (('D','F'), 6)
+, (('A','D'), 5) ]
+```
+![jarnik](/img/jarnik-graph.png)
