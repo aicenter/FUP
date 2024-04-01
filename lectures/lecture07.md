@@ -73,6 +73,7 @@ The most important commands you can use in the REPL are
 - `:reload`
 - `:type <expr>` displays the type of and `expr`
 - `:info <name>` displays info on a function or type
+- `:doc <name>` displays documentation on a function or type
 - `:quit` or `ctrl-d`
 
 ::: details Custom REPL
