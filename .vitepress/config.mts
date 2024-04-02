@@ -48,6 +48,7 @@ export default defineConfig({
           { text: '04: Higher Order Functions II', link: '/labs/lab04' },
           { text: '05: Streams & Graphs', link: '/labs/lab05' },
           { text: '06: Brainf*ck', link: '/labs/lab06' },
+          { text: '07: Lambda Calculus', link: '/labs/lab07' },
         ]
       },
 
