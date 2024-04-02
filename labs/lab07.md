@@ -79,7 +79,11 @@ The roots of redexes are colored red. To check that your reduction was correct, 
 :::
 
 ## Exercise 4
-Recall that multiplication of two numbers is computed by $M \equiv \lambda abc.a(bc)$. Find the normal form of $M01$ following the normal order reduction strategy, i.e., compute $0\cdot 1$, which should result in $0$. The numbers $0,1$ are abbreviations for $\lambda$-expressions $\lambda sz.z$ and $\lambda sz.sz$ respectively. 
+Recall that multiplication of two numbers is computed by
+$$M \equiv \lambda abc.a(bc).$$
+Find the normal form of $M01$ following the normal order reduction strategy, i.e., compute $0\cdot
+1$, which should result in $0$. The numbers $0,1$ are abbreviations for $\lambda$-expressions
+$\lambda sz.z$ and $\lambda sz.sz$ respectively. 
 
 ::: tip Hint
 Once you do it on paper, check your result in Racket. You can use Racket definitions and semiquoting to make your $\lambda$-expression more readable.
@@ -94,8 +98,17 @@ Once you do it on paper, check your result in Racket. You can use Racket definit
 :::
 
 ## Exercise 5
-Recall that a pair $(a,b)$ is represented in $\lambda$-calculus as $(a,b)\equiv \lambda z.zab$. The projections into the first and second components can be obtained by applying $(a,b)$ to Boolean values $T\equiv \lambda ab.a$ and $F\equiv \lambda ab.b$. Thus
-$(a,b)T \to^\beta a$ and $(a,b)F \to^\beta b$. We can even define a `cons` function by $CONS \equiv \lambda abz.zab$. In Racket, you can define all these constructions as follows (the final two calls check that it behaves as expected):
+Recall that a pair $(a,b)$ is represented in $\lambda$-calculus as
+$$(a,b)\equiv \lambda z.zab.$$
+The projections into the first and second components can be obtained by applying $(a,b)$ to Boolean values $T\equiv \lambda ab.a$ and $F\equiv \lambda ab.b$. Thus
+$$
+  (a,b)T \to^\beta a,
+$$
+$$
+  (a,b)F \to^\beta b.
+$$
+We can even define a `cons` function by $CONS \equiv \lambda abz.zab$. In Racket, you can define all
+these constructions as follows (the final two calls check that it behaves as expected):
 ```scheme
 (define T '(λ x : (λ y : x)))
 (define F '(λ x : (λ y : y)))
@@ -147,9 +160,14 @@ A list is either a pair or $F$ if it is empty. Let denote it by $p$.
 Recall the definition of the zero test from the lecture
 $$Z\equiv \lambda x.xF\neg F,$$
 where $\neg\equiv \lambda x.xFT$. 
-We need something similar for the list $p$. So our desired $\lambda$-expression should look like $\lambda p.pe_1e_2$ where $e_1,e_2$ have to be filled by suitable $\lambda$-expressions serving as arguments for $p$. If $p$ is empty (i.e., $p\equiv F$), then $p$ is just a projection into the second argument. Thus $e_2$ should be $T$, i.e., we have $\lambda p.pe_1T$. Now, if we substitute for $p$ a pair 
-(i.e., $p \equiv \lambda z.zab$), we obtain $(\lambda z.zab)e_1T$. Thus $e_1$ is going to be substituted for $z$, and consequently, it will be applied to $a$ and $b$, i.e., we would end up with $e_1abT$. Since the result in this case should be $F$, we need the result of $e_1ab$ to be $\neg$ because
-$\neg F\to^\beta T$.  
+We need something similar for the list $p$. So our desired $\lambda$-expression should look like
+$\lambda p.pe_1e_2$ where $e_1,e_2$ have to be filled by suitable $\lambda$-expressions serving as
+arguments for $p$. If $p$ is empty (i.e., $p\equiv F$), then $p$ is just a projection into the
+second argument. Thus $e_2$ should be $T$, i.e., we have $\lambda p.pe_1T$. If we substitute
+for $p$ a pair (i.e. $p \equiv \lambda z.zab$), we obtain $(\lambda z.zab)e_1T$. Thus $e_1$ is
+going to be substituted for $z$, and consequently, it will be applied to $a$ and $b$, i.e., we would
+end up with $e_1abT$. Since the result in this case should be $F$, we need the result of $e_1ab$ to
+be $\neg$ because $\neg F\to^\beta T$.  
 :::
 
 ::: details Solution
@@ -172,7 +190,9 @@ Check your solution in Racket.
 Define a $\lambda$-expression computing the length of a list.
 
 ::: tip Hint
-Follow the approach from the lecture where we defined a function $R\equiv \lambda rn.Zn0(nS(r(Pn)))$ which we turned into a recursive one by $Y$-combinator (i.e., $YR$).
+Follow the approach from the lecture where we defined a function
+$$R\equiv \lambda rn.Zn0(nS(r(Pn)))$$
+which we turned into a recursive one by $Y$-combinator (i.e., $YR$).
 :::
 
 Recall:
