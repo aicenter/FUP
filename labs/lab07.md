@@ -124,7 +124,7 @@ Once you have it, define `SWAP` and check that it correctly swaps the components
 (eval `(,SWAP ((,CONS a) b))) => '(λ z : ((z b) a))
 ```
 
-::: details Solutio
+::: details Solution
 ```scheme
 (define SWAP `(λ p : (λ z : ((z (p ,F)) (p ,T)))))
 ```
