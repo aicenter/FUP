@@ -46,12 +46,10 @@ We will use the helper function `draw-expr`. First, create the correct represent
 '((λ x : (y (x x))) (λ y : (y (x x))))
 ```
 Then evaluate the following function call:
-```scheme
-(draw-expr '((λ x : (y (x x))) (λ y : (y (x x)))))
-```
-It displays the following tree:
-
+::: details `(draw-expr '((λ x : (y (x x))) (λ y : (y (x x)))))`
+Displays the tree below:
 ![ex1](/img/lab07-ex1.png)
+:::
 
 An occurrence of a variable $v$ is bound if it is in the syntax tree below the node $\lambda v$ and is free otherwise. So, for our expression, the occurrences of $x$ in the left branch are bound, and they are free in the right branch. The occurrence of $y$ in the left branch is free and bound in the right branch.
 
