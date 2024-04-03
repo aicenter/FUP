@@ -27,7 +27,7 @@ the $\lambda$-expression $\lambda xy.xy(\lambda ab.b)$ has to be represented as 
 So we had to add the outermost parenthesis, expand the shortcuts $\lambda xy.$ to $\lambda
 x.(\lambda y.$, and put the parenthesis determining the order of the applications, i.e., as the
 application is left-associative, $xy(\lambda ab.b)$ is in fact $((x y) (\lambda ab.b))$.  The symbol
-λ can be entered in DrRacket by pressing Ctrl+\. Instead of the dot symbol, the colon symbol is
+λ can be entered in DrRacket by pressing `Ctrl+\`. Instead of the dot symbol, the colon symbol is
 used. 
 
 The module `lambda-calculus.rkt` provides the following functions:
@@ -112,8 +112,7 @@ these constructions as follows (the final two calls check that it behaves as exp
 (define F '(λ x : (λ y : y)))
 
 (define CONS 
-  '(λ a : (λ b : (λ z : ((z a) b))))
-  )
+  '(λ a : (λ b : (λ z : ((z a) b)))))
   
 (eval `(((,CONS a) b) ,T))
 (eval `(((,CONS a) b) ,F))
