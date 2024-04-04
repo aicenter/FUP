@@ -243,7 +243,7 @@ a = b + c where {b=1; c=2}
 ```
 Keywords (such as `where`, `let`, etc.) start a *block*.  The first word after the keyword defines
 the *pivot column*.  Lines *exactly* on the pivot define a new entry in the block.  You can start a
-line to the *left* of the pivot to continue the previous lines.  Start a line to the *right* of the
+line to the *right* of the pivot to continue the previous lines.  Start a line to the *left* of the
 pivot to end the block.
 
 
