@@ -61,6 +61,15 @@ lists.
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.hs).
 
+## [Lecture 8](lecture08): Haskell Types
+
+Discusses the strongly-typed, static, and inferred type system of Haskell including:
+parametric polymorphism, ad-hoc polymorphism (typeclasses), and algebraic datatypes.
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.hs).
+
+
 ## Old recorded lectures
 
 Old recorded lectures from 2021 can be found [here](https://cw.fel.cvut.cz/b202/courses/fup/lectures/start).

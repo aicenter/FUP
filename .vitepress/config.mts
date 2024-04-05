@@ -33,7 +33,8 @@ export default defineConfig({
           { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04'},
           { text: '05: Macros & Interpreters', link: '/lectures/lecture05'},
           { text: '06: Lambda Calculus', link: '/lectures/lecture06'},
-          { text: '07: Haskell', link: '/lectures/lecture07'},
+          { text: '07: Haskell Basics', link: '/lectures/lecture07'},
+          { text: '08: Haskell Types', link: '/lectures/lecture08'},
           { text: 'Bonus: Immutable datastructures', link: '/lectures/bonus'},
         ]
       },
