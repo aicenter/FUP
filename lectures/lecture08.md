@@ -2,7 +2,7 @@
 
 ## What is a type, really?
 
-A type is literally a *set of values*. That's it. Nothing more. For example, a boolean is just
+A type is essentially a *set of values*. For example, a boolean is just
 ```haskell
 data Bool = True | False
 ```
@@ -220,4 +220,43 @@ safehead [] = Nothing
 safehead (x:_) = Just x
 ```
 
+## Records
 
+Purely positional data declarations can become impractical with a large number of fields. Therefore, fields can be named:
+```haskell
+data Person = Person { firstName :: String
+                     , lastName :: String
+                     , age :: Int
+                     , phone :: String
+                     , address :: String }
+```
+
+This allows to define records in arbitrary order
+```haskell
+defaultPerson = Person { lastName="Smith"
+                       , firstName="John"
+                       , ... }
+```
+Haskell also automatically defines accessors for each field, e.g.:
+```haskell
+firstName :: Person -> String
+```
+
+## Recursive definitions
+
+Algebraic `data` type definitions (opposed to aliases which are defined with `type`) can be
+recursive. For example, we implement our own `List` type
+```haskell
+data List a = Nil | Cons a (List a) deriving Show
+```
+which implements a parametric list with elements of type `a`. The values of the list can either be
+`Nil` (i.e. the empty list), or they can be a `Cons` of an `a` and again a `List`. Hence, a list of
+`[1,2,3]` would be constructed like:
+```haskell
+Cons 1 (Cons 2 (Cons 3 Nil)) :: Num a => List a
+```
+## Examples
+
+### Expressions
+
+- something neat: once we have `Show` we can immediately parse expressions from strings (I think?)
