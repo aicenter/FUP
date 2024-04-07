@@ -50,6 +50,7 @@ export default defineConfig({
           { text: '05: Streams & Graphs', link: '/labs/lab05' },
           { text: '06: Brainf*ck', link: '/labs/lab06' },
           { text: '07: Lambda Calculus', link: '/labs/lab07' },
+          { text: '08: Haskell Basics', link: '/labs/lab08' },
         ]
       },
 
