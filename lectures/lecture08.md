@@ -1,19 +1,5 @@
 # Lecture 8 - Haskell Types
 
-## What is a type, really?
-
-A type is essentially a *set of values*. For example, a boolean is just
-```haskell
-data Bool = True | False
-```
-An analogously, an `Int` is essentially
-```haskell
-data Int = ... | -1 | 0 | 1 | ...
-```
-Types assign meaning to otherwise seemingly random bits, so they provide a means of *abstraction*.
-Additionally, they prevent us from making mistakes (like adding a number to a string).
-
-
 ## Haskell's type system
 
 - _**Strong**_: Haskell *guarantees* that your program does not have any type-level errors. Strong
@@ -184,6 +170,19 @@ flip Yes = No
 flip No  = Yes
 flip Unknown = Unknown
 ```
+
+::: details What is a type, really?
+A type is essentially a *set of values*. For example, a boolean is just
+```haskell
+data Bool = True | False
+```
+Analogously, an `Int` is essentially
+```haskell
+data Int = ... | -1 | 0 | 1 | ...
+```
+Types assign meaning to otherwise seemingly random bits, so they provide a means of *abstraction*.
+Additionally, they prevent us from making mistakes (like adding a number to a string).
+:::
 
 The data constructors can have parameters to create values that contain other values. For example,
 we can define a `Shape` type, which contains a `Circle` and a `Rect` value. A circle can be
