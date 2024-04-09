@@ -85,6 +85,7 @@ The grading is the standard grading scale:
 
 * Haskell:
     * https://haskell.org/documentation/
+    * [Real World Haskell](https://book.realworldhaskell.org/)
     * Lecture: [Introduction to Haskell](https://www.cis.upenn.edu/~cis1940/spring13/) - including
         lecutre notes and nice homework exercises
     * [Creating types](http://learnyouahaskell.com/making-our-own-types-and-typeclasses)
