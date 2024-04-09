@@ -243,6 +243,8 @@ firstName :: Person -> String
 
 ## Recursive definitions
 
+### Lists
+
 Algebraic `data` type definitions (opposed to aliases which are defined with `type`) can be
 recursive. For example, we implement our own `List` type
 ```haskell
@@ -254,8 +256,92 @@ which implements a parametric list with elements of type `a`. The values of the 
 ```haskell
 Cons 1 (Cons 2 (Cons 3 Nil)) :: Num a => List a
 ```
-## Examples
 
-### Expressions
+Note that above we wrote `deriving Show`, which will automatically make `List` part of the `Show`
+typeclass. The lists will be printed exactly like the data constructors are written:
 
-- something neat: once we have `Show` we can immediately parse expressions from strings (I think?)
+```haskell
+𝝺> Cons 1 (Cons 2 (Cons 3 Nil))
+Cons 1 (Cons 2 (Cons 3 Nil))
+```
+
+If we want to pretty print our custom list implementation we can manually define `show`:
+
+```haskell
+data List a = Nil | Cons a (List a)
+
+instance Show a => Show (List a) where
+  show lst = "<" ++ disp lst ++ ">" where
+    disp Nil = ""
+    disp (Cons x Nil) = show x
+    disp (Cons x l) = show x ++ "," ++ disp l
+```
+
+which will result in lists printed like below
+```haskell
+𝝺> (Cons 1 (Cons 2 (Cons 3 Nil)))
+<1,2,3>
+```
+
+### Arithmetic Expressions
+
+Another example that will prepare you for your [homework](/homework/hw03) is a simple expression
+evaluation (in your homework you will implement something very similar for arbitrary lambda
+expressions). We can define recursive expressions including their show class like below
+```haskell
+data Expr a = Val a
+            | Add (Expr a) (Expr a)
+            | Mul (Expr a) (Expr a)
+
+instance Show a => Show (Expr a) where
+    show (Val x) = show x
+    show (Add e1 e2) = "(" ++ show e1
+                           ++ " + "
+                           ++ show e2 ++ ")"
+    show (Mul e1 e2) = "(" ++ show e1
+                           ++ " * "
+                           ++ show e2 ++ ")"
+```
+
+which lets us build arbitrarily nested expression trees:
+```haskell
+𝝺> expr = Add (Val 3) (Mul (Val 5) (Val 8))
+(3 + (5 * 8))
+```
+
+Evaluating them is implemented simply by
+
+```haskell
+eval :: (Num a) => Expr a -> a
+eval (Val x) = x
+eval (Add x y) = eval x + eval y
+eval (Mul x y) = eval x * eval y
+```
+
+```haskell
+𝝺> eval expr
+43
+```
+
+To make our expressions much more convenient to write, we can make them part of the `Num` typeclass:
+
+```haskell
+instance (Ord a, Num a) => Num (Expr a) where
+    x + y         = Add x y
+    x - y         = Add x (Mul (Val (-1)) y)
+    x * y         = Mul x y
+    negate x      = Mul (Val (-1)) x
+    abs x         | eval x >= 0 = x
+                  | otherwise = negate x
+    signum        = Val . signum . eval
+    fromInteger = Val . fromInteger
+```
+
+```haskell
+𝝺> x = Val 2
+𝝺> y = Val 3
+𝝺> (x+y) * y
+((2 + 3) * 3)
+𝝺> eval ((x+y) * y)
+15
+```
