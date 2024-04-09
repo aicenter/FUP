@@ -279,8 +279,19 @@ instance Show a => Show (List a) where
 
 which will result in lists printed like below
 ```haskell
-𝝺> (Cons 1 (Cons 2 (Cons 3 Nil)))
+𝝺> lst = (Cons 1 (Cons 2 (Cons 3 Nil)))
 <1,2,3>
+```
+
+Let's do something useful with our list and reverse it!
+```haskell
+rev :: List a -> List a
+rev lst = iter lst Nil where
+  iter Nil acc = acc
+  iter (Cons x l) acc = iter l (Cons x acc)
+
+𝝺> rev lst
+<3,2,1>
 ```
 
 ### Arithmetic Expressions
