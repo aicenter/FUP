@@ -66,8 +66,8 @@ lists.
 Discusses the strongly-typed, static, and inferred type system of Haskell including:
 parametric polymorphism, ad-hoc polymorphism (typeclasses), and algebraic datatypes.
 
-[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.pdf).
-[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.hs).
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture08.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture08.hs).
 
 
 ## Old recorded lectures
