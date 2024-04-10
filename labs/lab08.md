@@ -76,6 +76,11 @@ If it is bigger, then take the first `n` elements and cons them to the result of
 split :: Int -> [Int] -> [[Int]]
 split n xs | (length xs) <= n = [xs]
            | otherwise = take n xs : (split n (drop n xs))
+
+-- solution using splitAt :: Int -> [a] -> ([a], [a])
+split n xs = case splitAt n xs of
+               ([], _) -> []
+               (a, b)  -> a : split n b
 ```
 :::
 
