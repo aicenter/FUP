@@ -71,7 +71,7 @@ You can use functions `take n xs` and `drop n xs`. The first one returns the lis
 The function `split` can be written recursively. If the length of `xs` is less than or equal to `n`, then return just `[[xs]]`.
 If it is bigger, then take the first `n` elements and cons them to the result of the recursive call of `split` after dropping the first `n` elements.
 
-::: details Solution
+::: details Solution: `split :: Int -> [Int] -> [[Int]]`
 ```haskell
 split :: Int -> [Int] -> [[Int]]
 split n xs | (length xs) <= n = [xs]
@@ -86,10 +86,11 @@ split n xs = case splitAt n xs of
 
 The function `average_n` can be easily written via the list comprehension using `split`. The only caveat is the division operation involved in the computation of averages. Even though the inner lists after applying `split` are of the type `[Int]`, their averages are floating numbers. So the type of `average_n` is `Int -> [Int] -> [Float]`. We can compute the sum of an inner list by the function `sum` and its length by `length`, but the type system would complain if we want to divide them. One must convert the integer arguments into floating-point numbers to overcome this problem. This can be done by the function `fromIntegral` converting an integer into any more general numeric type.
 
-::: details Solution
+::: details Solution: `average_n :: Int -> [Int] -> [Float]`
 ```haskell
 average_n :: Int -> [Int] -> [Float]
-average_n n ys = [fromIntegral (sum xs) / fromIntegral (length xs) | xs <- xss]
+average_n n ys =
+  [fromIntegral (sum xs) / fromIntegral (length xs) | xs <- xss]
     where xss = split n ys
 ```
 :::
