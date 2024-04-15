@@ -98,8 +98,9 @@ We have already seen Haskell's version of one of the most important higher-order
 map :: (a -> b) -> [a] -> [b]
 ```
 
-A *Functor* describes a generalization of `map` to any data type that is *mappable*, for example
-we might want to apply a function to every value of type `a` in a dictionary [`Map k a`](https://hackage.haskell.org/package/containers-0.7/docs/Data-Map-Internal.html#t:Map):
+A *functor* describes a generalization of `map` to any data type that is "mappable", for example
+we might want to apply a function to every value of type `a` in a dictionary [`Map k
+a`](https://hackage.haskell.org/package/containers-0.7/docs/Data-Map-Internal.html#t:Map):
 ```haskell
 mapMap :: (a -> b) -> Map k a -> Map k b
 ```
@@ -109,9 +110,9 @@ or to every node in a `Tree a`:
 treeMap :: (a -> b) -> Tree a -> Tree b
 ```
 
-All these maps have in common that the preserve the structure of the data type that we map over,
+All these maps have in common that they preserve the structure of the data type that we map over,
 i.e. a list stays a list, a tree stays a tree, etc. This preservation of structure is the reason
-they are called *Functors*, which is a term coming from category theory. To make something an
+they are called *functors*, which is a term coming from category theory. To make something an
 instance of `Functor` you have to implement the class:
 ```haskell
 class Functor f where
@@ -124,47 +125,6 @@ For lists `[]` the function `fmap` is just regular old `map`:
 instance Functor [] where
   fmap = map
 ```
-:::
-
-::: tip Kinds `*` of types
-To figure out what kinds of types we can implement `Functor` for, we have to look at which arguments
-`Functor` accepts. But `Functor` is a type constructor... How do we look at the type of a type
-constructor...? 
-
-In Haskell, "types" of types, are called *kinds*, and we can inspect them via `:kind`:
-```haskell
-𝝺> :kind Int
-Int :: *
-
-𝝺> :kind Char
-Char :: *
-```
-
-We see that `Int` and `Char` have the kind `*`, and so does every other type that we would use as a
-classic type for a value. Things become interesting when we look at e.g. the type of e.g. `Tree`:
-```haskell
-𝝺> :kind Tree
-Tree :: * -> *
-```
-which tells us that `Tree` has the kind `* -> *`, so it accepts a type of kind `*` and creates a new
-type. Concretely, `Tree Int` accepts an `Int` and produces a type `Tree Int :: *`.
-This is where the name *type constructor* comes from. `Tree` is essentially a function on types.
-The same is true for example for lists:
-```haskell
-𝝺> :k []
-[] :: * -> *
-```
-
-So, what can we learn from the kind of `Functor`?
-```haskell
-𝝺> :k Functor
-Functor :: (* -> *) -> Constraint
-```
-A `Functor` accepts a function form one kind to another `* -> *` (i.e. a type constructor) and
-produces a `Constraint`. So we can pass e.g. a `Tree :: * -> *` to `Functor` to produce the
-constraint `Functor Tree`. *Constraints* are the type constrains we know from the beginning of our
-type signatures, such as `(+) :: (Num a) => a -> a -> a`.
-Hence we can pass any type constructor of a single type to `Functor`.
 :::
 
 More concretely, imagine you are given a data type `Tree a`:
@@ -218,6 +178,47 @@ immediately work:
 Map.fromList [('a',2), ('b',3)]
 ```
 :::
+
+## *Kinds* of types
+To figure out what kinds of types we can implement `Functor` for, we have to look at which arguments
+`Functor` accepts. But `Functor` is a type constructor... How do we look at the type of a type
+constructor...? 
+
+In Haskell, "types" of types, are called *kinds*, and we can inspect them via `:kind`:
+```haskell
+𝝺> :kind Int
+Int :: *
+
+𝝺> :kind Char
+Char :: *
+```
+
+We see that `Int` and `Char` have the kind `*`, and so does every other type that we would use as a
+classic type for a value. Things become interesting when we look at e.g. the type of e.g. `Tree`:
+```haskell
+𝝺> :kind Tree
+Tree :: * -> *
+```
+which tells us that `Tree` has the kind `* -> *`, so it accepts a type of kind `*` and creates a new
+type. Concretely, `Tree Int` accepts an `Int` and produces a type `Tree Int :: *`.
+This is where the name *type constructor* comes from. `Tree` is essentially a function on types.
+The same is true for example for lists:
+```haskell
+𝝺> :k []
+[] :: * -> *
+```
+
+So, what can we learn from the kind of `Functor`?
+```haskell
+𝝺> :k Functor
+Functor :: (* -> *) -> Constraint
+```
+A `Functor` accepts a function form one kind to another `* -> *` (i.e. a type constructor) and
+produces a `Constraint`. So we can pass e.g. a `Tree :: * -> *` to `Functor` to produce the
+constraint `Functor Tree`. *Constraints* are the type constrains we know from the beginning of our
+type signatures, such as `(+) :: (Num a) => a -> a -> a`.
+Hence we can pass any type constructor of a single type to `Functor`.
+
 
 ## Safe computations
 
@@ -286,8 +287,7 @@ safeSecond :: [a] -> Maybe a
 safeSecond = safeHead . safeTail
 ```
 because `safeHead` does not accept a `Maybe [a]`...
-
-We could again do it manually for every function we would like to compose like this
+We could again do it manually for every function we would like to compose:
 ```haskell
 safeSecond :: [a] -> Maybe a
 safeSecond xs =
@@ -321,7 +321,7 @@ andThen Nothing _ = Nothing
 andThen (Just x) f = f x
 ```
 
-We will discuss this pattern much more in future lectures. It is known as a `Monad` and put another
+We will discuss this pattern much more in future lectures. It is known as a `Monad` and puts another
 very powerful tool into our box of Haskell goodies:
 ```haskell
 safeSecond :: [a] -> Maybe a
@@ -333,3 +333,23 @@ safeFourth :: [a] -> Maybe a safeFourth xs =
   safeTail `andThen`
   safeHead
 ```
+
+### `Either`
+
+You can implement error message handling with the same pattern we used above with the type `Either`.
+It is very similar to `Maybe`, just that it has a second value that can actually contain something
+(like an error message):
+
+```haskell
+data Either a b = Left a | Right b
+```
+We could, for example, implement a safe division that reports and error:
+```haskell
+safeDiv :: Int -> Int -> Either String Int
+safeDiv _ 0 = Left "Division by 0 error"
+safeDiv x y = Right (x `div` y)
+```
+and compose computations in the same manner as done for `Maybe`. `Either` has two parameters so its
+kind is `* -> * -> *`. Hence, we have to be careful how we implement `Functor` for it (remember
+`Functor` accepts `* -> *`), just like we have to do a little bit of thinking for `andThen`, but
+that is an exercise for the next lectures.
