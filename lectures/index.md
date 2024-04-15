@@ -69,6 +69,13 @@ parametric polymorphism, ad-hoc polymorphism (typeclasses), and algebraic dataty
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture08.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture08.hs).
 
+## [Lecture 9](lecture09): Type Classes
+
+We discuss some more examples of type classes, most importantly `Functor`s.
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture09.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture09.hs).
+
 
 ## Old recorded lectures
 
