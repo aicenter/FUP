@@ -103,7 +103,6 @@ a string consisting of `n` copies of `str`. E.g.
 copy 3 "abc" => "abcabcabc"
 ```
 
-<!--
 ::: details Solution
 ```haskell
 copy :: Int -> String -> String
@@ -117,7 +116,6 @@ copy2 n str = iter n "" where
                | otherwise = iter (k-1) (acc ++ str)
 ```
 :::
--->
 
 ## Task 2
 The Luhn algorithm is used to check bank card numbers for simple errors such as mistyping a
@@ -148,7 +146,6 @@ Since the numbers are processed from right to left, reverse first the list by th
 to be luhnDoubled and the rest.
 :::
 
-<!--
 ::: details Solution
 ```haskell
 luhnDouble :: Int -> Int
@@ -161,4 +158,3 @@ luhn xs = (sum evs + sum [luhnDouble x | x <- ods]) `mod` 10 == 0
           (evs, ods) = separate rxs
 ```
 :::
--->
