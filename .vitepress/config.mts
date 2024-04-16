@@ -33,9 +33,10 @@ export default defineConfig({
           { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04'},
           { text: '05: Macros & Interpreters', link: '/lectures/lecture05'},
           { text: '06: Lambda Calculus', link: '/lectures/lecture06'},
+          { text: 'Bonus: Immutable datastructures', link: '/lectures/bonus'},
           { text: '07: Haskell Basics', link: '/lectures/lecture07'},
           { text: '08: Haskell Types', link: '/lectures/lecture08'},
-          { text: 'Bonus: Immutable datastructures', link: '/lectures/bonus'},
+          { text: '09: Type Classes', link: '/lectures/lecture09'},
         ]
       },
 
@@ -51,6 +52,7 @@ export default defineConfig({
           { text: '06: Brainf*ck', link: '/labs/lab06' },
           { text: '07: Lambda Calculus', link: '/labs/lab07' },
           { text: '08: Haskell Basics', link: '/labs/lab08' },
+          { text: '09: Haskell Types', link: '/labs/lab09' },
         ]
       },
 
