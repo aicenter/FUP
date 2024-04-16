@@ -82,8 +82,6 @@ which lets us parse times from e.g. a list of times:
 ```haskell
 𝝺> read "[23:34,23:12,03:22]" :: [Time]
 [23:34,23:12,03:22]
-
-The `read`
 ```
 
 This is a summary of [this stackoverflow
@@ -173,7 +171,6 @@ immediately work:
 𝝺> addOne [1,2,3]
 [2,3,4]
 
-
 𝝺> addOne (Map.fromList [('a',1), ('b',2)])
 Map.fromList [('a',2), ('b',3)]
 ```
@@ -217,8 +214,43 @@ A `Functor` accepts a function form one kind to another `* -> *` (i.e. a type co
 produces a `Constraint`. So we can pass e.g. a `Tree :: * -> *` to `Functor` to produce the
 constraint `Functor Tree`. *Constraints* are the type constrains we know from the beginning of our
 type signatures, such as `(+) :: (Num a) => a -> a -> a`.
-Hence we can pass any type constructor of a single type to `Functor`.
+Hence we can pass any type constructor of a single type to `Functor`, like we did with `Tree`:
+```haskell
+instance Functor Tree where
+  ...
+```
+because `Tree :: * -> *`. If we have a type constructor with multiple arguments, such as a
+dictionary `Map k a`, we can make it *functorial* for only one argument. Currying works for type
+constructors as well, so we could just define:
+```haskell
+instance Functor (Map k) where
+  ...
+```
+to make `Map k a` functorial in `a`, which is exactly how `fmap` works for Haskell's `Map`s.
+Applying `fmap` to a `Map` leaves the keys `k` unchanged and applies the function to the values `a`:
+```haskell
+fmap :: (a -> b) -> Map k a -> Map k b
 
+𝝺> fmap (+1) (Map.fromList [('a',5), ('b',6)])
+fromList [('a',6), ('b',7)]
+```
+
+::: details Hack: Functoriality in arguments other than the last.
+If we have a type constructor `MyType a b` in which we want to implement `fmap` for the argument `a`
+we would intuitively like to write something like:
+```haskell
+instance Functor (\b -> MyType a b) where
+    fmap f (MyConstructor x y) = MyConstructor (f x) y
+```
+which is unfortunately not syntactically correct Haskell, we just can't write lambdas in instance
+declarations this way. Instead we can use `newtype`:
+```haskell
+newtype MyTypeFunctor b a = MyTypeFunctor (MyType a b)
+
+instance Functor (MyTypeFunctor b) where
+    fmap f (MyTypeFunctor (MyConstructor x y)) = MyTypeFunctor (MyConstructor (f x) y)
+```
+:::
 
 ## Safe computations
 
@@ -232,14 +264,21 @@ data Maybe a = Nothing | Just a
 safeHead :: [a] -> Maybe a
 safeHead [] = Nothing
 safeHead xs = Just (head xs)
+
+safeTail :: [a] -> Maybe [a]
+safeTail [] = Nothing
+safeTail (_:xs) = Just xs
 ```
-which will let us get the head and tail e.g. empty lists without unrecoverably failing:
+which will let us get the head and tail of empty lists without unrecoverably failing:
 ```haskell
 𝝺> safeHead [1,2,3]
 Just 1
 
 𝝺> safeHead []
 Nothing
+
+𝝺> head []
+*** Exception: Prelude.head: empty list
 ```
 
 We obviously will want to compose functions like `safeHead` and e.g. `(+1)`, but we will run
@@ -254,7 +293,12 @@ What we need is a function that does the following:
 ```haskell
 (a -> b) -> Maybe a -> Maybe b
 ```
-and in fact, this is exactly what we were doing with `addOne = fmap (+1)` before:
+and in fact, this is exactly what we were doing with `addOne = fmap (+1)` before (the type signature
+above is just `fmap` for `Maybe`). The function `addOne` has the signature
+```haskell
+addOne :: (Functor f) => f a -> f b
+```
+so we can immediately compose it with `safeHead`:
 ```haskell
 safeAdd1ToHead :: Maybe Int -> Maybe Int
 safeAdd1ToHead  = addOne . safeHead
@@ -279,10 +323,6 @@ We can operate with functions on `Maybe`s. But what if we would like to compose 
 outputs `Maybe`s, such as the safe equivalent of `second = head . tail`?
 We cannot just write
 ```haskell
-safeTail :: [a] -> Maybe [a]
-safeTail [] = Nothing
-safeTail (_:xs) = Just xs
-
 safeSecond :: [a] -> Maybe a
 safeSecond = safeHead . safeTail
 ```
