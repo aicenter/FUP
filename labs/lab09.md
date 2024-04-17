@@ -141,7 +141,7 @@ labelTree :: Tree a -> Tree (a, Int)
 labelTree t = fst (labelHlp t 0)
 ```
 
-## Task 1:
+## Task 1
 Define a recursive data type `Polynomial a` representing univariate polynomials with an
 indeterminate $x$ whose coefficients are of a general type `a`. The definition will have two data
 constructors. First, `Null` 
@@ -200,7 +200,7 @@ instance (Show a, Num a, Ord a) => Show (Polynomial a) where
 :::
 -->
 
-## Task 2:
+## Task 2
 Write a function 
 ```haskell
 getDegree :: Polynomial a -> Int 
