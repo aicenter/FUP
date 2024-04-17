@@ -5,8 +5,8 @@
 Define a type representing binary trees storing data in leaves of a general type `a`. Each
 non-leaf node has always two children. Make your type an instance of the class `Show` so it can be
 displayed in an XML-like format. A leaf node containing a datum `x` 
-should be displayed as ''<Leaf
-x/>'' and an inner
+should be displayed as `<Leaf
+x/>` and an inner
 node `<Node>...children nodes...</Node>`. E.g., the following tree
 ```
      *
