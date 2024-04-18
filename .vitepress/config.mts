@@ -84,7 +84,7 @@ export default defineConfig({
           { text: '11. Square Code', link: '/exams/square-code/' },
           { text: '12. Rock, Paper, Scissors', link: '/exams/rock-paper-scissors/' },
           { text: '13. Sierpinski Carpet', link: '/exams/sierpinski-carpet/' },
-          // { text: '14. Spiral Matrix', link: '/exams/filetree' },
+          { text: '14. Spiral Matrix', link: '/exams/spiral-matrix/' },
           // { text: '15. Unit Propagation', link: '/exams/filetree' },
           // { text: '16. Balanced Binary Tree', link: '/exams/filetree' },
           // { text: '17. Minimum Spanning Tree', link: '/exams/filetree' },
