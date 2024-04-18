@@ -24,7 +24,7 @@ points of the convex hull of a given set of points.
 **(B)**: Three of the polar angles $\varphi_i$ that have to be computed to sort the points.
 :::
 
-# Algorithm
+## Algorithm
 
 The imperative pseudocode for finding the generating points is shown below.
 
