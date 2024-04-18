@@ -81,7 +81,7 @@ export default defineConfig({
           { text: '8.  Non-deterministic Finite Automata', link: '/exams/finite-automata/' },
           { text: '9.  Least Common Anchestor', link: '/exams/least-common-ancestor/' },
           { text: '10. Building Trees', link: '/exams/building-trees/' },
-          // { text: '11. Square Code', link: '/exams/filetree' },
+          { text: '11. Square Code', link: '/exams/square-code/' },
           // { text: '12. Rock, Paper, Scissors', link: '/exams/filetree' },
           // { text: '13. Sierpinski Carpet', link: '/exams/filetree' },
           // { text: '14. Spiral Matrix', link: '/exams/filetree' },
