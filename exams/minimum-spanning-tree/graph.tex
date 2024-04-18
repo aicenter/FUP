@@ -1,0 +1,46 @@
+\documentclass[border=0pt]{standalone}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,calc,patterns,angles,quotes}
+
+
+\begin{document}
+
+\tikzset{vertex/.style={draw,circle,inner sep=2pt}}
+
+  \begin{tikzpicture}[scale=1.5]
+    \node[vertex] (a) at (1,-1.2) {A};
+    \node[vertex] (b) at (1,0) {B};
+    \node[vertex] (c) at (3,0) {C};
+    \node[vertex] (d) at (0,-2) {D};
+    \node[vertex] (e) at (2,-2) {E};
+    \node[vertex] (f) at (4,-2) {F};
+
+    \draw (a) -- node[left] {1} (b) -- node[right] {2} (e)
+              -- node[below] {4} (d) -- node[above] {5} (a)
+              -- node[above] {3} (e) -- node[above left] {4} (c)
+              -- node[right] {5} (f) -- node[below] {7} (e);
+    \draw[bend right] (d) -- node[above left] {6} (b);
+  \end{tikzpicture}
+  \hspace{1cm}
+  \begin{tikzpicture}[scale=1.5]
+    \node[vertex] (a) at (1,-1.2) {A};
+    \node[vertex] (b) at (1,0) {B};
+    \node[vertex] (c) at (3,0) {C};
+    \node[vertex] (d) at (0,-2) {D};
+    \node[vertex] (e) at (2,-2) {E};
+    \node[vertex] (f) at (4,-2) {F};
+
+    \draw (a) -- node[left] {1} (b) -- node[right] {2} (e)
+    -- node[below] {4} (d);
+    \draw (e) -- node[above left] {4} (c)
+    -- node[right] {5} (f);
+
+  \end{tikzpicture}
+
+
+\end{document}

@@ -1,0 +1,84 @@
+\documentclass[border=0pt]{standalone}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{pgf}
+\usepackage{tikz}
+\usepackage[vlined,algoruled,linesnumbered]{algorithm2e}
+
+
+\definecolor{myGray}{rgb}{0.85,0.85,0.85}
+
+\begin{document}
+
+\begin{algorithm}
+  \caption{Build Heap}\label{alg:buildHeap}
+\DontPrintSemicolon
+\KwIn{$X$ -- values to be added to the heap}
+\KwOut{$root$ -- root representing the balanced binary heap}
+\vspace{2pt}\hrule\vspace{2pt}
+\SetKwFunction{buildHeap}{buildHeap}
+\SetKwProg{FnBuildHeap}{Procedure}{}{}
+\SetKwFunction{minimumDepth}{minDepth}
+\SetKwFunction{insertAtEmpty}{insertAtEmpty}
+\SetKwProg{FnInsertAtEmpty}{Procedure}{}{}
+\SetKwFunction{enforceHeap}{enforceHeap}
+\SetKwFunction{swap}{swap}
+\SetKwProg{FnEnforceHeap}{Procedure}{}{}
+
+
+\FnBuildHeap{\buildHeap{$X$}}
+{
+  $root \gets $ empty leaf\\
+  \For {$x \in X$}
+  {
+    \insertAtEmpty{$x$,$root$}\\
+    \enforceHeap{$root$}\\
+  }
+  \KwRet $root$\\
+}
+
+\FnInsertAtEmpty{\insertAtEmpty{$x$, $N$}}
+{
+  \If{$N$ is an empty leaf}
+  {
+     $N.value \gets x$\\
+     $N.leftSubtree \gets $ empty leaf\\
+     $N.rightSubtree \gets $ empty node\\
+  }
+  \ElseIf{$\minimumDepth{$N.leftSubtree$} < \minimumDepth{$N.rightSubtree$}$}
+  {
+    \insertAtEmpty{$x$, $N.leftSubtree$}
+  }
+  \ElseIf{$\minimumDepth{$N.rightSubtree$} < \minimumDepth{$N.leftSubtree$}$}
+  {
+    \insertAtEmpty{$x$, $N.rightSubtree$}
+  }
+  \Else
+  {
+    \insertAtEmpty{$x$, $N.leftSubtree$}
+  }
+}
+
+\FnEnforceHeap{\enforceHeap{$N$}}
+{
+  \If{$N$ is an empty leaf}
+  {
+    \KwRet
+  }
+  \enforceHeap{$N.leftSubtree$}\\
+  \enforceHeap{$N.rightSubtree$}\\
+  \If{$N.leftSubtree$ is not empty \textbf{and} $N.value < N.leftSubtree.value$}
+    {
+      \swap{$N.value$,$N.leftSubtree.value$}
+    }
+  \If{$N.rightSubtree$ is not empty \textbf{and} $N.value < N.rightSubtree.value$}
+    {
+      \swap{$N.value$,$N.rightSubtree.value$}
+    }
+}
+
+\end{algorithm}
+
+\end{document}
