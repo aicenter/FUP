@@ -89,7 +89,7 @@ export default defineConfig({
           { text: '16. Balanced Binary Tree', link: '/exams/balanced-tree/' },
           { text: '17. Minimum Spanning Tree', link: '/exams/minimum-spanning-tree/' },
           { text: '18. Pretty Printing Binary Numbers', link: '/exams/pretty-binary-numbers/' },
-          // { text: '19. Fermat Primality Test', link: '/exams/filetree' },
+          { text: '19. Fermat Primality Test', link: '/exams/fermat-primality/' },
           // { text: '20. Convex Hull', link: '/exams/filetree' },
         ]
       },
