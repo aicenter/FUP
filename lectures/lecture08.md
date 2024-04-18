@@ -121,7 +121,7 @@ etc. If you are interested in how they work, try running e.g. `:i Num` in GHCi.
 
 Polymorphic functions can contain **type constraints**, for example
 ```haskell
-(==3) :: (Num a, Eq a) => Int -> Bool
+(==3) :: (Num a, Eq a) => a -> Bool
 ```
 is a function that checks if a number is equal to `3`. For this, the input has to be a number itself
 and additionally, it has to implement `Eq`. Generally, everything before the `=>` in a type
