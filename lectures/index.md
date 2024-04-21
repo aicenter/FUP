@@ -77,6 +77,12 @@ We discuss some more examples of type classes, most importantly `Functor`s.
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture09.hs).
 
 
+## [Lecture 10](lecture10): Haskell's IO & Monads
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture10.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture09.hs).
+
+
 ## Old recorded lectures
 
 Old recorded lectures from 2021 can be found [here](https://cw.fel.cvut.cz/b202/courses/fup/lectures/start).

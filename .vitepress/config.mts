@@ -37,6 +37,7 @@ export default defineConfig({
           { text: '07: Haskell Basics', link: '/lectures/lecture07'},
           { text: '08: Haskell Types', link: '/lectures/lecture08'},
           { text: '09: Type Classes', link: '/lectures/lecture09'},
+          { text: '10: IO & Monads', link: '/lectures/lecture10'},
         ]
       },
 
