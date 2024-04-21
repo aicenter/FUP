@@ -64,6 +64,7 @@ export default defineConfig({
           { text: '01: ASCII Art', link: '/homework/hw01' },
           { text: '02: SVGen Interpreter', link: '/homework/hw02' },
           { text: '03: λ-Calculus Evaluator', link: '/homework/hw03' },
+          { text: '04: Parser of λ-programs', link: '/homework/hw04' },
         ]
       },
 
