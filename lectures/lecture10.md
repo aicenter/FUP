@@ -238,9 +238,10 @@ safeSecond xs = safeTail xs >>= safeHead
 
 ::: tip `>>=` implementation for `Maybe`:
 ```haskell
-instance Monad (Maybe a) where
-  Nothing >>= f = Nothing
-  Just x  >>= f = Just (f x)
+instance Monad Maybe where
+  return  = Just
+  Nothing >>= _ = Nothing
+  Just x  >>= k = k x
 ```
 :::
 
@@ -256,6 +257,8 @@ sumFirstTwo xs =
 ```
 This kind of nesting of `>>=` and lambda functions can be come very tedious, and confusing. To
 simplify things, and make them look very much like procedural programming, we can use `do`-notation.
+
+## `do`-notation
 `do`-notation is a syntax block (like e.g. `where` or `let`) that lets you sequence actions more
 easily:
 - Actions on a separate line get executed
@@ -270,3 +273,11 @@ sumFirstTwo xs = do
   return (first + second)
 ```
 
+
+## Other monads
+
+```haskell
+instance Monad [] where
+  return x = [x]
+  xs >>= k = concat (map k xs)
+```
