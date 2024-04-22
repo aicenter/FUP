@@ -4,23 +4,23 @@ In this lecture we will accept the fact that in order to do *anything useful* wi
 language we *need side effects*. A program that does not read input or produce output (IO) is
 not very useful, because we would not have a means to access the results it produced.
 Unfortunately, producing output is an impure operation.
-For example, the `print` function puts something in `stdout`. Calling
-`print` again adds a second line to `stdout`, hence, calling the function does not
+For example, the `putStrLn` function puts something in `stdout`. Calling
+`putStrLn` again adds a second line to `stdout`, hence, calling the function does not
 always produce the same output. We are mutating something outside of our function!
 
 ```haskell
-𝝺> print "Hello World"   | stdout: Hello World
+𝝺> putStrLn "Hello World"   | stdout: Hello World
 
-𝝺> print "Hello World"   | stdout: Hello World
-                                   Hello World
+𝝺> putStrLn "Hello World"   | stdout: Hello World
+                                      Hello World
 ```
 
 Believe it or not, this was quite a problem for functional programming languages!  Luckily, the
 Haskell community came up with a solution: Haskell works with the *whole world* as its state!
-So, theoretically, `print` becomes a function that accepts a string, the current world, and outputs
+So, theoretically, `putStrLn` becomes a function that accepts a string, the current world, and outputs
 a mutated world where the string has appeared on your screen:
 ```haskell
-print :: String -> World -> World
+putStrLn :: String -> World -> World
 ```
 This is now a completely pure function!
 Very similarly, we could define a pure function that reads an input from the world:
@@ -31,9 +31,9 @@ With this approach we could write pure programs that read from an input and writ
 ```haskell
 helloworld :: World -> World
 helloworld w1 = w4 where
-  w2         = print "What is your name?" w1
+  w2         = putStrLn "What is your name?" w1
   (name, w3) = getLine w2
-  w4         = print ("Hello " ++ name) w3
+  w4         = putStrLn ("Hello " ++ name) w3
 ```
 
 [^tsoding]: Stolen from [here](https://www.youtube.com/watch?v=fCoQb-zqYDI), which is a highly
@@ -54,9 +54,9 @@ such that we can rewrite the `helloworld` function like this:
 ```haskell
 helloworld :: IO ()
 helloworld = do
-  print "What is your name?"
+  putStrLn "What is your name?"
   name <- getLine
-  print ("Hello " ++ name)
+  putStrLn ("Hello " ++ name)
 ```
 Where the `World` completely disappeared and we can write code that looks very much like procedural
 programming.
@@ -91,14 +91,14 @@ getLine :: IO String
 ```
 so `getLine` can be regarded as an *action* that (once we run it) produces a value of `IO String`
 (i.e. a modified world from which we read a `String`).
-The `print` function from before has to be slightly modified to work with `IO`. It does not return
+The `putStrLn` function from before has to be slightly modified to work with `IO`. It does not return
 anything except a modified world, so we will represent the missing `a` as `()`:
 ```haskell
-print :: String -> World -> ((),World)
+putStrLn :: String -> World -> ((),World)
 ```
 Written in terms of `IO` it becomes:
 ```haskell
-print :: String -> IO ()
+putStrLn :: String -> IO ()
 ```
 i.e. a function that accepts a string and outputs an action that only contains a mutated world,
 nothing else.
@@ -109,14 +109,14 @@ With the definitions above we have completely hidden the `World` and we could tr
 helloworld :: IO ()
 helloworld = 
   let ac_name = getLine          -- IO String
-  in print ("Hello " ++ ac_name) -- This fails! We cannot ++ with an action!
+  in putStrLn ("Hello " ++ ac_name) -- This fails! We cannot ++ with an action!
 ```
 The above code won't compile, because the function `(++) :: String -> String -> String` does not
 work for the case we have here: `String -> IO String -> String`. We need a way to manipulate the
 values that are hidden inside our `IO` actions. 
 
 Taking a step back, what we really need is a way to sequence the
-`getLine :: IO String` action with the `print :: String -> IO ()` action:
+`getLine :: IO String` action with the `putStrLn :: String -> IO ()` action:
 ```haskell
 ??? :: IO String -> (String -> IO ()) -> IO ()
 ```
@@ -178,8 +178,8 @@ help we can rewrite our `helloworld` function, but first, the two ingredients we
 ```haskell
 main :: IO ()
 main = 
-  print "hello" -- :: IO ()
-  >> print "world"  -- ignore result of IO () and chain next action
+  putStrLn "hello" -- :: IO ()
+  >> putStrLn "world"  -- ignore result of IO () and chain next action
 ```
 
 2. `x >>= f :: IO a -> (a -> IO b) -> IO b` is the action that performs first `x`, and then passes its result
@@ -187,20 +187,20 @@ main =
 
 ```haskell
 -- getLine :: IO String
--- print :: String -> IO ()
-main = getLine >>= print
+-- putStrLn :: String -> IO ()
+main = getLine >>= putStrLn
 ```
 
 The `helloworld` function first asks for a name, then reads from input, and finally prints `"Hello
 NAME"`. These steps can be encapsulated in three IO actions, which have to be chained. We can start
 with reading from input and printing, because we almost have the function written above. We just
-want to do something slightly more complex than `print`:
+want to do something slightly more complex than `putStrLn`:
 
 ```haskell
-main = getLine >>= \name -> print ("Hello " ++ name)
+main = getLine >>= \name -> putStrLn ("Hello " ++ name)
 ```
 Above, we call `getLine`, which produces an `IO String`. We want to use its value, so we can define
-a function that accepts a string `name` and processes it before passing the result to `print`.
+a function that accepts a string `name` and processes it before passing the result to `putStrLn`.
 
 As the last step we want to ask `"What is your name?"`. This is also an IO action that as to happen
 before we read/print to stdout. We don't care about the output of this action, we just want to
@@ -208,9 +208,9 @@ print, so we can use `>>`:
 ```haskell
 helloworld :: IO ()
 helloworld = 
-  print "What is your name?" >>
+  putStrLn "What is your name?" >>
   getLine >>=
-  \name -> print ("Hello " ++ name)
+  \name -> putStrLn ("Hello " ++ name)
 ```
 
 ::: tip Separation of `IO` side effects
@@ -309,15 +309,15 @@ Compare the version with `>>=` to the one with do-notation:
 ```haskell
 helloworld :: IO ()
 helloworld = 
-  print "What is your name?" >>
+  putStrLn "What is your name?" >>
   getLine >>=
-  \name -> print ("Hello " ++ name)
+  \name -> putStrLn ("Hello " ++ name)
 
 helloworld :: IO ()
 helloworld = do
-  print "What is your name?"
+  putStrLn "What is your name?"
   name <- getLine
-  print ("Hello " ++ name)
+  putStrLn ("Hello " ++ name)
 ```
 
 
