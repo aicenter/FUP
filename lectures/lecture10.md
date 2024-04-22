@@ -80,11 +80,11 @@ are: `Maybe`, list `[]`, `IO`, `State`, and many more.
 ## `IO` actions
 
 Haskell's `IO` is a *functor* which satisfies further properties (collected under the name *monad*).
-`IO` is a type constructor that produces values of type `IO a`
+`IO` is a type constructor that produces values of type `IO a`. You can think of it as:
 ```haskell
 type IO a = World -> (a, World)
 ```
-which are called *actions*. When we run an IO action, it produces a value of type `a`. For example,
+`IO a` is called an *action*. When we run an IO action, it produces a value of type `a`. For example,
 the function `getLine` with the definition of `IO` above just becomes:
 ```haskell
 getLine :: IO String
@@ -96,7 +96,7 @@ anything except a modified world, so we will represent the missing `a` as `()`:
 ```haskell
 print :: String -> World -> ((),World)
 ```
-such that written in terms of `IO` it becomes:
+Written in terms of `IO` it becomes:
 ```haskell
 print :: String -> IO ()
 ```
@@ -112,7 +112,7 @@ helloworld =
   in print ("Hello " ++ ac_name) -- This fails! We cannot ++ with an action!
 ```
 The above code won't compile, because the function `(++) :: String -> String -> String` does not
-work for the case we have here: `IO String -> String -> String`. We need a way to manipulate the
+work for the case we have here: `String -> IO String -> String`. We need a way to manipulate the
 values that are hidden inside our `IO` actions. 
 
 Taking a step back, what we really need is a way to sequence the
@@ -127,13 +127,12 @@ The more general concept that this function encapsulates is called a *Monad*.
 
 ## Monads
 
-In the previous lecture we pulled out the boilerplate that was needed to chain computations into a
-function `andThen`
+In the previous lecture we pulled out the boilerplate that was needed to chain failing computations
+into a function `andThen`
 ```haskell
 andThen :: Maybe a -> (a -> Maybe b) -> Maybe b
 ```
-which accepted a value `Maybe a` from a potentially failing computation and inserted it into a
-function `a -> Maybe b`.
+which accepted a value `Maybe a` and inserted it into a function `a -> Maybe b`.
 
 The problem of chaining `IO` actions is almost exactly the same! We want to sequence a value coming
 from `getLine` which is an `IO String` action and stick it into a `String -> IO ()` function. The
@@ -156,7 +155,7 @@ Additionally, we can see that a `Monad` has a type constraint of `Applicative`. 
 `Applicative`s in the next lecture; for now you can just think of this type constraint to be
 `Functor` such that, every `Monad` is also a `Functor`.
 
-::: details Monads are functors
+::: details Monads are functors.
 Every monad is a functor as we can express `fmap` in terms of `>>=`:
 ```haskell
 fmap :: (Monad m) => (a -> b) -> m a -> m b
@@ -202,29 +201,17 @@ main = getLine >>= \name -> print ("Hello " ++ name)
 ```
 Above, we call `getLine`, which produces an `IO String`. We want to use its value, so we can define
 a function that accepts a string `name` and processes it before passing the result to `print`.
+
 As the last step we want to ask `"What is your name?"`. This is also an IO action that as to happen
 before we read/print to stdout. We don't care about the output of this action, we just want to
 print, so we can use `>>`:
 ```haskell
-main :: IO ()
-main = 
+helloworld :: IO ()
+helloworld = 
   print "What is your name?" >>
   getLine >>=
   \name -> print ("Hello " ++ name)
 ```
-
-Sometimes, in order to combine results of previous actions it is useful to just wrap a value in a
-monadic context. This is what the function `return` is for:
-```haskell
-getSquare :: IO Int
-getSquare = putStrLn "Enter number:"
-            >> getLine
-            >>= \line -> let n = read line
-                         in return (n*n)
-```
-Above, we read a line, parse it to an `Int` (via `read`), and then make sure that the thing we
-return from our lambda function is actually an `IO` action by using `return`.
-
 
 ::: tip Separation of `IO` side effects
 
@@ -242,6 +229,7 @@ There is no accessible data constructor for `IO`, so we cannot do pattern matchi
 We can manipulate IO actions only via bind `>>=`.
 
 :::
+
 
 ## More safe computations
 
@@ -281,10 +269,27 @@ sumFirstTwo xs =
   \second -> 
     return (first + second)
 ```
-This kind of nesting of `>>=` and lambda functions can become very tedious and confusing. To
-simplify things, and make them look very much like procedural programming, we can use `do`-notation.
+
+::: tip The `return` function
+Sometimes, in order to combine results of previous actions it is useful to just wrap a value in a
+monadic context. This is what the function `return` is for:
+```haskell
+getSquare :: IO Int
+getSquare = putStrLn "Enter number:"
+            >> getLine
+            >>= \line -> let n = read line
+                         in return (n*n)
+```
+Above, we read a line, parse it to an `Int` (via `read`), and then make sure that the thing we
+return from our lambda function is actually an `IO` action by using `return`.
+:::
+
 
 ## `do`-notation
+
+The kind of nesting of `>>=` and lambda functions above can become very tedious and confusing. To
+simplify things, and make them look very much like procedural programming, we can use `do`-notation.
+
 `do`-notation is a syntax block (like e.g. `where` or `let`) that lets you sequence actions more
 easily:
 - Actions on a separate line get executed
