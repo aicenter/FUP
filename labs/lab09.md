@@ -180,7 +180,6 @@ has no `x^0`.  Then define the instance of `Show` for `Polynomial a`.  You need 
 `show` function in the same way as `format`.
 :::
 
-<!--
 ::: details Solution
 ```haskell
 type Monomial a = (a, Int)
@@ -198,7 +197,6 @@ instance (Show a, Num a, Ord a) => Show (Polynomial a) where
     show (Pol m ms) = format m ++ " + " ++ show ms
 ```
 :::
--->
 
 ## Task 2
 Write a function 
@@ -207,7 +205,6 @@ getDegree :: Polynomial a -> Int
 ```
 returning the degree of a given polynomial. The zero polynomial has a degree $-1$ by definition. Otherwise, you have to find the highest exponent occurring in the polynomial.
 
-<!--
 ::: details Solution
 ```haskell
 getDegree :: Polynomial a -> Int
@@ -217,4 +214,3 @@ getDegree p = iter p (-1) where
                            | otherwise = iter ms n 
 ```
 :::
--->
