@@ -1,4 +1,4 @@
-# Lecture 9 - Typeclasses
+# Typeclasses
 
 
 During the last lecture we introduced [ad-hoc polymorphism](lecture08#polymorphism) via *typeclasses*.

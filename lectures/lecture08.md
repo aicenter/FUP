@@ -1,6 +1,8 @@
-# Lecture 8 - Haskell Types
+---
+outline: deep
+---
 
-## Haskell's type system
+# Haskell's type system
 
 - _**Strong**_: Haskell *guarantees* that your program does not have any type-level errors. Strong
     also means that it will not do automatic type coercion (i.e. casting/type conversion).
