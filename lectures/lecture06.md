@@ -2,7 +2,7 @@
 outline: deep
 ---
 
-## Introduction
+# Lambda Calculus
 
 Lambda calculus is a model of computation. It was introduced in the 1930s by Alonzo Church. He was
 trying to develop formal foundations for mathematics. His attempts were unsuccessful, as several of

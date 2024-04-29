@@ -82,6 +82,11 @@ We discuss some more examples of type classes, most importantly `Functor`s.
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture10.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture10.hs).
 
+## [Lecture 11](lecture11): Monadic Parsing
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture11.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture11.hs).
+
 
 ## Old recorded lectures
 
