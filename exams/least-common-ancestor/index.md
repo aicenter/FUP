@@ -20,7 +20,7 @@ To find the least common ancestor of two nodes $x$ and $y$ in a tree $t$, we fol
 3. consider the common prefix of $p_x$ and $p_y$, the last node in the common prefix is the least
    common ancestor. 
 
-Consider, for example, the binary tree depicted in Figure~\ref{fig:tree}. The least common ancestor 
+Consider, for example, the binary tree depicted below. The least common ancestor 
 of $3$ and $5$ is $2$. Indeed, the path from the root $1$ to $3$ is $1,2,3$. The path from $1$
 to $5$ is $1,2,4,5$. Their common prefix is $1,2$ whose last element is $2$.
 

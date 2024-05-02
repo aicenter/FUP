@@ -17,7 +17,7 @@ $$
 $$
 is represented as 
 $$
-  \varphi=\{\{a,b,\neg c,\neg f\}, \{b,c\}, \{\neg b, e\}, \{\neg b\}\}.
+  \varphi=\{\{a,b,\neg c,\neg f\}, \{b,c\}, \{\neg b, e\}, \{\neg b\}\}. \qquad (1)
 $$
 
 One of the subroutines of the DPLL algorithm is the unit propagation simplifying the input formula.
@@ -29,7 +29,7 @@ $c_k=\{u\}$ for some $k$ and literal $u$, then $\varphi$ can be simplified by th
 1. if $u\in c_i$, then $c_i$ can be removed from $\varphi$,
 2. if $\neg u\in c_i$, then $\neg u$ can be removed from $c_i$.
 
-For example, the formula $\varphi$ in~(\ref{ex1}) has a unit $\{\neg b\}$, so we can simplify to
+For example, the formula $\varphi$ in $(1)$ has a unit $\{\neg b\}$, so we can simplify to
 $\{\{a,\neg c,\neg f\}, \{c\}\}$. Note that by propagating the unit, a new unit was created. Thus we
 can continue and propagate the unit $\{c\}$ obtaining $\{\{a,\neg f\}\}$. The resulting set of
 clauses has no unit.
