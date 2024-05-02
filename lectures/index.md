@@ -86,6 +86,7 @@ We discuss some more examples of type classes, most importantly `Functor`s.
 
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture11.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture11.hs).
+[`Parser.hs`](https://github.com/aicenter/FUP/blob/main/lectures/Parser.hs).
 
 
 ## Old recorded lectures

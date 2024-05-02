@@ -303,7 +303,7 @@ instance Monad Parser where
 𝝺> parse (item >>= \c -> if c == 'a' then item else return ' ') "abc"
 Just ('b', "c")
 
-𝝺> parse (item >>= \c -> if c == 'a' then item else return ' ') "abc"
+𝝺> parse (item >>= \c -> if c == 'a' then item else return ' ') "bbc"
 Just (' ', "bc")
 ```
 
