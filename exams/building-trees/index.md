@@ -24,7 +24,7 @@ constructed tree. So the currently constructed tree remains unchanged.
 
 ## Racket
 
-In \textbf{Racket}, implement a function `(build-tree init edges)` that takes an initial 
+Implement a function `(build-tree init edges)` that takes an initial 
 tree `init` and a list of edges `edges`, and returns the tree created by expanding 
 the initial tree by the edges.
 

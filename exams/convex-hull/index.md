@@ -112,7 +112,6 @@ Your file has to be called `convexhull.rkt` and must provide the function
 ```
 
 _**Hint \#2 (Polar Angle)**_
-\label{par:hint_2}
 In Scheme, you can compute the polar angle of a vector $\vec v=(x,y)$ with
 ```Scheme
 (atan y x)  ; note the argument order!
@@ -122,7 +121,6 @@ You may want to shift the output by adding $2\pi$ to negative angles in order
 to obtain $\varphi\in(0,2\pi)$.
 
 _**Hint \#3 (Sorting)**_
-\label{par:hint_3}
 To implement custom sorting you can use the function `sort` which takes
 a list and a comparison function. The comparison function has to accept two
 elements from the list and return `\#t` if the first argument is less
@@ -251,8 +249,7 @@ You may want to shift the output by adding $2\pi$ to negative angles in order
 to obtain $\varphi\in(0,2\pi)$.
 
 _**Hint \#5 (Sorting):**_
-\label{par:hint_3}
-To implement custom sorting of a list of tuples you can use the function \texttt{sortBy :: (a -> a -> Ordering) -> [a] -> [a]} provided by `Data.List`. Below is an example that sorts a list of tuples by
+To implement custom sorting of a list of tuples you can use the function `sortBy :: (a -> a -> Ordering) -> [a] -> [a]` provided by `Data.List`. Below is an example that sorts a list of tuples by
 the x-coordinate
 ```Haskell
 import Data.List

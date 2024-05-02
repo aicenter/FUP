@@ -138,10 +138,9 @@ To find the common prefix of two lists, use the function `(take-common-prefix ls
 
 ## Haskell
 
-In \textbf{Haskell}, implement a function 
-`commonAncestor :: Eq a => a -> a -> Tree a -> Maybe a` that takes 
-two nodes and a binary tree, and returns the least common ancestor of these two nodes.
-If it does not exist, the function returns `Nothing`.
+Implement a function `commonAncestor :: Eq a => a -> a -> Tree a -> Maybe a` that takes two nodes
+and a binary tree, and returns the least common ancestor of these two nodes.  If it does not exist,
+the function returns `Nothing`.
 
 To represent binary trees in Haskell, use the following data type:
 ```haskell
