@@ -22,7 +22,7 @@ it, for instance, as follows:
 ```
 
 Adding two infinite streams can be done recursively. Since the streams are infinite, we do not have
-to check the emptiness of any input streams. 
+to check the emptiness of any input streams.
 ::: details Solution: `stream-add`
 ```scheme
 (define (stream-add s1 s2)
@@ -31,7 +31,7 @@ to check the emptiness of any input streams.
 ```
 :::
 
-The definition of the Fibonacci sequence 
+The definition of the Fibonacci sequence
 $F(0)=0$, $F(1)=1$, and $F(n)=F(n-1) + F(n-2)$ for $n>1$ can be reformulated as follows:
 ```scheme
       0 1 1 2 3  5  8 13 ...   ; F(n-2) - Fibonacci sequence
@@ -69,7 +69,7 @@ define a structure for a graph:
 ```
 
 The following graph
-![](/img/6n-graph.svg){ style="width: 50%; margin: auto;" }
+![](/img/6n-graph.svg){ style="width: 50%; margin: auto;" class="inverting-image"}
 
 is represented as follows:
 ```scheme
@@ -82,10 +82,10 @@ is represented as follows:
 
 Given a graph $G$, a [Hamiltonian path](https://en.wikipedia.org/wiki/Hamiltonian_path) is a path
 visiting each vertex of $G$ exactly once. We will represent a path as a list of consecutive nodes in
-the path. The above graph `gr` has a Hamiltonian path `(3 2 1 5 4 6)`. 
+the path. The above graph `gr` has a Hamiltonian path `(3 2 1 5 4 6)`.
 
 Write a function `(find-hamiltonian-path g)` which takes a graph as its input and returns a
-Hamiltonian path, if it exists, and `#f` otherwise. E.g. 
+Hamiltonian path, if it exists, and `#f` otherwise. E.g.
 ```scheme
 (find-hamiltonian-path gr) => (3 2 1 5 4 6)
 (find-hamiltonian-path (graph '(a b c d) '((a b) (a c) (a d)))) => #f
@@ -110,7 +110,7 @@ Given a list, we create a list of pairs of consecutive nodes. E.g. `(1 2 3 4)` i
 `list` element-wise. Finally, we test whether all these pairs are connected.  To do so, we use the
 function `(andmap f lst)`. This function is implemented in Racket. It behaves like `map` but
 aggregates the results of `f` by `and` function, i.e., once any of the results is `#f`, it returns
-`#f` and the last result otherwise. 
+`#f` and the last result otherwise.
 ::: details Solution: `check-path`
 ```scheme
 (define (check-path g)
@@ -142,7 +142,7 @@ compare the perfromance of the two implementations on a larger graph.
 ## Task 1
 Write a function `(stream-mul s1 s2)` taking two infinite streams and multiplying them
 elements-wise. Using this function, define an infinite stream `factorial-stream` of factorials $0!,
-1!, 2!, 3!,\ldots$. 
+1!, 2!, 3!,\ldots$.
 
 ::: tip
 The recursive definition of factorial $f(0)=1$ and $f(n)=n\cdot f(n-1)$ for $n>0$ gives us
@@ -155,7 +155,7 @@ The recursive definition of factorial $f(0)=1$ and $f(n)=n\cdot f(n-1)$ for $n>0
 In your definition, you can use the function `(in-naturals n)` implemented in Racket to define the
 stream of natural numbers starting from n.
 :::
- 
+
 Once you have the stream of factorials `factorial-stream`, the function `stream-mul` and the stream
 of natural numbers `(in-natural 0)` (or even simply `(in-naturals)`), you can define a function
 `(exp-stream x)` taking a number `x` and returning the power series representing $e^x$, i.e., $e^x =
@@ -224,7 +224,7 @@ subsets ordered by their cardinality. To fix this, we have to modify the functio
 the result of the recursive call and the newly created subsets. Thus we define a function
 `(stream-merge s1 s2 cmp)` which takes two streams and a function `cmp` comparing two elements of
 these streams and returns a stream where the values are merged so that the smaller elements come
-first.  
+first.
 :::
 ```scheme
 ; lazy subsequences
@@ -235,7 +235,7 @@ first.
     ([cmp (stream-first s1) (stream-first s2)]
      (stream-cons (stream-first s1) (stream-merge (stream-rest s1) s2 cmp)))
     (else (stream-cons (stream-first s2) (stream-merge s1 (stream-rest s2) cmp)))))
-      
+
 (define (sub-seq lst)
   (if (null? lst)
       (stream '())

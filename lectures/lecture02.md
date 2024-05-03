@@ -430,7 +430,7 @@ code remains untouched.[^structures]
 
 Consider the following tree:
 
-![A binary tree](../img/tree.svg){ style="width: 100%; margin: auto;" }
+![A binary tree](../img/tree.svg){ style="width: 100%; margin: auto;" class="inverting-image"}
 
 The above binary tree can be encoded as follows if we represent the empty tree as `#f`:
 

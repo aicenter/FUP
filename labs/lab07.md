@@ -28,7 +28,7 @@ So we had to add the outermost parenthesis, expand the shortcuts $\lambda xy.$ t
 x.(\lambda y.$, and put the parenthesis determining the order of the applications, i.e., as the
 application is left-associative, $xy(\lambda ab.b)$ is in fact $((x y) (\lambda ab.b))$.  The symbol
 λ can be entered in DrRacket by pressing `Ctrl+\`. Instead of the dot symbol, the colon symbol is
-used. 
+used.
 
 The module `lambda-calculus.rkt` provides the following functions:
 | Function | Description |
@@ -39,7 +39,7 @@ The module `lambda-calculus.rkt` provides the following functions:
 | `(eval expr [info 'quiet])` | finds the normal form of `expr`; if `info` is set to `'verbose`, displays all the steps; if `info` is `'tree`, then all the steps are drawn as trees |
 
 ## Exercise 1
-Draw the syntax tree of the $\lambda$-expression $(\lambda x.y(xx))(\lambda y.y(xx))$ and determine which variable occurrences are free and which are bound. 
+Draw the syntax tree of the $\lambda$-expression $(\lambda x.y(xx))(\lambda y.y(xx))$ and determine which variable occurrences are free and which are bound.
 
 We will use the helper function `draw-expr`. First, create the correct representation as an S-expression:
 ```scheme
@@ -48,7 +48,7 @@ We will use the helper function `draw-expr`. First, create the correct represent
 Then evaluate the following function call:
 ::: details `(draw-expr '((λ x : (y (x x))) (λ y : (y (x x)))))`
 Displays the tree below:
-![ex1](/img/lab07-ex1.png)
+![ex1](/img/lab07-ex1.png){class="inverting-image"}
 :::
 
 An occurrence of a variable $v$ is bound if it is in the syntax tree below the node $\lambda v$ and is free otherwise. So, for our expression, the occurrences of $x$ in the left branch are bound, and they are free in the right branch. The occurrence of $y$ in the left branch is free and bound in the right branch.
@@ -65,7 +65,7 @@ Try first to draw the tree on paper. Then compare your result with the result re
 Find all redexes in $(\lambda x.x y) z ((\lambda u.u) ((\lambda v.v) z))$. Which one is the leftmost outermost redex, and which is the leftmost innermost redex? Reduce the leftmost outermost redex.
 
 ::: tip Hint
-Try to find the redexes. Then call `(draw-expr expr)` 
+Try to find the redexes. Then call `(draw-expr expr)`
 for `expr` being the following S-expression:
 ```scheme
 '(((λ x : (x y)) z) ((λ u : u) ((λ v : v) z)))
@@ -81,7 +81,7 @@ Recall that multiplication of two numbers is computed by
 $$M \equiv \lambda abc.a(bc).$$
 Find the normal form of $M01$ following the normal order reduction strategy, i.e., compute $0\cdot
 1$, which should result in $0$. The numbers $0,1$ are abbreviations for $\lambda$-expressions
-$\lambda sz.z$ and $\lambda sz.sz$ respectively. 
+$\lambda sz.z$ and $\lambda sz.sz$ respectively.
 
 ::: tip Hint
 Once you do it on paper, check your result in Racket. You can use Racket definitions and semiquoting to make your $\lambda$-expression more readable.
@@ -111,18 +111,18 @@ these constructions as follows (the final two calls check that it behaves as exp
 (define T '(λ x : (λ y : x)))
 (define F '(λ x : (λ y : y)))
 
-(define CONS 
+(define CONS
   '(λ a : (λ b : (λ z : ((z a) b)))))
-  
+
 (eval `(((,CONS a) b) ,T))
 (eval `(((,CONS a) b) ,F))
 ```
-  
-Write a $\lambda$-expression swapping components of a given pair $p$. 
+
+Write a $\lambda$-expression swapping components of a given pair $p$.
 
 ::: tip Hint
-The desired $\lambda$-expression should take a pair $p$ and return another pair with swapped components. 
-So the expression should start with $\lambda pz.z??$ where the question marks are the components of the returned pair. 
+The desired $\lambda$-expression should take a pair $p$ and return another pair with swapped components.
+So the expression should start with $\lambda pz.z??$ where the question marks are the components of the returned pair.
 :::
 
 ::: details Solution
@@ -142,7 +142,7 @@ Once you have it, define `SWAP` and check that it correctly swaps the components
 
 ## Exercise 6
 Since we can create pairs, we can create lists as in Racket. We represent the empty list by the false value $F$. Now we can
-create a list `'(a b)` by 
+create a list `'(a b)` by
 ```scheme
 (define lst `((,CONS a) ((,CONS b) ,F)))
 
@@ -153,10 +153,10 @@ create a list `'(a b)` by
 Write a $\lambda$-expression $NULL?$ testing if a list is empty, i.e., it returns $T$ if it is empty and $F$ otherwise.
 
 ::: tip Hint
-A list is either a pair or $F$ if it is empty. Let denote it by $p$. 
+A list is either a pair or $F$ if it is empty. Let denote it by $p$.
 Recall the definition of the zero test from the lecture
 $$Z\equiv \lambda x.xF\neg F,$$
-where $\neg\equiv \lambda x.xFT$. 
+where $\neg\equiv \lambda x.xFT$.
 We need something similar for the list $p$. So our desired $\lambda$-expression should look like
 $\lambda p.pe_1e_2$ where $e_1,e_2$ have to be filled by suitable $\lambda$-expressions serving as
 arguments for $p$. If $p$ is empty (i.e., $p\equiv F$), then $p$ is just a projection into the
@@ -164,11 +164,11 @@ second argument. Thus $e_2$ should be $T$, i.e., we have $\lambda p.pe_1T$. If w
 for $p$ a pair (i.e. $p \equiv \lambda z.zab$), we obtain $(\lambda z.zab)e_1T$. Thus $e_1$ is
 going to be substituted for $z$, and consequently, it will be applied to $a$ and $b$, i.e., we would
 end up with $e_1abT$. Since the result in this case should be $F$, we need the result of $e_1ab$ to
-be $\neg$ because $\neg F\to^\beta T$.  
+be $\neg$ because $\neg F\to^\beta T$.
 :::
 
 ::: details Solution
-$\lambda p.p(\lambda ab.\neg)T$ 
+$\lambda p.p(\lambda ab.\neg)T$
 :::
 
 Check your solution in Racket.
@@ -199,7 +199,7 @@ $$S\equiv \lambda wyx.y(wyx)$$
 for adding $1$. The computation of the desired $\lambda$-expression can be expressed in Racket as
 follows:
 ```scheme
-(define len 
+(define len
   (lambda (p) (if (null? p)
                     0
                     (+ (len (cdr p)) 1))))
@@ -227,7 +227,7 @@ Check your solution in Racket:
                (,S (r (lst ,F)))))))
 
 (eval `((,Y ,LEN) ,F)) ; => 0
-(eval `((,Y ,LEN) ((,CONS a) ,F))) ; => 1 
+(eval `((,Y ,LEN) ((,CONS a) ,F))) ; => 1
 (eval `((,Y ,LEN) ((,CONS a) ((,CONS b) ,F)))) ; => 2
 ```
 :::

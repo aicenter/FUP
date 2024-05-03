@@ -7,7 +7,7 @@ I already discussed that all data structures in purely functional programs are i
 [Lecture 1](lecture01#immutability). In this lecture, I will introduce some examples of
 immutable data structures that can be used as alternatives to common mutable data structures from
 imperative programming languages. It is beyond this introductory course to study immutable data
-structures in detail. I hope these examples will give you a brief insight into the topic. 
+structures in detail. I hope these examples will give you a brief insight into the topic.
 
 From the general perspective, we distinguish two kinds of data structures:
 
@@ -84,18 +84,18 @@ Now return to the first implementation of `my-append`. To practice pattern match
     [(list x us ...) (cons x (my-append us ys))]))
 ```
 
-Suppose we append a list `ys` to a list `xs` and name the resulting list `zs`: 
+Suppose we append a list `ys` to a list `xs` and name the resulting list `zs`:
 ```scheme
 (define zs (my-append xs ys))
-``` 
+```
 What happens is that `xs` is recursively decomposed and copied so that its copied version is connected to `ys`.
 The situation is depicted below on three-element lists `'(1 2 3)` and `'(4 5 6)`.
 
-![](/img/append.png){ style="width: 100%; margin: auto;" }
+![](/img/append.png){ style="width: 100%; margin: auto;" class="inverting-image"}
 
 Both original lists `xs` and `ys` are persistent, i.e., none is destroyed. Moreover, `ys` shares its members with the resulting list `zs`. This contrasts with the imperative setting where appending might be destructive. Updating the second component of the last pair in `xs` so that it points to `ys`, destroys the original `xs` as we do not know where it ends.
 
-![](/img/mutable-append.png){ style="width: 100%; margin: auto;" }
+![](/img/mutable-append.png){ style="width: 100%; margin: auto;" class="inverting-image"}
 
 An analogous situation occurs if we need to modify an element at a given position in a list. It
 requires linear time $O(n)$ because we must copy all the list members before the modified element.
@@ -118,7 +118,7 @@ representing a buffer. It stores data in the order they are coming in and releas
 elements first. A queue is usually endowed with two operations: `enqueue` and `dequeue`. The first
 adds new-coming data to the back of the queue. The second removes the data stored in the front.
 
-![](/img/queue.png){ style="width: 80%; margin: auto;" }
+![](/img/queue.png){ style="width: 80%; margin: auto;" class="inverting-image"}
 
 Following the tradition of functional programming, I will call `enqueue` and `dequeue`,
 respectively, `snoc` and `tail`. `snoc` is `cons` spelled backward, so its name should express that
@@ -137,7 +137,7 @@ implementation is inefficient. How can we improve `snoc` in the purely functiona
 cannot modify the pair holding the last element of the queue? The idea is simple. We will represent
 a queue via two lists: the front list and the rear list.
 
-![](/img/pure-queue.png){ style="width: 70%; margin: auto;" }
+![](/img/pure-queue.png){ style="width: 70%; margin: auto;" class="inverting-image"}
 
 We strip off the first element from the front list to dequeue an element. It can be done in constant
 time $O(1)$. Analogously, to enqueue an element, we prepend it to the rear list. This can be done in
@@ -178,7 +178,7 @@ We represent the queue as a structure with two components: the front and rear li
 maintains the invariant that the queue is empty if, and only if, the front is empty. Thus to test if
 the queue is empty, we check if the front list is empty (Line 5). The function `check`
 (Line 7) maintains the invariant. If the front list is empty (Line 8), we
-create a new queue whose front list is the reverse of the rear list, and the rear is empty (Line 9). If the front list is non-empty, we return the input queue `q` (Line 10). 
+create a new queue whose front list is the reverse of the rear list, and the rear is empty (Line 9). If the front list is non-empty, we return the input queue `q` (Line 10).
 
 Now the main functions. `head` simply extracts the first element of the front list (Line 12). `snoc` creates a new queue whose front list is preserved, and the rear list is
 expanded by the new element `x` (Line 15). Moreover, we must check if the invariant
@@ -204,7 +204,7 @@ invariant by reversing the rear list.
 (tail (snoc 'c (snoc 'b (snoc 'a empty-queue)))) => (queue '(b c) '())
 ```
 
-If we add further elements, they are consed to the rear list. 
+If we add further elements, they are consed to the rear list.
 ```scheme
 (snoc 'd (tail (snoc 'c (snoc 'b (snoc 'a empty-queue))))) => (queue '(b c) '(d))
 ```
@@ -227,7 +227,7 @@ Line 2 generates a random sequence of zeros and ones. The function `generate-eve
 Finally, Line 7 creates testing data. The output of `make-data` might look as follows:
 
 ```scheme
-(make-data 10) => 
+(make-data 10) =>
 '(g6642396 g6642397 g6642398 tail tail g6642399 g6642400 g6642401 g6642402 tail)
 ```
 
@@ -242,7 +242,7 @@ Next, we need a function applying the testing data to a particular queue.
 ```
 The function `test-data` accepts an initial queue `q0`, a predicate testing queue's emptiness `empty?`, functions `enq` and `deq` enqueuing and dequeuing an element, and testing data.  The local function `exec` (Lines 2-5) executes a command `cmd` on the queue. If `cmd` is `'tail`, the first element is dequeued provided the queue is non-empty. Otherwise, `cmd` is an element to be enqueued. Line 6 runs all the commands on the initial queue `q0`.
 
-Now it remains to measure the times needed to evaluate `test-data`. We first create testing data `data` and then compare the performance. To prevent displaying the large queues on the screen, we can enclose the call of `test-data` inside 
+Now it remains to measure the times needed to evaluate `test-data`. We first create testing data `data` and then compare the performance. To prevent displaying the large queues on the screen, we can enclose the call of `test-data` inside
 [`begin`](https://docs.racket-lang.org/reference/begin.html#%28form._%28%28quote._~23~25kernel%29._begin%29%29) and returns just a value `'done`.
 ```scheme
 (define data (make-data 1000000))
@@ -267,15 +267,15 @@ The problem with the regular list is that their length equals their size. Thus, 
 where $b_0,b_1,\ldots,b_k\in\{0,1\}$ are the bits of its binary representation; $b_0$ is the least significant bit and $b_k$ the most significant. Assuming that the most significant bit $b_k=1$, we have $2^k\leq n$, implying $k\leq\log_{2}n$.
 In other words, the number of bits we need to represent $n$ is logarithmic.
 
-Suppose we want to represent an array of size $n=\sum_{i=0}^k b_i\cdot 2^i$. For each non-zero bit $b_i$, we create a chunk of $2^i$ elements. These chunks altogether give us the whole array. For example, if 
-\[n=10=1\cdot 2^1 + 1\cdot 2^3,\] 
+Suppose we want to represent an array of size $n=\sum_{i=0}^k b_i\cdot 2^i$. For each non-zero bit $b_i$, we create a chunk of $2^i$ elements. These chunks altogether give us the whole array. For example, if
+\[n=10=1\cdot 2^1 + 1\cdot 2^3,\]
 we split the elements into two chunks; the first of size $2$ and the second of size $8$.
 
 As the chunks are of size $2^i$, i.e., still too large to be processed as regular lists, we represent them as leaves of a complete binary tree. Thus we can quickly look up an element inside a chunk.
 
 Altogether, we represent an array of size $n=\sum_{i=0}^k b_i\cdot 2^i$ as a list of complete binary trees $t_i$ of size $2^i$ for $i$s such that $b_i=1$. Consider, for instance, an array $[0,1,2,\ldots,9]$ of size $n=10=1\cdot 2^1 + 1\cdot 2^3$. Its representation is a list of two trees depicted below:
 
-![](/img/rnd-lst.png){ style="width: 80%; margin: auto;" }
+![](/img/rnd-lst.png){ style="width: 80%; margin: auto;" class="inverting-image"}
 
 The chunks corresponding to non-zero bits are the binary trees. Their leaves (yellow nodes) hold the data. For convenience, the inner nodes (white nodes) contain information about the number of leaves below them.
 
@@ -289,40 +289,40 @@ Now we can discuss how to implement this representation in Racket. We define two
 Thus the inner node is a triple consisting of the number of leaves below it and left and right subtrees. The leaf contains only a value. So the above-depicted list of trees is represented in Racket as follows:
 
 ```scheme
-(list (node 2 (leaf 0) 
-              (leaf 1)) 
-      (node 8 (node 4 (node 2 (leaf 2) 
-                              (leaf 3)) 
-                      (node 2 (leaf 4) 
-                              (leaf 5))) 
-              (node 4 (node 2 (leaf 6) 
-                              (leaf 7)) 
-                      (node 2 (leaf 8) 
+(list (node 2 (leaf 0)
+              (leaf 1))
+      (node 8 (node 4 (node 2 (leaf 2)
+                              (leaf 3))
+                      (node 2 (leaf 4)
+                              (leaf 5)))
+              (node 4 (node 2 (leaf 6)
+                              (leaf 7))
+                      (node 2 (leaf 8)
                               (leaf 9)))))
 
 ```
 
-Next, we need to deal with a function building random access lists. In particular, we will implement a function `cons-el`, adding one new element to an existing random access list. 
-Adding a new element to a random access list of size $n$ follows the standard procedure of adding $1$ to $n=\sum_{i=1}^k b_i\cdot 2^i$ in binary representation. This standard procedure adds $1$ to $b_0$. If $b_0=0$, we set $b_0=1$, and we are done. If $b_0=1$, then $b_0=0$ and we carry $1$ to the next bit, and the process continues. For example, for 
-\[n=11=1\cdot 2^0+1\cdot 2^1+0\cdot 2^2 + 1\cdot 2^3,\] we get 
-\[n+1=12=0\cdot 2^0+0\cdot 2^1+1\cdot 2^2+1\cdot 2^3.\] 
+Next, we need to deal with a function building random access lists. In particular, we will implement a function `cons-el`, adding one new element to an existing random access list.
+Adding a new element to a random access list of size $n$ follows the standard procedure of adding $1$ to $n=\sum_{i=1}^k b_i\cdot 2^i$ in binary representation. This standard procedure adds $1$ to $b_0$. If $b_0=0$, we set $b_0=1$, and we are done. If $b_0=1$, then $b_0=0$ and we carry $1$ to the next bit, and the process continues. For example, for
+\[n=11=1\cdot 2^0+1\cdot 2^1+0\cdot 2^2 + 1\cdot 2^3,\] we get
+\[n+1=12=0\cdot 2^0+0\cdot 2^1+1\cdot 2^2+1\cdot 2^3.\]
 Thus we carry $1$ twice until we encounter $b_2=0$, the bit whose weight is $2^2$.
 
 Let us see how the binary increment by $1$ influences the structure of random access lists. An array consisting of $11$ elements is represented as follows:
 
-![](/img/rnd-lst11.png){ style="width: 80%; margin: auto;" }
+![](/img/rnd-lst11.png){ style="width: 80%; margin: auto;" class="inverting-image"}
 
 Now we add a new element, say $-1$, as `(leaf -1)`.
 
-![](/img/rnd-lst11-1.png){ style="width: 85%; margin: auto;" }
+![](/img/rnd-lst11-1.png){ style="width: 85%; margin: auto;" class="inverting-image"}
 
 However, this is not a correct representation because we have two trees of size $2^0$. Thus we need to join them and create a new tree of size $2^1$.
 
-![](/img/rnd-lst11-2.png){ style="width: 88%; margin: auto;" }
+![](/img/rnd-lst11-2.png){ style="width: 88%; margin: auto;" class="inverting-image"}
 
 The result is still not a correct representation as we have two trees of size $2^1$. Thus we must join them again.
 
-![](/img/rnd-lst12.png){ style="width: 90%; margin: auto;" }
+![](/img/rnd-lst12.png){ style="width: 90%; margin: auto;" class="inverting-image"}
 
 Now we have a correct representation for the array of size $12=1\cdot 2^2+1\cdot 2^3$.
 
@@ -364,18 +364,18 @@ Let us see the first few calls of `cons-el` if we build a random access list fro
 ```scheme
 (cons-el 'a '()) => (list (leaf 'a))
 
-(cons-el 'b (cons-el 'a '())) => (list (node 2 (leaf 'b) 
+(cons-el 'b (cons-el 'a '())) => (list (node 2 (leaf 'b)
                                                (leaf 'a)))
 
-(cons-el 'c (cons-el 'b (cons-el 'a '()))) => (list (leaf 'c) 
-                                                    (node 2 (leaf 'b) 
+(cons-el 'c (cons-el 'b (cons-el 'a '()))) => (list (leaf 'c)
+                                                    (node 2 (leaf 'b)
                                                             (leaf 'a)))
 
-(cons-el 'd (cons-el 'c (cons-el 'b (cons-el 'a '())))) => 
-(list (node 4 (node 2 (leaf 'd) 
-                      (leaf 'c)) 
-              (node 2 (leaf 'b) 
-                      (leaf 'a))))                                                            
+(cons-el 'd (cons-el 'c (cons-el 'b (cons-el 'a '())))) =>
+(list (node 4 (node 2 (leaf 'd)
+                      (leaf 'c))
+              (node 2 (leaf 'b)
+                      (leaf 'a))))
 ```
 Inserting the first element `'a` creates a list containing only `(leaf 'a)` (Line 1). Adding the second element `'b` must join two leaves; thus we end up with a single binary tree of size $2$ (Lines 3-4). The third element `'c` is included as `(leaf 'c)` (Lines 6-8). Finally, inserting the forth element `'d'` results in a single tree of size $4=0\cdot 2^0+0\cdot 2^1+1\cdot 2^2$ (Lines 11-14).
 
@@ -452,12 +452,12 @@ Let us check how `update` works:
 ```scheme
 (define ral (cons-el 'c (cons-el 'b (cons-el 'a '()))))
 
-ral => (list (leaf 'c) 
-             (node 2 (leaf 'b) 
+ral => (list (leaf 'c)
+             (node 2 (leaf 'b)
                      (leaf 'a)))
 
-(update 1 333 ral) => (list (leaf 'c) 
-                            (node 2 (leaf 333) 
+(update 1 333 ral) => (list (leaf 'c)
+                            (node 2 (leaf 333)
                                     (leaf 'a)))
 ```
 
@@ -481,7 +481,7 @@ cpu time: 0 real time: 0 gc time: 0
 ```
 Note that it took approximately 2.8s to build the random access list holding numbers from $0$ to $9999999$. On the other hand, the times for lookup and update were negligible.
 
-I used the standard built-in functions implemented in Racket to compare the results with the regular lists.  
+I used the standard built-in functions implemented in Racket to compare the results with the regular lists.
 ```scheme
 (define lst (time (range 10000000)))
 (time (list-ref lst 9999999))

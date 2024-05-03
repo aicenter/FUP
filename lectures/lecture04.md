@@ -13,7 +13,7 @@ then branch the computation based on the corresponding equality tests. Consider 
 computing perimeter of a given 2D shape. There are three types of shapes: rectangle, circle, and
 triangle. The size of the rectangle is specified by its width and height, the circle by its radius,
 and the triangle by the lengths of its sides. Thus the input is given as a list whose first member
-is a symbol among `'rect`, `'circ`, and `'tri` followed by respective numeric parameters. E.g., 
+is a symbol among `'rect`, `'circ`, and `'tri` followed by respective numeric parameters. E.g.,
 ```scheme
 '(rect 3 4)
 '(circ 5)
@@ -89,7 +89,7 @@ element. Moreover, its value is bound to `x`. Line 4 fires if `lst` has the firs
 the symbol `'fn`. The three dots behind `ys` mean that the list of remaining members, i.e., `(cdr
 lst)`, is bound to `ys`. Line 5 shows that we can even match nested lists. Line 6 matches if `lst`
 has at least three elements and starts with numbers `1` and `2`. The
-last element is bound to `z`, and the elements between `2` and `z` are bound to `ys`. 
+last element is bound to `z`, and the elements between `2` and `z` are bound to `ys`.
 
 With the above tools, we can simplify the function `ugly-perim` as follows:
 ```scheme
@@ -172,7 +172,7 @@ Thus we can simplify the above call of `my-if` a bit:
 ```scheme
  (my-if (< 0 1) (thunk 'then) (thunk (/ 1 0))) => 'then
 ```
-Still, wrapping all the argument expressions by `thunk` remains tedious. We will see how to fix it once we discuss 
+Still, wrapping all the argument expressions by `thunk` remains tedious. We will see how to fix it once we discuss
 [macros](#macros).
 
 A natural question is why we need lazy evaluation. There are several applications besides functions behaving like conditionals.
@@ -191,7 +191,7 @@ They are similar to lists, but their members are computed when needed. Streams c
 infinite. In other words, we can extract from them as many members as we need. Analogously to lists,
 streams are constructed through pairs. The first component carries data, and the second represents
 the rest of the stream. Unlike lists, the second component of a stream is delayed, i.e., wrapped
-into a thunk. 
+into a thunk.
 
 The thunks are further extended with a caching mechanism to make the computation with them more
 efficient. Once we evaluate the body of a thunk, the resulting value is cached. The cached value is
@@ -303,7 +303,7 @@ Similarly, if we want to define an infinite stream $\overline{ab}=a,b,a,b,\ldots
 
 (stream->list (stream-take ab 10)) => '(a b a b a b a b a b)
 ```
-The definition of `ab` can be simplified using the function `stream*` that allows prepending several initial stream elements to an existing stream. 
+The definition of `ab` can be simplified using the function `stream*` that allows prepending several initial stream elements to an existing stream.
 ```scheme
 (define ab (stream* 'a 'b ab))
 ```
@@ -355,7 +355,7 @@ It sums the first $10^7$ natural numbers. A list `(range 10000000)` of size $10^
 
 Comparing the performance of both approaches gives the following results:
 ```scheme
-> (time (stream-fold + 0 (in-range 10000000))) 
+> (time (stream-fold + 0 (in-range 10000000)))
 cpu time: 171 real time: 169 gc time: 0
 49999995000000
 
@@ -377,7 +377,7 @@ details on this idea, see the paper by John Hughes.[^why-fp-matters]
 
 Let us see some examples of this approach. Consider the Newton-Ralphson method for approximating the square root of a number $n$. The method generates a sequence of still better approximations. Once the successive approximations are close enough, we stop the generating process. More precisely, we start with an initial guess $g_0$. A next approximation given the $i$-th approximation $g_i$ is computed by
 
-$$g_{i+1}=\frac{1}{2}\left(g_i + \frac{n}{g_i}\right).$$ 
+$$g_{i+1}=\frac{1}{2}\left(g_i + \frac{n}{g_i}\right).$$
 
 A terminating condition could be $|1-\frac{g_i}{g_{i+1}}|\leq\varepsilon$ for a sufficiently small
 $\varepsilon>0$. [^termination]
@@ -391,7 +391,7 @@ Now, we compare the code that mixes the generating code with the terminating con
 ```scheme:line-numbers
 (define eps 0.000000000001)
 (define (mean . xs) (/ (apply + xs) (length xs)))
-(define (next-guess n g) (mean g (/ n g)))  
+(define (next-guess n g) (mean g (/ n g)))
 (define (good-enough? n1 n2 eps) (< (abs (- 1 (/ n1 n2))) eps))
 
 (define (my-sqrt n [g 1.0])
@@ -407,7 +407,7 @@ function generating the successive approximation. Line 4 is the terminating cond
 The core of the computation is captured in the function `my-sqrt` (Lines 6-10). Line 7
 computes the following approximation from the current one. Line 8 checks if
 the stopping condition holds. If it is the case (Line 9), we return our last
-approximation. If not, `my-sqrt` is recursively called again with a better approximation (Line 10. 
+approximation. If not, `my-sqrt` is recursively called again with a better approximation (Line 10.
 
 [^dot]: The dot in the definition `(mean . xs)` tells Racket that `mean` can have an arbitrary
     number of arguments. The list of their values is bound to `xs`. Thus to sum them, we need to
@@ -464,16 +464,16 @@ Suppose we are given a digraph to explore, i.e., we have a function generating n
 Initially, we are in the state $1$, and we look for a path leading from $1$ to node $3$; see the
 picture below.  Note that the edge between $1$ and $2$ is bidirectional.
 
-![](/img/digraph.png){ style="width: 80%; margin: auto;" }
+![](/img/digraph.png){ style="width: 80%; margin: auto;" class="inverting-image"}
 
 To represent the above digraph in Racket, we introduce a structure capturing arcs and define a digraph `g`:
 
 ```scheme
 (struct arc (source target) #:transparent)
 
-(define g (list (arc 1 2) (arc 2 1) 
-                (arc 1 5) (arc 2 4) 
-                (arc 4 5) (arc 5 6) 
+(define g (list (arc 1 2) (arc 2 1)
+                (arc 1 5) (arc 2 4)
+                (arc 4 5) (arc 5 6)
                 (arc 6 3) (arc 3 4)))
 ```
 Moreover, we define a function returning a list of neighbors of a given vertex:
@@ -482,9 +482,9 @@ Moreover, we define a function returning a list of neighbors of a given vertex:
   (map arc-target (filter (lambda (arc) (equal? v (arc-source arc))) g)))
 ```
 
-If we want to find the path, we build the tree by generating neighbors. From node $1$, we can get to $2$. From $2$, we can continue to $4$ or get back to $1$. Continuing this way, we can define the infinite tree of visited nodes. Its initial part is depicted below: 
+If we want to find the path, we build the tree by generating neighbors. From node $1$, we can get to $2$. From $2$, we can continue to $4$ or get back to $1$. Continuing this way, we can define the infinite tree of visited nodes. Its initial part is depicted below:
 
-![The tree produced by exploring the above graph starting in node $1$](/img/lazy-tree.png){ style="width: 80%; margin: auto;"  id="tree"}
+![The tree produced by exploring the above graph starting in node $1$](/img/lazy-tree.png){ style="width: 80%; margin: auto;" id="tree" class="inverting-image"}
 
 In the modular lazy approach, it is possible to implement a function generating such a (possibly infinite) tree and process it later. We represent the tree nodes as a structure
 ```scheme
@@ -500,13 +500,13 @@ If we have a function generating children (I call them successors), it is easy t
 The function starts the generating process in a vertex `v`, computes its children (Line 2),
 and makes a tree node consisting of `v` and a stream of its children (Line 3).
 Even though `successors` form a regular list, we transform it into a stream by calling
-the function `stream-map`. Moreover, `stream-map` applies recursively `make-tree` to each child. 
+the function `stream-map`. Moreover, `stream-map` applies recursively `make-tree` to each child.
 
 Using the function `get-neighbors`, we can generate the above-depicted  tree as follows:
 ```scheme
 (define t (make-tree (curry get-neighbors g) 1))
 ```
-Let us evaluate the tree `t` manually in the REPL: 
+Let us evaluate the tree `t` manually in the REPL:
 ```{.tight-code}
 ; the root node 1
 t => (node 1 #<stream>)
@@ -532,7 +532,7 @@ We do not have to modify the generating function `make-tree` to do this node enr
 ```
 This function takes a graph `g` and a `path`, extracts its last vertex `end` (Line 2),
 computes its neighbors (Line 3), and finally expands `path` by all neighbors, creating a
-list of possible `path` extensions 
+list of possible `path` extensions
 (Line 4).[^curryr]
 
 [^curryr]: The function
@@ -544,7 +544,7 @@ Now we can generate the enriched tree as follows:
 ```scheme
 (define t-en (make-tree (curry get-ext-paths g) '(1)))
 ```
-Let us evaluate the enriched tree `t-en` manually in the REPL: 
+Let us evaluate the enriched tree `t-en` manually in the REPL:
 ```scheme
 ; the root node 1
 t-en => (node '(1) #<stream>)
@@ -569,7 +569,7 @@ Using pattern matching, we extract the root data and its children's stream (Line
 Lines 4-5 construct the filtered tree.
 Line 5 forces evaluation of the
 children and filters them based on the predicate `pred`. The children of remaining children are
-filtered recursively using `stream-map` (Line 4). 
+filtered recursively using `stream-map` (Line 4).
 
 We use the function [`check-duplicates`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Flist..rkt%29._check-duplicates%29%29) to test if a path is cyclic. It tests whether a given list contains an element more than once. Thus our predicate can be implemented as follows:
 ```scheme
@@ -611,7 +611,7 @@ the previous recursive call.
 
 Now, let us test our solution on the graph example:
 ```scheme
-(dfs (compose (curry eqv? 3) car) t-en-f) 
+(dfs (compose (curry eqv? 3) car) t-en-f)
 => '(1 2 4 5 6 3)
 ```
 It correctly finds the path from node $1$ to node $3$.
