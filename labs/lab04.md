@@ -35,10 +35,10 @@ using the recursion on the length of `lst`.
 (define (interleave el lst)
   (if (null? lst)
       ; there is only a single way one can insert el into '()
-      (list (list el))                          
+      (list (list el))
       ; otherwise one possibility is to prepend el to lst
       (cons (cons el lst)
-            ; for the rest take all possible insertions of el into (cdr lst) 
+            ; for the rest take all possible insertions of el into (cdr lst)
             (map (curry cons (car lst))
                  ; and prepend (car lst) to each of them
                  (interleave el (cdr lst))))))
@@ -46,8 +46,8 @@ using the recursion on the length of `lst`.
 (define (permutations lst)
   (if (null? lst)
       '(())
-      (apply append 
-             ; into each permutation of (cdr lst) interleave (car last) 
+      (apply append
+             ; into each permutation of (cdr lst) interleave (car last)
              (map (curry interleave (car lst)) (permutations (cdr lst))))))
 ```
 :::
@@ -63,7 +63,7 @@ permutations with the (builtin) `in-permutations` function.
 Binary decision trees represent Boolean functions, i.e., functions from $\{0,1\}^n$ to $\{0,1\}$.
 Let $f(x_1,\ldots,x_n)$ be a Boolean function. The corresponding binary decision tree is created as
 follows:
-  - Each input variable $x_i$ induces the $i$th-level in the tree whose nodes are labelled by $x_i$. 
+  - Each input variable $x_i$ induces the $i$th-level in the tree whose nodes are labelled by $x_i$.
   - Leaves are elements from $\{0,1\}$.
 
 Each path from the root to a leaf encodes an evaluation of input variables. If the path in an
@@ -71,7 +71,7 @@ internal node $x_i$ goes to the left, the variable $x_i$ is evaluated by $0$. If
 evaluated by $1$. The leaf in the path represents the value $f(x_1,\ldots,x_n)$ for the evaluation
 defined by the path. Example of a Boolean function and its binary decision tree:
 
-![](/img/bdd.png){ style="width: 70%; margin: auto;" }
+![](/img/bdd.png){ style="width: 70%; margin: auto;" class="inverting-image"}
 
 We will represent the inner variable nodes as Racket structures:
 ```scheme
@@ -98,7 +98,7 @@ values of variables $x_1,\ldots,x_n$ and returns $f(x_1,\ldots,x_n)$. E.g.
 (evaluate bool-tree '(1 0 1)) => 0
 (evaluate bool-tree '(0 1 1)) => 1
 ```
-The second function `(satisficing-evaluations tree)` takes a binary decision 
+The second function `(satisficing-evaluations tree)` takes a binary decision
 tree `tree`
 representing a Boolean function $f(x_1,\ldots,x_n)$ and returns all its satisficing evaluations,
 i.e., those for which $f(x_1,\ldots,x_n)=1$. To represent a variable assignment, we introduce the
@@ -143,25 +143,25 @@ Finally, it applies their composition to `tree`.
 ```
 :::
 
-The function `satisficing-evaluations` is a recursive 
+The function `satisficing-evaluations` is a recursive
 function using an accumulator `ev`,
 keeping partial evaluation as we traverse the tree.
-It recursively finds all satisficing evaluations of the left and right subtree, extends them by $0$ (resp. $1$) if they come from left (resp. right), and append them together. 
+It recursively finds all satisficing evaluations of the left and right subtree, extends them by $0$ (resp. $1$) if they come from left (resp. right), and append them together.
 
 ::: details Solution `satisficing-evaluations`
 ```scheme
 (define (satisficing-evaluations tree [ev '()])
   (match tree
     [1 (list (reverse ev))]        ; we reverse the evaluation so that the root variable comes first
-    [0 '()]                        
+    [0 '()]
     [(node v l r)
-     (append (satisficing-evaluations l (cons (assignment v 0) ev))      
-             (satisficing-evaluations r (cons (assignment v 1) ev)))])) 
+     (append (satisficing-evaluations l (cons (assignment v 0) ev))
+             (satisficing-evaluations r (cons (assignment v 1) ev)))]))
 ```
 :::
 
 ## Task 1
-Write a function `(sub-seq lst)` 
+Write a function `(sub-seq lst)`
 taking a list `lst` and returning a list of all its sublists/subsequences. E.g.
 ```scheme
 (sub-seq '(1 2 3)) =>

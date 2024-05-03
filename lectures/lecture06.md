@@ -52,13 +52,13 @@ The abstraction $\lambda x.t$ defines an anonymous function as in Racket. The va
 parameter, and $t$ is its body. The application represents a function call.
 
 Note that each abstraction and application introduce parentheses. To simplify the notation, we use
-several conventions to remove some of the parentheses. 
+several conventions to remove some of the parentheses.
 
 - We often leave the outermost parentheses.
 - The application is left-associative, e.g. $e_1e_2e_3e_4$ is $(((e_1e_2)e_3)e_4)$
-- The bodies of functions extends to the right as far as possible. 
+- The bodies of functions extends to the right as far as possible.
 
-Using the above conventions, we can simplify the following term 
+Using the above conventions, we can simplify the following term
 
 $$\Big(\lambda x.\Big(\textcolor{red}{(}\lambda y.((xy)x)\textcolor{red}{)}z\Big)\Big)$$
 
@@ -74,7 +74,7 @@ Alternatively, we avoid parentheses if we understand lambda terms as abstract sy
 above lambda term $\lambda x.\textcolor{black}{(}\lambda y.xyx\textcolor{black}{)}z$ corresponds to
 the following tree (the application nodes are denoted by the symbol @):
 
-![](../img/lambda-tree.png){ style="width: 30%; margin: auto;" }
+![](../img/lambda-tree.png){ style="width: 30%; margin: auto;" class="inverting-image"}
 
 Before focusing on semantics, we need to introduce the scopes of variables. An occurrence of a
 variable $x$ is said to be *bound* if it occurs in the body $t$ of an abstraction $\lambda x.t$. The
@@ -95,7 +95,7 @@ all the occurrences are bound except for the only occurrence of $z$.[^fol] A lam
 In lambda calculus, programs (i.e., lambda terms) consist of anonymous functions created by
 abstraction and function calls. The computation of such a program is the simplification process
 reducing the program to a lambda term that cannot be reduced anymore. This term is the value
-computed by the program. 
+computed by the program.
 
 A lambda term $\lambda x.t$ represents an anonymous function with an argument $x$ and body $t$. The
 term $\lambda x.t$ corresponds to the following expression in Racket:
@@ -124,14 +124,14 @@ $$
 \begin{align*}
         (\lambda x.xx)(\lambda y.y) &\to^\beta (xx)[x:=(\lambda y.y)] \equiv (\lambda y.y)(\lambda y.y) \\
         &\to^\beta y[y:=(\lambda y.y)] \equiv (\lambda y.y)
-    \end{align*}    
+    \end{align*}
 $$
 
 $$(\lambda x.x(\lambda x.x))y \to^\beta (x(\lambda x.x))[x:=y] \equiv y(\lambda x.x)$$
 
 Note that we substitute only for the free occurrence of $x$ in the last example.
 
-The substitution rule has one more caveat regarding the variable names. Consider a redex $(\lambda x.t)e$. 
+The substitution rule has one more caveat regarding the variable names. Consider a redex $(\lambda x.t)e$.
 A free occurrence of a variable in $e$ may become bound after the $\beta$-reduction. For example,
 
 $$(\lambda x.(\lambda y.xy))y \to^\beta \lambda y.xy[x:=y]\equiv \lambda y.\textcolor{red}{y}y$$
@@ -141,14 +141,14 @@ The above reduction step is not valid. The reason is that functions do not depen
 (define y 5)
 (define (cadd x) (lambda (y) (+ x y)))
 ```
-If we now call 
+If we now call
 ```scheme
 (cadd y)
-``` 
-the resulting function cannot be 
+```
+the resulting function cannot be
 ```scheme
 (lambda (y) (+ y y))
-``` 
+```
 which would be doubling its argument. Instead, it should be the function adding $y=5$ to its argument. To see that, we can simple rename the argument $y$, for instance, to $z$:
 ```scheme
 > (define (cadd x) (lambda (z) (+ x z)))
@@ -158,7 +158,7 @@ which would be doubling its argument. Instead, it should be the function adding 
 
 Thus the correct reduction of the above lambda term should proceed as follows:
 
-$$(\lambda x.(\lambda y.xy))y \equiv (\lambda x.(\lambda \textcolor{blue}{z}.x\textcolor{blue}{z}))y 
+$$(\lambda x.(\lambda y.xy))y \equiv (\lambda x.(\lambda \textcolor{blue}{z}.x\textcolor{blue}{z}))y
 \to^\beta \lambda \textcolor{blue}{z}.x\textcolor{blue}{z}[x:=y]\equiv \lambda z.yz$$
 
 Whenever we want to substitute a term $e$ for a variable in a term $t$, we must first check if any
@@ -180,7 +180,7 @@ y[x:=e] &= y \quad\text{if $y\neq x$}\\
 \end{align*}
 $$
 The last case is the one where we need to do the $\alpha$-conversion and rename the function
-argument to a fresh name $\lambda z.t[y:=z]$ before we proceed with the substitution $[x:=e]$. 
+argument to a fresh name $\lambda z.t[y:=z]$ before we proceed with the substitution $[x:=e]$.
 
 ## Church-Rosser Theorems
 
@@ -192,7 +192,7 @@ $$\underbrace{(\lambda x.x)(\overbrace{(\lambda y.y)z}^{\text{redex}})}_{\text{r
 
 This leads to natural questions: Does it matter which redex we reduce first? Can different reduction
 orders lead to different final values? Can some reduction orders terminate, whereas some do not? The
-answers to these questions are provided by the Church-Rosser theorems. 
+answers to these questions are provided by the Church-Rosser theorems.
 
 Before we state the Church-Rosser theorems, let us discuss a few examples showing what might happen.
 First of all, it may happen that the reduction process does not terminate no matter which reduction
@@ -223,9 +223,9 @@ redex* is the leftmost redex, not containing any other redex. For example, consi
 lambda term:
 
 $$(\lambda y.y) ((\lambda z.zz) x)\Big((\lambda z.(\lambda a.a)z)(\lambda y.(\lambda z.z)x)\Big)$$
-It has five redexes depicted in the following figure by the red color. 
+It has five redexes depicted in the following figure by the red color.
 
-![](../img/redexes.png){ style="width: 70%; margin: auto;" }
+![](../img/redexes.png){ style="width: 70%; margin: auto;" class="inverting-image"}
 
 The leftmost outermost redex is $(\lambda y.y) ((\lambda z.zz) x)$. On the other hand, the leftmost
 innermost redex is $(\lambda z.zz)x$.
@@ -305,7 +305,7 @@ $$\wedge \equiv \lambda xy.xy\mathsf{F}$$
 
 Let us check that the encoding works correctly. For an arbitrary lambda term $t$, we have
 $$
-\begin{align*}   
+\begin{align*}
     \wedge \mathsf{F}t & \equiv (\lambda xy.xy\mathsf{F})\mathsf{F}t \to^\beta \mathsf{F}t\mathsf{F} \to^\beta \mathsf{F}\\
     \wedge \mathsf{T}t & \equiv (\lambda xy.xy\mathsf{F})\mathsf{T}t \to^\beta \mathsf{T}t\mathsf{F} \to^\beta t
 \end{align*}
@@ -315,7 +315,7 @@ Similarly, we can define disjunction that is true if the first argument is true 
 $$\vee \equiv \lambda xy.x\mathsf{T}y$$
 For an arbitrary lambda term $t$, we have
 $$
-\begin{align*}   
+\begin{align*}
     \vee \mathsf{T}t & \equiv (\lambda xy.x\mathsf{T}y)\mathsf{T}t \to^\beta \mathsf{TT}t \to^\beta \mathsf{T}\\
     \vee \mathsf{F}t & \equiv (\lambda xy.x\mathsf{T}y)\mathsf{F}t \to^\beta \mathsf{FT}t \to^\beta t
 \end{align*}
@@ -367,13 +367,13 @@ $$
 \end{align*}
 $$
 
-Multiplication of two numbers $n,m$ can be represented by the term 
-$$\mathsf{M}\equiv\lambda nmsz.n(ms)z$$ 
+Multiplication of two numbers $n,m$ can be represented by the term
+$$\mathsf{M}\equiv\lambda nmsz.n(ms)z$$
 Since $n$ is a numeral, applying it to $(ms)$ and $z$ results in a term applying $n$-times $(ms)$ to $z$, i.e., $(ms)((ms)(\cdots((ms)z)\cdots))$.  Analogously, each application of $(ms)$ results in $m$-many applications of $s$. Altogether, we get $n\cdot m$ many applications of $s$ to $z$. Let us see an example:
 
 $$
 \begin{align*}
-\mathsf{M23}&\equiv (\lambda nmsz.n(ms)z)\mathsf{23}\to^\beta \lambda sz.\mathsf{2}(\mathsf{3}s)z 
+\mathsf{M23}&\equiv (\lambda nmsz.n(ms)z)\mathsf{23}\to^\beta \lambda sz.\mathsf{2}(\mathsf{3}s)z
 \to^\beta \lambda sz.(\mathsf{3}s)((\mathsf{3}s)z)\\
 & \to^\beta \lambda sz.(\mathsf{3}s)(s (s (s z))) \to^\beta \lambda sz.(s (s (s (s (s (s z))))))\equiv\mathsf{6}
 \end{align*}
@@ -381,9 +381,9 @@ $$
 
 The multiplication term $\mathsf{M}$ can be further simplified to
 $$\mathsf{M}'\equiv\lambda nms.n(ms)$$
-We can remove the variable $z$ because $\mathsf{M}$ and $\mathsf{M}'$ behave identically. To see that, consider an abstraction $\lambda x.(tx)$ for a term $t$. It defines a function of an argument $x$ applying $t$ to $x$. If we apply it to any expression $e$, we obtain $(\lambda x.(tx))e \to^\beta te$. Thus we can directly replace $\lambda x.(tx)$ just with the term $t$. This simplification is known as *$\eta$-reduction*. Utilizing $\eta$-reduction to 
+We can remove the variable $z$ because $\mathsf{M}$ and $\mathsf{M}'$ behave identically. To see that, consider an abstraction $\lambda x.(tx)$ for a term $t$. It defines a function of an argument $x$ applying $t$ to $x$. If we apply it to any expression $e$, we obtain $(\lambda x.(tx))e \to^\beta te$. Thus we can directly replace $\lambda x.(tx)$ just with the term $t$. This simplification is known as *$\eta$-reduction*. Utilizing $\eta$-reduction to
 
-$$\mathsf{M}\equiv\lambda nmsz.n(ms)z\equiv\lambda nms.(\lambda z.(n(ms))z),$$ 
+$$\mathsf{M}\equiv\lambda nmsz.n(ms)z\equiv\lambda nms.(\lambda z.(n(ms))z),$$
 
 we end up with $\mathsf{M}'$.
 
@@ -404,7 +404,7 @@ components. Note that this is exactly how we encoded a 2D point as a function cl
 Given a pair, we can access its components by applying it to the projection functions $\mathsf{T}$
 and $\mathsf{F}$.
 $$
-\begin{align*}    
+\begin{align*}
   \langle t,s\rangle\mathsf{T} &\equiv (\lambda z.zts)\mathsf{T} \to^\beta \mathsf{T}ts \to^\beta t\\
   \langle t,s\rangle\mathsf{F} &\equiv (\lambda z.zts)\mathsf{F} \to^\beta \mathsf{F}ts \to^\beta s
 \end{align*}
@@ -421,8 +421,8 @@ its successor $\mathsf{S}(p\mathsf{T})$, and returns a pair consisting of the su
 first component. The reason why $\mathsf{\Phi}$ is important is that when we apply it $n$-times to
 the pair $\langle\mathsf{0},\mathsf{0}\rangle$, we get the pair $\langle n,n-1\rangle$.
 $$
-\mathsf{\Phi}\langle\mathsf{0},\mathsf{0}\rangle \to^\beta \langle\mathsf{1},\mathsf{0}\rangle,\quad 
-\mathsf{\Phi}\langle\mathsf{1},\mathsf{0}\rangle \to^\beta \langle\mathsf{2},\mathsf{1}\rangle,\quad 
+\mathsf{\Phi}\langle\mathsf{0},\mathsf{0}\rangle \to^\beta \langle\mathsf{1},\mathsf{0}\rangle,\quad
+\mathsf{\Phi}\langle\mathsf{1},\mathsf{0}\rangle \to^\beta \langle\mathsf{2},\mathsf{1}\rangle,\quad
 \mathsf{\Phi}\langle\mathsf{2},\mathsf{1}\rangle \to^\beta \langle\mathsf{3},\mathsf{2}\rangle,\quad \ldots
 $$
 
@@ -441,12 +441,12 @@ we need to find a term $t$ such that when applied to $\mathsf{T}$ at least once,
 $\mathsf{F}$. Such a term $t$ is the constant function always returning $\mathsf{F}$, i.e., $\lambda
 x.\mathsf{F}$. Altogether, we define
 
-$$\mathsf{Z} \equiv \lambda n.n(\lambda x.\mathsf{F})\mathsf{T}$$ 
+$$\mathsf{Z} \equiv \lambda n.n(\lambda x.\mathsf{F})\mathsf{T}$$
 
 So we have
 
 $$
-\mathsf{Z0} 
+\mathsf{Z0}
     \equiv (\lambda n.n(\lambda x.\mathsf{F})\mathsf{T})\mathsf{0}
     \to^\beta \mathsf{0}(\lambda x.\mathsf{F})\mathsf{T}
     \to^\beta \mathsf{T}
@@ -464,7 +464,7 @@ $$
 
 Finally, we are getting to the most exciting construction of how to encode recursive functions if we
 have only anonymous functions in lambda calculus. Recursive functions can be defined through the
-so-called $\mathsf{Y}$-combinator. 
+so-called $\mathsf{Y}$-combinator.
 
 $$\mathsf{Y} \equiv \lambda y.(\lambda x.y(xx))(\lambda x.y(xx))$$
 
@@ -482,7 +482,7 @@ $$
 \begin{align*}
     \mathsf{R}' &\equiv (\lambda x.\mathsf{R}(xx))(\lambda x.\mathsf{R}(xx))\\
     &\to^\beta \mathsf{R}((\lambda x.\mathsf{R}(xx))(\lambda x.\mathsf{R}(xx))) \equiv \mathsf{R}\mathsf{R}'\\
-    &\to^\beta \mathsf{R}(\mathsf{R}((\lambda x.\mathsf{R}(xx))(\lambda x.\mathsf{R}(xx)))) \equiv 
+    &\to^\beta \mathsf{R}(\mathsf{R}((\lambda x.\mathsf{R}(xx))(\lambda x.\mathsf{R}(xx)))) \equiv
     \mathsf{R}(\mathsf{R}\mathsf{R}')\\
     &\to^\beta \ldots
 \end{align*}
@@ -498,7 +498,7 @@ $\sum_{i=0}^n i$. We can define the function recursively using the fact $\sum_{i
 i=n+\sum_{i=0}^{n-1} i$. In Racket, we would implement such a function as follows:
 ```scheme
 (define (sum-to n)
-  (if (= n 0) 
+  (if (= n 0)
       0
       (+ n (sum-to (- n 1)))))
 ```
@@ -522,17 +522,17 @@ Let us see if it correctly sums up all the natural numbers to $3$. Recall that $
 \mathsf{RR}'$.
 $$
 \begin{align*}
-\mathsf{R}'\mathsf{3} & \equiv \mathsf{YR3} \to^\beta \mathsf{R}\mathsf{R}'\mathsf{3} 
+\mathsf{R}'\mathsf{3} & \equiv \mathsf{YR3} \to^\beta \mathsf{R}\mathsf{R}'\mathsf{3}
     \equiv \mathsf{Z30}(\mathsf{3S}(\mathsf{R}'(\mathsf{P3})))\\
     &\to^\beta \mathsf{F0}(\mathsf{3S}(\mathsf{R}'(\mathsf{P3}))) \to^\beta \mathsf{3S}(\mathsf{R}'(\mathsf{P3}))\\
     &\to^\beta \mathsf{3S}(\mathsf{R}'\mathsf{2}) \to^\beta \mathsf{3S}(\mathsf{RR}'\mathsf{2}) \\
-    &\to^\beta \mathsf{3S}(\mathsf{Z20}(\mathsf{2S}(\mathsf{R}'(\mathsf{P2})))) 
+    &\to^\beta \mathsf{3S}(\mathsf{Z20}(\mathsf{2S}(\mathsf{R}'(\mathsf{P2}))))
     \to^\beta \mathsf{3S}(\mathsf{2S}(\mathsf{R}'\mathsf{1}))\\
-    &\to^\beta \mathsf{3S}(\mathsf{2S}(\mathsf{RR}'\mathsf{1})) 
+    &\to^\beta \mathsf{3S}(\mathsf{2S}(\mathsf{RR}'\mathsf{1}))
     \to^\beta \mathsf{3S(2S(1S(R'0)))}\\
     &\to^\beta \mathsf{3S(2S(1S(RR'0)))} \equiv \mathsf{3S(2S(1S(Z00(0S(R'(P0))))))} \\
     &\to^\beta \mathsf{3S(2S(1S(T0(0S(R'(P0))))))} \to^\beta \mathsf{3S(2S(1S0)) \to^\beta 6}
-\end{align*}  
+\end{align*}
 $$
 
 Note that the expression in the last line contains several redexes. The one hidden in $\mathsf{R}'$

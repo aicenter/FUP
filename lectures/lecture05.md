@@ -9,7 +9,7 @@ outline: deep
 The following section should only briefly introduce syntactic macros. At the
 same time, I will explain a related topic on how Racket processes source files.
 What happens if we press the `Run` button in DrRacket or execute `racket
-source.rkt` in a shell? 
+source.rkt` in a shell?
 
 1. Racket must first parse our source file consisting of a sequence of
    characters. In other words, the sequence of characters is converted into a data
@@ -25,7 +25,7 @@ source.rkt` in a shell?
 
 2. Once AST is created, Racket executes various transformations on AST. In fact,
    some Racket syntactic constructions are implemented as transformations on AST.
-   For example, the expression `(and exp1 exp2 exp3)` is transformed into 
+   For example, the expression `(and exp1 exp2 exp3)` is transformed into
 
 ```scheme
 (if exp1
@@ -40,7 +40,7 @@ source.rkt` in a shell?
 
 The workflow is depicted below:
 
-![](../img/ast.png){ style="width: 100%; margin: auto;" }
+![](../img/ast.png){ style="width: 100%; margin: auto;" class="inverting-image"}
 
 If we create a Racket program, its expressions get evaluated in the runtime,
 i.e., after the compilation phase. On the other hand, syntactic
@@ -48,7 +48,7 @@ i.e., after the compilation phase. On the other hand, syntactic
 extra transformations into the second phase before the compilation.  Macros are
 basically functions operating on AST. Thanks to the homoiconicity, AST is
 represented as usual data in Racket. Thus macros can be defined as usual Racket
-functions. 
+functions.
 
 Implementing macros is a complex topic. The simplest way to introduce a macro is
 based on pattern matching. We specify a syntax rule consisting of a pattern and
@@ -224,7 +224,7 @@ tape:
 4. `[-<+>]`: Is a cycle, which we will keep executing until the number at the current pointer is zero.
    Currently, it is `3`, so we run the cycle. The cycle itself contains four operations which decrement
    the number at the current position, move the pointer to the left, increment the number there, and
-   finally moves the pointer back to the right. 
+   finally moves the pointer back to the right.
 ```
 input: '()
 tape:
@@ -445,7 +445,7 @@ The last case where we just need to translate symbols to tape operations is the 
 ```scheme
 (define (eval-cmd cmd prg input)
   (match cmd
-    ['+ (tape 'plus)] 
+    ['+ (tape 'plus)]
     ['- (tape 'minus)]
     ['< (tape 'left)]
     ['> (tape 'right)]
@@ -471,10 +471,10 @@ and then call `eval-cycle` again (with potentially changed input list).  If the
 current value is zero at the beginning of the cycle, we skip its evaluation.
 ```scheme
 (define (eval-cycle cycle prg input)
-  (if (= (tape 'dot) 0)                         ; is cycle is finished? 
+  (if (= (tape 'dot) 0)                         ; is cycle is finished?
       (eval-prg prg input)                      ; if yes, recursive call preocessing further commands
       (let ([new-input (eval-prg cycle input)]) ; otherwise evaluate cycle code
-        (eval-cycle cycle prg new-input))))     ; and execute the cycle again       
+        (eval-cycle cycle prg new-input))))     ; and execute the cycle again
 ```
 
 We are done! The complete implementation of our interpreter can be found
@@ -490,17 +490,17 @@ tape: (#(2 3 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: -
 tape: (#(2 2 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
 tape: (#(2 2 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: +
 tape: (#(3 2 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: >
-tape: (#(3 2 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: 
+tape: (#(3 2 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd:
 tape: (#(3 2 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: -
 tape: (#(3 1 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
 tape: (#(3 1 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: +
 tape: (#(4 1 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: >
-tape: (#(4 1 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: 
+tape: (#(4 1 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd:
 tape: (#(4 1 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: -
 tape: (#(4 0 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
 tape: (#(4 0 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: +
 tape: (#(5 0 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: >
-tape: (#(5 0 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: 
+tape: (#(5 0 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd:
 tape: (#(5 0 0 0 0 0 0 0 0 0) 1)  input:    ()  cmd: <
 tape: (#(5 0 0 0 0 0 0 0 0 0) 0)  input:    ()  cmd: *
 5

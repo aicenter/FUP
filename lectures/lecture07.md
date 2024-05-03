@@ -27,7 +27,7 @@ enables *much more modular* code.
     new perspectives on a given problem. It is nicely complemented by the idea of projective
     programming: first solve a more general problem, then extract the interesting bits and pieces by
     transforming the general program into more specialised ones.*
-    
+
     For example, consider this pseudocode in a C/Java-ish sort of language:
     ```c
     int acc = 0;
@@ -78,7 +78,7 @@ The most important commands you can use in the REPL are
 - `:quit` or `ctrl-d`
 
 ::: details Custom REPL
-To get the lambda prompt instead of `Prelude>` and also output type information automatically, you 
+To get the lambda prompt instead of `Prelude>` and also output type information automatically, you
 and use the following config:
 ```bash
 $ cat ~/.ghc/ghci.conf
@@ -465,7 +465,7 @@ weighted, undirected graph.
    find the minimum-weight edge, and transfer it to the tree.
 3. Repeat step 2 (until all vertices are in the tree).
 
-![jarnik](/img/jarnik.gif){ style="width: 30%; margin: auto;" }
+![jarnik](/img/jarnik.gif){ style="width: 30%; margin: auto;" class="inverting-image"}
 :::
 
 To implement this algorithm we can first make use of Haskell's type system to define some type
@@ -589,4 +589,4 @@ Now we can compute the minimum spanning tree:
 , (('D','F'), 6)
 , (('A','D'), 5) ]
 ```
-![jarnik](/img/jarnik-graph.png)
+![jarnik](/img/jarnik-graph.png){class="inverting-image"}
