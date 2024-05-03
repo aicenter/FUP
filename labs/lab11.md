@@ -1,11 +1,3 @@
-<style>
-    @media (prefers-color-scheme: dark) {
-        .inverting-image {
-            filter: invert(1);
-        }
-    }
-</style>
-
 # Lab 11: Functors and IO
 
 ## Exercise 1

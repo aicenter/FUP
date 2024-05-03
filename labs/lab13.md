@@ -1,11 +1,3 @@
-<style>
-    @media (prefers-color-scheme: dark) {
-        .inverting-image {
-            filter: invert(1);
-        }
-    }
-</style>
-
 # Lab 13: State Monad
 
 This lab is focused on the state monad `State`. In the lecture, I show you how it is implemented. In this lab, we are going to use the implementation from the lecture [State.hs](https://drive.google.com/file/d/10lPsFg__39AQBT5schwiqI9FHKxpPXDY/view?usp=sharing). So include the following lines in your source file:
