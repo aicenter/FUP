@@ -7,7 +7,7 @@ any type. Haskell makes extensive use of typeclasses to define many kinds of abs
 behaviours over types. Some of the most important builtin typeclasses are shown in the diagram
 below.
 
-![typeclasses](/img/haskell-typeclasses.png)
+![typeclasses](/img/haskell-typeclasses.png){class="inverting-image"}
 
 We have so far heard about `Eq`, `Ord`, `Show`, and `Num`. Today, as a warmup, we will discuss
 another common typeclass (`Read`) before starting to dive into the depths of the first really

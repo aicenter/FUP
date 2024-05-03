@@ -315,7 +315,7 @@ The following picture shows the basic architecture. The Elm runtime applies the 
 render the HTML document. If the browser generates a message, the runtime uses the update function
 to mutate the current state.
 
-![Elm architecture](../img/buttons.svg){ style="width: 70%; margin: auto;" }
+![Elm architecture](../img/buttons.svg){ style="width: 70%; margin: auto;" class="inverting-image"}
 
 Below you can find an example of a simple Elm application allowing the user to enter a string and displaying a histogram of digits occurring in the entered string. Note that the state is captured by the type `Model` consisting of the entered string `content` and a dictionary representing the histogram. The function `init` sets up the empty initial state. The function `update` creates a new state based on the message (in this case, a new string entered by the user). Thus `content` is set to `newContent`, and the function `transform` computes a new histogram. Note that `transform` is just a composition of functions (`>>` denotes the function composition): 
 
@@ -779,7 +779,7 @@ right. Next, we draw `stick2`. Finally, we recursively draw a smaller fractal in
 slightly tilted to the left. Thus this procedure is tree recursive because it contains three
 recursive calls.
 
-![Recursive generation of a tree-like fractal](../img/fractal.svg){ style="width: 100%; margin: auto;" }
+![Recursive generation of a tree-like fractal](../img/fractal.svg){ style="width: 100%; margin: auto;" class="inverting-image"}
 
 Now, let us see how to program this procedure in Racket. First, we need a drawing library if we want
 to draw something. Racket contains a simple library called 
@@ -830,7 +830,7 @@ composition, check the picture below.
     [let-expression](https://docs.racket-lang.org/guide/let.html), which I will discuss in the
     following lecture.
 
-![Function composition generating the tree fractal](../img/fractal-composing.svg){ style="width: 100%; margin: auto;" }
+![Function composition generating the tree fractal](../img/fractal-composing.svg){ style="width: 100%; margin: auto;" class="inverting-image"}
 
 So we first take the input image `img` and draw `stick1` (Line 10). Next, we extract the
 turtle's state (Line 11) and call it `state`. In the image containing `stick1`, we turn
@@ -844,7 +844,7 @@ turn the turtle by 5 degrees counter-clockwise and make the last recursive call 
 Line 18 contains the main program's expression that gets evaluated when we run the
 program. The resulting image is shown below.
 
-![Resulting fractal](../img/tree.png){ style="width: 60%; margin: auto;" }
+![Resulting fractal](../img/tree.png){ style="width: 60%; margin: auto;" class="inverting-image"}
 
 ## Summary
 
