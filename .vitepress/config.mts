@@ -56,6 +56,9 @@ export default defineConfig({
           { text: '08: Haskell Basics', link: '/labs/lab08' },
           { text: '09: Haskell Types', link: '/labs/lab09' },
           { text: '10: Polymorphic functions', link: '/labs/lab10' },
+          { text: '11: Functors and IO', link: '/labs/lab11' },
+          { text: '12: Monads in action', link: '/labs/lab12' },
+          { text: '13: State Monad', link: '/labs/lab13' },
         ]
       },
 
