@@ -60,7 +60,6 @@ Suppose we have an index `n`, an element `x :: a` and a list `xs :: [a]`. We wan
 `n` in `xs` by `x` provided that `n` is within the range of indexes of `xs`. If `n` is outside this range, it returns `Nothing`.
 ```haskell
 safePut :: Int -> a -> [a] -> Maybe [a]
-...
 ```
 ::: details Solution: `safePut`
 ```haskell
@@ -73,7 +72,6 @@ safePut n x xs | 0 <= n && n < length xs = Just $ take n xs ++ [x] ++ drop (n+1)
 Similarly, try to implement the function `safeGet` that extract the element of index `n` provided it exists:
 ```haskell
 safeGet :: Int -> [a] -> Maybe a
-...
 ```
 ::: details Solution: `safeGet`
 ```haskell
@@ -108,7 +106,6 @@ a block `b`, a maze `m`, a position `(x,y)` and returns a new maze created by re
 the block on `(x,y)` by  `b`.
 ```haskell
 setBlock :: Block -> Pos -> Maze -> Maybe Maze
-...
 ```
 
 ::: details Solution: `setBlock`
@@ -200,8 +197,7 @@ solve (p,q,m) = bfs [] [[p]] q m
 bfs :: [Pos] -> [Path] -> Pos -> Maze -> Maybe Path
 bfs _ [] _ _ = Nothing
 bfs visited (path@(p:_):paths) q m                       -- consider the first path in the queue and its head p
-    | p ## q
- Just $ reverse path                       -- is path a solution? If yes, return the reversed solution
+    | p == q = Just $ reverse path                       -- is path a solution? If yes, return the reversed solution
     | p `elem` visited = bfs visited paths q m           -- does path end in an already visited position? If yes, disregard it
     | otherwise = bfs (p:visited) (paths ++ extend path m) q m  -- add p to visited positions and extend path by all possible positions
 
@@ -298,8 +294,7 @@ instance Applicative Parser where
 
 instance Monad Parser where
     -- (>>=) :: Parser a -> (a -> Parser b) -> Parser b
-    p >>## f
- P (\inp -> case parse p inp of
+    p >>= f = P (\inp -> case parse p inp of
                            Nothing -> Nothing
                            Just (v,out) -> parse (f v) out)
 
@@ -322,19 +317,19 @@ then `"="`, again possibly followed by spaces, and then a position followed by t
 The goal definition is analogous. The position is just a tuple of numbers in parentheses separated by a comma and possibly by spaces.
 The maze `<map>` consists of rows followed by `"\n"`. Each row is a (possibly empty) sequence of the wall `"#"` and free `" "` blocks.
 ```haskell
-<file> -> <start> <goal> <map>
+<file>  -> <start> <goal> <map>
 
 <start> -> "start" <sep>* "=" <sep>* <pos> "\n"
-<goal> -> "goal" <sep>* "=" <sep>* <pos> "\n"
+<goal>  -> "goal" <sep>* "=" <sep>* <pos> "\n"
 
-<pos> -> "(" <sep>* <digit>+ <sep>* "," <sep>* <digit>+ <sep>* ")"
+<pos>   -> "(" <sep>* <digit>+ <sep>* "," <sep>* <digit>+ <sep>* ")"
 
-<map> -> <row>*
-<row> -> (<wall> | <sep>)* "\n"
+<map>   -> <row>*
+<row>   -> (<wall> | <sep>)* "\n"
 
-<wall> -> "#"
+<wall>  -> "#"
 <digit> -> 0 | 1 | ... | 9
-<sep> -> " "
+<sep>   -> " "
 ```
 
 First, we create a basic parser `item` consuming a single character and failing if there is none.
@@ -351,11 +346,6 @@ sat pr = do x <- item
             if pr x then return x
             else empty
 ```
-/*
-sat :: (Char -> Bool) -> Parser Char
-sat pr = item >>= \x -> if pr x then return x
-                        else empty
-*/
 
 To parse numbers, we need a parser for a single digit. The predicate `isDigit` from `Data.Char` recognizes digits. Further, we need parsers
 for a specific character and even a specific string like `"start"`.
@@ -371,8 +361,16 @@ string [] = return []
 string (x:xs) = do char x
                    string xs
                    return (x:xs)
--- string (x:xs) = char x *> string xs *> pure (x:xs)  -- alternative definition using Applicative
+```
+::: details Alternative definition using Applicative
+```haskell
+string :: String -> Parser String
+string [] = return []
+string (x:xs) = char x *> string xs *> pure (x:xs)
+```
+:::
 
+```haskell
 > parse digit "34abc"
 Just ('3',"4abc")
 
@@ -407,35 +405,28 @@ together with the function `token` that transforms any parser to omit spaces at 
 space :: Parser ()
 space = do many (sat isSpace)
            return ()
--- some (sat isSpace) *> pure () -- alternative definition by Applicative combinators
 
 token :: Parser a -> Parser a
 token p = do space
              x <- p
              space
              return x
--- token p = space *> p <* space -- alternative definition by Applicative combinators
+```
 
+::: details Alternative definition by Applicative combinators
+```haskell
+space :: Parser ()
+space = do many (sat isSpace) *> pure ()
+
+token :: Parser a -> Parser a
+token p = space *> p <* space
+```
+:::
+
+```haskell
 > parse (token (char '=')) " = (1,2)"
 Just ('=',"(1,2)")
 ```
-
-/*
-string :: String -> Parser String
-string [] = return []
-string (x:xs) = char x
-                >> string xs
-                >> return (x:xs)
-
-space :: Parser ()
-space = many (sat isSpace) >> return ()
-
-token :: Parser a -> Parser a
-token p = space
-          >> p
-          >>= \x -> space
-          >> return x
-*/
 
 Now we will follow the grammar. We start with a parser for a position.
 ```haskell
@@ -459,7 +450,6 @@ Nothing
 Using the above parsers, try to define the following function by taking a string and returning the parser of a definition.
 ```haskell
 def :: String -> Parser Pos
-...
 ```
 ::: details Solution: `def`
 ```haskell
@@ -484,7 +474,6 @@ Next, we focus on maze parsing. We define simple parsers for blocks. Out of them
 wall :: Parser Block
 wall = do char '#'
           return W
--- wall = char '#' *> pure W -- Applicative approach
 
 free :: Parser Block
 free = do char ' '
@@ -494,8 +483,20 @@ row :: Parser [Block]
 row = do bs <- many (wall <|> free)
          char '\n'
          return bs
--- row = many (wall <|> free) <* char '\n' -- Applicative approach
+```
 
+::: details Applicative approach
+
+```haskell
+wall :: Parser Block
+wall = char '#' *> pure W
+
+row :: Parser [Block]
+row = many (wall <|> free) <* char '\n'
+```
+:::
+
+```hs
 > parse row "  ### # \n#      #\n"
 Just ([F,F,W,W,W,F,W,F],"#      #\n")
 ```
@@ -505,18 +506,25 @@ A maze is just a (possibly empty) sequence of rows. The input starts with the st
 mapP :: Parser Maze
 mapP = do rs <- many row
           return (M rs)
--- mapP = M <$> many row -- Functor approach
 
 file :: Parser Task
 file = do p <- def "start"
           q <- def "goal"
           m <- mapP
           return (p,q,m)
--- Applicative approach
--- file = (,,) <$> def "start"
---            <*> def "goal"
---            <*> mapP
 ```
+
+::: details Functor and Applicative approach
+```haskell
+mapP :: Parser Maze
+mapP = M <$> many row
+
+file :: Parser Task
+file = (,,) <$> def "start"
+            <*> def "goal"
+            <*> mapP
+```
+:::
 
 ## IO actions
 
