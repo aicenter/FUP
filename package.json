@@ -9,5 +9,9 @@
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-mathjax3": "^4.3.2",
     "vitepress": "^1.0.0-rc.44"
+  },
+  "devDependencies": {
+    "mermaid": "^10.9.0",
+    "vitepress-plugin-mermaid": "^2.0.16"
   }
 }

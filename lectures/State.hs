@@ -1,12 +1,17 @@
 module State where
 
+-- WARNING:
+-- lecture12.md depends on the exact line number of code snippets in this file
+
 -- My state
 newtype State s a = S { runState:: s -> (a, s) }
 
+-- #region functor
 instance Functor (State s) where
--- fmap :: (a -> b) -> State s a -> State s b
-    fmap f st = S (\s -> let (x,s') = runState st s
-                         in (f x,s'))
+  fmap :: (a -> b) -> State s a -> State s b
+  fmap f st = S (\s -> let (x,s') = runState st s
+                       in (f x,s'))
+-- #endregion functor
 
 instance Applicative (State s) where
 -- pure :: a -> State s a
