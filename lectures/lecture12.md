@@ -3,8 +3,8 @@ outline: deep
 ---
 # Stateful Computations
 
-Generally, *almost all interesting computations* are somehow stateful (e.g. even just pushing to a
-list already involves a state).  Essentially, every operation that involves some sort of memory
+*Almost all interesting computations* are somehow stateful. Even just pushing to a
+list already involves a state. Essentially, every operation that involves some sort of memory
 storage is in the end a stateful computation.
 
 ```mermaid
@@ -19,11 +19,10 @@ flowchart LR
   c2 --> out(Output)
 ```
 
-
 In procedural languages, mutating state is so simple and natural that we often do not even think
 explicitly about the fact that we are performing a stateful computation.  Unfortunately, in
 functional programming we so far had to *explicitly pass around* states (i.e. variables which we
-wanted to update), because we want to avoid mutation of (global) variable. While this potentially
+wanted to update), because we want to avoid mutation of (global) variables. While this potentially
 makes our code more safe and easier to reason about, it comes at the cost of somewhat clunky
 implementations and repetitive boiler plate.
 
@@ -60,8 +59,9 @@ flowchart
 ```
 </div>
 
-This can be achieved by explicitly passing around trees and a state (in this case the incrementing
-`Int` that will be put in the leaves). The solution looked like below:
+We can implement a function that performs the task above by explicitly passing around trees and a
+state (in this case the incrementing `Int` that will be put in the leaves). The solution looked like
+below:
 ```haskell{3-5}
 labelHlp :: Tree a -> Int -> (Tree (a, Int), Int)
 labelHlp (Leaf x) n = (Leaf (x, n), n+1)
@@ -72,16 +72,16 @@ labelHlp (Node left right) n = let (left', n') = labelHlp left n
 labelTree :: Tree a -> Tree (a, Int)
 labelTree t = fst (labelHlp t 0)
 ```
-Where the implementation for `Node` is really just plumbing to keep track of the updated state (in
-the highlighted part of the code).  No actual computation is happening there.
+Where the implementation for the `Node` case is really just plumbing to keep track of the updated
+state (in the highlighted part of the code).  No actual computation is happening there.
 
-::: tip Note
+::: tip TL;DR
 This lecture focuses on how to abstract away the repetitive parts of our stateful computations and
 regain (at least most of) the convenience of procedural programming.
 
 In general, given a function `f` that performs some computation on
 `x` but depends also on some state `s` we always need to explicitly keep track of the state, so we
-always have two inputs and two outputs to our stateful functions:
+always have two inputs rendering the functions pure again:
 
 ```mermaid
 flowchart LR
@@ -111,11 +111,16 @@ flowchart LR
 ```
 
 The Haskell state monad implements this essentially as a curried function `b -> s -> (a,s)` with two
-outputs. After implementing all the necessary typeclasses we will end up with a much tidier version
+outputs, while keeping the state `s` hidden where it is not needed.
+:::
+
+After implementing all the necessary typeclasses we will end up with a much tidier version
 of the labelling function that looks a lot like procedural code and abstracts away the state
 completely (see highlight & don't worry about how it works yet - we will build the solution step by
 step later).
-```haskell{8-11}
+
+::: code-group
+```haskell{8-11} [New: State monad]
 fresh :: State Int Int
 fresh = state (\n -> (n, n+1))
 
@@ -131,16 +136,28 @@ label (Node l r) = do
 labelTree :: Tree a -> Tree (a, Int)
 labelTree t = evalState (label t) 0
 ```
-:::
 
+```haskell{3-5} [Old: With explicit arguments]
+labelHlp :: Tree a -> Int -> (Tree (a, Int), Int)
+labelHlp (Leaf x) n = (Leaf (x, n), n+1)
+labelHlp (Node left right) n = let (left', n') = labelHlp left n
+                                   (right', n'') = labelHlp right n'
+                                in (Node left' right', n'')
+
+labelTree :: Tree a -> Tree (a, Int)
+labelTree t = fst (labelHlp t 0)
+```
+
+:::
 
 ## State Monad
 
 ::: tip Note
 Haskell provides a powerful way of handling stateful computations in the type `StateT` (`T` for
 *transformer*). Unfortunately state transformers are out of the scope of this course, but you can
-find more information about them [ADD LINK HERE](). We will work with a slightly simpler
-implementation which is easier to understand.
+find more information about them
+[here](https://book.realworldhaskell.org/read/monad-transformers.html). We will work with a slightly
+simpler implementation which is easier to understand.
 :::
 
 As already mentioned, we will implement stateful computations (naturally) based on curried functions
@@ -154,15 +171,22 @@ One very convenient way to encode this in a new type is by defining a `State s a
 newtype State s a = S { runState :: s -> (a,s) }
 ```
 which then means we will work with functions that accept an input `b` and produce a stateful
-computation `State s a`:
+computation `State s a`[^parser]:
 ```haskell
 st :: b -> State s a
 ```
 
-The type `State s a` is chosen like above, because we will *of course* want to compose stateful computations.
-We can implement `Functor`, `Applicative`, & `Monad` (which will let us do exactly this composition)
-for `State s`, meaning the type of the state `s` itself will remain the same throughout our whole
-program, while the inputs and outputs can have varying types.
+[^parser]: Note the similarity of `State s a` to the [`Parser` type](lecture11#the-parser-type).
+    ```haskell
+    newtype Parser a = P (String -> Maybe (a,String))
+    ```
+    is essentially a special case of `State s a`
+    including a `Maybe`.
+
+To compose stateful computations, and importantly, to hide the boring boilerplate of dragging along
+the state `s`, we can implement the `Monad` instance for `State s`. To arrive at the
+definition of the `Monad` instance we need to implement two other important typeclasses: `Functor`
+and `Applicative`.
 
 ### `Functor (State s)`
 
@@ -213,7 +237,7 @@ flowchart LR
 ### `Applicative (State s)`
 
 With `Applicative` we can compose two (or more) stateful computations with a given function `f` that
-is itself enclosed in a `State` context.  We will not directly need the `<*>` operator itself, but
+is itself enclosed in a `State` context.  We will not directly need the `<*>` operator today, but
 Haskell's type hierarchy requires it, so we have to implement it.
 
 ```haskell
@@ -278,7 +302,6 @@ flowchart LR
 
 Finally, we have the `Monad` instance which will allow us to perform stateful computations in
 sequence, while automatically piping the state through or functions.
-
 ```haskell
 instance Monad (State s) where
   (>>=) :: State s a -> (a -> State s b) -> State s b
@@ -325,11 +348,18 @@ apparent that `>>=` is doing nothing except composing our functions that involve
 (s -> (a,s))  ->  (a -> s -> (b,s))  ->  (s -> (b,s))
 ```
 
+::: tip Note
+The type of the state `s` itself will remain the same throughout our whole program, while the inputs
+and outputs can have varying types (this is the main reason for the particular design of `State s
+a`).  
+:::
+
+
+
 
 ## Manipulating `State` & do-notation
 
-To work with our new `State` we introduce three useful functions which are also implemented in the
-actual, more complicated Haskell implementation `StateT`:
+To work with our new `State` we introduce three useful functions:
 ```haskell
 state :: (s -> (a,s)) -> State s a
 state f = S f
@@ -342,6 +372,9 @@ evalState st x = fst $ runState st x
 execState :: State s a -> s -> s
 execState st x = snd $ runState st x
 ```
+The `state` function is just an alias to the value constructor `S` in our case, but it is used in
+real world Haskell for `StateT`, so we use it here as well to familiarize you with what is out
+there.
 
 Now, we can prepare ourselves to use `do`-notation with the state monad. Our first example will be
 labelling the tree from the beginning of the lecture.
@@ -355,15 +388,14 @@ fresh :: State Int Int
 fresh = state $ \n -> (n, n+1)
 
 𝝺> runState fresh 0
-(0,1)
+(0,1) -- (current_output, state/next_output)
 ```
-
-Now, if we define a function `label` that accepts a `Tree a` and outputs a stateful computation we
-have to cover the two cases for `Leaf` and `Node` again. We implemented `Monad`, so we have
-`do`-notation available. The variable at the left of `<-` will be the argument in which `State` is
-monadic, so `a`. That means we can access the output of a stateful computation super easily via: `i
-<- fresh`. In practice, this will result in a `label` function:
-
+We implemented `Monad`, so we have `do`-notation available. The variable at the left of `<-` will be
+the argument in which `State` is monadic, so `a`. That means we can access the output of a stateful
+computation super easily via: `i <- fresh`.
+If we define a function `label` that accepts a `Tree a` and outputs a stateful computation we have
+to cover the two cases for `Leaf` and `Node` again.  In practice, this will result in a `label`
+function for `Leaf` like below:
 ```haskell
 label :: Tree a -> State Int (Tree (a,Int))
 label (Leaf x) = do
