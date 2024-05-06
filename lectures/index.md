@@ -88,6 +88,13 @@ We discuss some more examples of type classes, most importantly `Functor`s.
 [Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture11.hs).
 [`Parser.hs`](https://github.com/aicenter/FUP/blob/main/lectures/Parser.hs).
 
+## [Lecture 12](lecture12): State Monad
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture12.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/lectures/lecture12.hs).
+[`State.hs`](https://github.com/aicenter/FUP/blob/main/lectures/State.hs).
+[`StateIO.hs`](https://github.com/aicenter/FUP/blob/main/lectures/StateIO.hs).
+
 
 ## Old recorded lectures
 

@@ -39,6 +39,7 @@ export default defineConfig({
           { text: '09: Type Classes', link: '/lectures/lecture09'},
           { text: '10: IO & Monads', link: '/lectures/lecture10'},
           { text: '11: Monadic Parsing', link: '/lectures/lecture11'},
+          { text: '12: State Monad', link: '/lectures/lecture12'},
         ]
       },
 
