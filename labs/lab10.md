@@ -304,7 +304,6 @@ of `xs` together with subsequences of `xs` extended by `x`. To produce the sorte
 `merge` function.
 :::
 
-<!--
 ::: details Solution
 ```haskell
 merge :: (a -> Int) -> [a] -> [a] -> [a]
@@ -318,4 +317,3 @@ subseqs [] = [[]]
 subseqs (x:xs) = merge length (subseqs xs) [x:ys | ys <- subseqs xs]
 ```
 :::
--->
