@@ -222,7 +222,7 @@ parMap f (a:as) = do
   return (b:bs)
 ```
 
-With `parMap` we can solve a number of mazes with the solver from the [labs](labs/lab12).
+With `parMap` we can solve a number of mazes with the solver from the [labs](/labs/lab12).
 ```haskell
 import System.Environment
 import Control.Parallel.Strategies
