@@ -19,7 +19,7 @@ Much of the motivation for non-mutating, lazy, functional programming languages 
 promise of easier parallelism. So, what do we actually gain from all the hoops that we are jumping
 through while we are programming Haskell code?
 
-- Parallel programs in Haskell are *deterministic*! No parallel debugging needed! No race
+- Parallel programs in Haskell are _**deterministic**_! No parallel debugging needed! No race
     conditions, no deadlocks! This is possible because we only have *pure*, non-mutating functions
     in Haskell.
 - High-level declarations of parallelism via `rpar` and `rseq`. No syncronization/communication code
