@@ -367,8 +367,10 @@ f x = sin x + cos x + sinh x + cosh x
 main = do
   print $ integral f 0.00001 0 (4*pi)
 ```
+Let's make this such that we refer to the previous lecture about foldables/monoids.
 
 :::
+
 
 
 ## Potentially useful
