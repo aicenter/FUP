@@ -172,21 +172,23 @@ instance Monad Eval where
 We have different options for parallel evaluation of an expensive function `f` on a pair.
 For example, we can implement a strategy that just creates two sparks and returns immediately:
 ```haskell
-parPair :: (a,b) -> Eval (a,b)
-parPair (x,y) = do
+parPair :: (a,b) -> (a,b)
+parPair (x,y) = runEval $ do
   x' <- rpar (f x)
   y' <- rpar (f y)
   return (x',y')
 ```
 The `Eval` monad is strict in the first argument of `>>=` and therefore eagerly evaluates
 `rpar (f x)`, which creates a spark. If `Eval` was not strict nothing would happen at all apart from
-creation of normal, new thunks. The dashed line in the figure below indicates when `parPair`
-returns.
+creation of normal, new thunks. The dashed line in the figure below indicates when the `retrun` in
+`parPair` happens.
 
 <img src="/img/parpar-pair.png" class="inverting-image" style="width: 70%; margin: auto">
 
+The examples here are taken from Simon Marlow's book, you can play with a scripts that nicely
+illustrates what is happening [here](https://github.com/simonmar/parconc-examples/blob/master/rpar.hs)
 
-Another strategy could be to return after `f y` is done:
+Another strategy could be to return after `f y` is done by using `rseq` to evaluate `f y` to WHNF.
 ::: code-group
 ```haskell{4} [rseq]
 parSeqPair :: (a,b) -> (a,b)
@@ -201,7 +203,7 @@ parSeqPair :: (a,b) -> (a,b)
 parSeqPair (x,y) = runEval $ do
   x' <- rpar (f x)
   y' <- rpar (f y) -- could be executed on another processor
-  rseq x' -- but we wait for it here
+  rseq y'          -- but we wait for it here
   return (x',y')
 ```
 :::
