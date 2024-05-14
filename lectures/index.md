@@ -95,9 +95,7 @@ We discuss some more examples of type classes, most importantly `Functor`s.
 [`State.hs`](https://github.com/aicenter/FUP/blob/main/lectures/State.hs).
 [`StateIO.hs`](https://github.com/aicenter/FUP/blob/main/lectures/StateIO.hs).
 
-## Lecture 13: Monoids & Foldables
-
-Lecture notes coming soon!
+## [Lecture 13](lecture13): Monoids & Foldables
 
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture13.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/code/lecture13.hs).
