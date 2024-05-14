@@ -70,35 +70,6 @@ The following shows the behaviour of the `encode` function.
 "hae and via ecy"
 ```
 
-::: details Solution
-```scheme
-#lang racket
-
-(provide encode)
-
-(define (normalize str)
-  (filter char-alphabetic? (string->list (string-downcase str))))
-
-(define (get-num-cols n)
-  (exact-ceiling (sqrt n)))
-
-(define (make-rows lst n)
-  (let ([len (length lst)])
-    (cond
-      ([null? lst] '())
-      ([< len n] (list (append lst (make-list (- n len) #\space))))
-      (else (cons (take lst n) (make-rows (drop lst n) n))))))
-
-(define (transpose lst)
-  (apply map list lst))
-
-(define (encode str)
-  (let* ([lst (normalize str)]
-         [n (get-num-cols (length lst))]
-         [rows (transpose (make-rows lst n))])
-    (string-join (map list->string rows))))
-```
-:::
 
 ## Haskell
 
@@ -133,30 +104,3 @@ The following shows the behaviour of the `encode` function.
 > encode "haveaniceday"
 "hae and via ecy"  
 ```
-
-::: details Solution
-```haskell
-module Task4 ( encode ) where
-import Data.Char
-import Data.List
-
-normalize :: String -> String
-normalize s = [toLower c | c <- s, isAlpha c]
-
-getNumCols :: Int -> Int
-getNumCols n = ceiling $ sqrt $ fromIntegral n
-
-makeRows :: String -> Int -> [String]
-makeRows s n | s == "" = []
-             | len < n = [s ++ replicate (n-len) ' ']
-             | otherwise = take n s:makeRows (drop n s) n
-        where len = length s
-
-encode :: String -> String
-encode s = unwords rows'
-        where ns = normalize s
-              n = getNumCols $ length ns
-              rows = makeRows ns n
-              rows' = transpose rows
-```
-:::

@@ -83,42 +83,6 @@ First two rounds are stalemates (stalemate, stalemate, win).
 (rps players strategies) ; '("charlie")
 ```
 
-::: details
-```scheme
-#lang racket
-
-(provide rps)
-
-(define players '("alice" "bob" "charlie"))
-(define strategies '((r p) (r r) (s p)))
-
-(define (game-finished? strats) (andmap null? strats))
-(define (strats-current strats) (map car strats))
-(define (strats-future strats) (map cdr strats))
-
-(define (view xs bools)
-  (for/list ((x xs) (b bools) #:when b) x))
-
-(define (eliminated-throw throws)
-  (match (remove-duplicates (sort throws symbol<?))
-    ('(p r) 'r)
-    ('(p s) 'p)
-    ('(r s) 's)
-    (_ '())))
-
-(define (rps-survivors throws)
-  (let* ((elim (eliminated-throw throws)))
-    (map (curry (compose not equal?) elim) throws)))
-
-(define (rps players strategies)
-  (if (game-finished? strategies)
-      players
-      (let* ((current (strats-current strategies))
-             (future (strats-future strategies))
-             (mask (rps-survivors current)))
-        (rps (view players mask) (view future mask)))))
-```
-:::
 
 ## Haskell
 
@@ -169,35 +133,3 @@ strategies = [['r', 'p', 'r'], ['p', 's', 'r'], ['s', 'r', 'p']]
 
 rps players strategies -- ["charlie"]
 ```
-
-::: details
-```haskell
-module Task4 (rps) where
-import Data.List
-
-isFinished xs = null xs || any null xs
-
-currentStrategies = map head
-
-futureStrategies = map tail
-
-view xs bs = map fst $ filter snd $ zip xs bs
-
-eliminated throws =
-    let e = elim $ sort $ nub throws
-    in map (/= e) throws
-    where
-        elim ['p', 'r'] = 'r'
-        elim ['p', 's'] = 'p'
-        elim ['r', 's'] = 's'
-        elim _ = ' '
-
-rps :: [String] -> [[Char]] -> [String]
-rps players strategies | isFinished strategies = players
-rps players strategies =
-    let current = currentStrategies strategies
-        future = futureStrategies strategies
-        mask = eliminated current
-    in rps (view players mask) (view future mask)
-```
-:::

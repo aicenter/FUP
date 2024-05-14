@@ -133,39 +133,6 @@ function operates as follows.
 _**Hint:**_ first, generate all possible words of the given length.  Then, filter the words using
 the function `accepts`.
 
-::: details Solution
-```haskell
-import Control.Monad.State
-
-data Transition a b = Tr a b a deriving Show
-data Automaton a b = NFA [(Transition a b)] a [a] deriving Show
-
---nfa::Automaton Int Char
---nfa = NFA [(Tr 1 'a' 1), (Tr 1 'b' 1), (Tr 1 'c' 1), (Tr 1 'b' 2), (Tr 1 'c' 2)] 1 [2]
-
-
-walk :: (Eq a, Eq b) => Automaton a b -> a -> [b] -> Bool
-walk aut@(NFA trs start finals) state [] | elem state finals = True
-                                         | otherwise = False 
-walk aut@(NFA trs start finals) state (c:ws) = or [ (walk aut t ws) | tr@(Tr f c' t) <- trs, c' == c, f == state]
-
-accepts :: (Eq a, Eq b) => Automaton a b -> [b] -> Bool
-accepts aut@(NFA trs start finals) word = walk aut start word
-
-combinations :: [a] -> Int -> State [[a]] [[a]]
-combinations cs 0 = do ws <- get
-                       return ws
-combinations cs n = do ws <- get
-                       let ws' = [ c:w | c <- cs , w <- ws]
-                       put ws'
-                       combinations cs (n-1)
-
-lwords :: (Eq a, Eq b) => [b] -> Automaton a b -> Int -> [[b]]
-lwords abc aut n = reverse $ [ w |  w <- p, accepts aut w] where
-    p = evalState (combinations abc n) [[]]
-
-```
-:::
 
 ## Racket
 
@@ -244,60 +211,4 @@ For testing purposes your file should be named `task3.rkt` and start with the fo
          lwords)
 ```
 
-::: details Solution
-```scheme
-#lang racket
 
-(provide accepts
-         lwords)
-
-(struct transition (from-state symbol to-state))
-(struct automaton (trans init-state final-states))
-
-(define ((s-next fa a) s)
-  (define tr (automaton-trans fa))
-  (map transition-to-state
-       (filter (lambda (t) (and (equal? s (transition-from-state t))
-                                (equal? a (transition-symbol t))))
-               tr)))
-
-(define ((next fa) a ss)
-  (define tr (automaton-trans fa))
-  (apply append (map (s-next fa a) ss)))
-
-(define (accepts fa w)
-  (define states (foldl (next fa) (list (automaton-init-state fa)) (string->list w)))
-  (if (eq? #f (ormap (lambda (s) (member s (automaton-final-states fa))) states))
-      #f
-      #t))
-
-(define (words alp n)
-  (cond
-    ((= n 0) '())
-    ((= n 1) (map list alp))
-    (else (apply append
-                 (map (lambda (w)
-                        (map (lambda (a) (cons a w)) alp))
-                      (words alp (- n 1)))))))
-
-(define (lwords alp nfa n)
-  (filter (lambda (w) (accepts nfa (list->string w)))
-          (words (string->list alp) n)))
-
-
-(define nfa
-  (automaton
-   (list (transition 1 #\a 2)
-         (transition 2 #\b 2)
-         (transition 1 #\a 3)
-         (transition 3 #\b 4)
-         (transition 4 #\a 3)
-         (transition 2 #\a 4))
-   1
-   (list 2 3)))
-
-
-(accepts nfa "aba")
-(lwords "ab" nfa 3)
-```
-:::

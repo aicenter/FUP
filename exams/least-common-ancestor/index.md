@@ -98,43 +98,6 @@ Your file should be called \texttt{task3.rkt} and should export the `find-path` 
 
 To find the common prefix of two lists, use the function `(take-common-prefix lst1 lst2)`.
 
-::: details Solution
-```scheme
-#lang racket
-
-(provide find-path
-         common-ancestor
-         (struct-out node)
-         (struct-out leaf))
-
-(struct node (val left right) #:transparent)
-(struct leaf (val) #:transparent)
-
-(define tree (node 1 (node 2 (leaf 5) (leaf 6)) (node 3 (leaf 4) (leaf 7))))
-
-(define (find-path x tree)
-  (match tree
-    [(leaf y) (if (equal? x y)
-                  (list x)
-                  '())]
-    [(node y l r) (if (equal? x y)
-                      (list x)
-                      (let* ([pl (find-path x l)]
-                             [pr (find-path x r)]
-                             [both (append pl pr)])
-                        (if (null? both)
-                            '()
-                            (cons y both))))]))
-
-(define (common-ancestor x y tree)
-  (define px (find-path x tree))
-  (define py (find-path y tree))
-  (define common (take-common-prefix px py))
-  (if (null? common)
-      #f
-      (last common)))
-```
-:::
 
 ## Haskell
 
@@ -192,35 +155,3 @@ Just 2
 > commonAncestor 3 15 tree2
 Nothing
 ```
-
-::: details Solution
-```haskell
-module Task4 (findPath, commonAncestor, Tree(..)) where
-
-data Tree a = Leaf a
-            | Node a (Tree a) (Tree a) deriving (Eq,Show)
-
-tree = Node 1 (Node 2 (Leaf 5) (Leaf 6)) (Node 3 (Leaf 4) (Leaf 7))
-tree2 = Node 1 (Node 2 (Leaf 3)
-                       (Node 4 (Leaf 5)
-                               (Leaf 6)))
-               (Node 7 (Leaf 8)
-                       (Leaf 9))
-
-findPath :: Eq a => a -> Tree a -> [a]
-findPath x (Leaf y) | x == y = [x]
-                    | otherwise = []
-findPath x (Node y l r) | x == y = [x]
-                        | otherwise = let pl = findPath x l
-                                          pr = findPath x r
-                                      in if null (pl ++ pr) then []
-                                         else y:(pl++pr)
-
-commonAncestor :: Eq a => a -> a -> Tree a -> Maybe a
-commonAncestor x y t | null common = Nothing 
-                     | otherwise = Just $ last common 
-    where px = findPath x t
-          py = findPath y t
-          common = [x | (x,y) <- zip px py, x==y ]
-```
-:::

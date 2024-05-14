@@ -64,48 +64,6 @@ The functions `string->list` and `string-split` might be useful to parse the out
     (newline)))
 ```
 
-::: details Solution
-```scheme
-#lang racket
-
-(define board (map string->list (string-split "·*·*·\n··*··\n··*··\n·····")))
-
-(define (int->digit i)
-  (integer->char (+ 48 i)))
-
-(define (finalizer nu st)
-  (match (cons nu st)
-    ((cons _ #\*) #\*)
-    ((cons 0 _) #\.)
-    ((cons n _) (int->digit n))))
-
-(define (neighbours bss mx my x y)
-  (for*/list ((i (range (max 0 (- y 1)) (min my (+ y 2))))
-	      (j (range (max 0 (- x 1)) (min mx (+ x 2)))))
-    (list-ref (list-ref bss i) j)))
-
-(define (num nei y x m)
-  (let* ((neis (nei x y))
-	 (fnei (filter (curry equal? #\*) neis))
-	 (countMines (length fnei)))
-  (finalizer countMines m)))
-
-(define (sweep board)
-  (define mx (length (car board)))
-  (define my (length board))
-  (define nei (curry neighbours board mx my))
-  (define (inner y xs) (map (curry num nei y) (range 0 mx) xs))
-  (map inner (range 0 my) board))
-
-(let* ((ss (port->lines))
-       (ls (map string->list ss))
-       (ln (sweep ls))
-       (sn (map list->string ln)))
-  (for ((l sn))
-    (display l)
-    (newline)))
-```
-:::
 
 ## Haskell
 
@@ -138,47 +96,3 @@ main = do
   let sw = sweep lines
   mapM_ putStrLn sw
 ```
-
-::: details Solution
-```haskell
-import Control.Monad (replicateM)
-import Data.Char (intToDigit)
-
-slice :: Int -> Int -> [a] -> [a]
-slice f t xs = drop f $ take t xs
-
-neighbours :: Int -> Int -> [String] -> String
-neighbours x y board = slice (y-1) (y+2) board >>= slice (x-1) (x+2)
-
-
-sweep :: [String] -> [String]
-sweep board = mapi2d pretty board where
-
-  -- fill coordinates with numbers/*/.
-  mapi2d f = zipWith (\y-> zipWith (\x e-> f e x y) [0..]) [0..]
-  pretty e x y = finalizer (mines x y) e
-  finalizer _ '*' = '*'
-  finalizer 0 _ = '.'
-  finalizer n _ = intToDigit n
-
-  -- compute number of mines at coords
-  mines x y = count (neighbours x y board)
-  count xs = length $ filter (=='*') xs
-
-readInput :: IO [String]
-readInput = do
-  count <- readLn  -- type is infered because of the signature of replicateM
-  lines <- replicateM (count) getLine
-  return lines
-
-test_board = ["..."
-             ,".**"
-             ,"..."]
-
-main = do
-  lines <- readInput
-  putStrLn "\nSweep Result:"
-  let sw = sweep lines
-  mapM_ putStrLn sw
-```
-:::
