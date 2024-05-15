@@ -1,21 +1,28 @@
 import Data.List
-import Control.Parallel (par, pseq)
 import Data.Monoid
+import Control.Parallel (par, pseq)
 import Control.Parallel.Strategies
+import Control.Exception
+import Data.Time.Clock
+import Text.Printf
+import System.Environment
+
+-- <<main
+main = do
+  [n] <- getArgs
+  let s = 0.000001
+      r = case (read n) of
+            1 -> integral f s 0 (4*pi)
+            2 -> integralchunk f s 0 (4*pi) 1000
+  t0 <- getCurrentTime
+  print r
+  printTimeSince t0
 
 chunks :: Int -> [a] -> [[a]]
 chunks _ [] = []
 chunks n xs =
     let (ys, zs) = splitAt n xs
     in  ys : chunks n zs
-
-integral' :: (Ord a, Floating a, Enum a) => (a -> a) -> a -> a -> a -> a
-integral' f step start end = foldl' (+) 0 quads
- where
-  quad (a,b) = (b-a) * f ((a+b)/2)
-  -- quads = map quad (zip (init steps) (tail steps)) -- this is where we parallelize with `using`
-  quads = map quad (zip (init steps) (tail steps)) `using` parListChunk 10000 rseq
-  steps = [start, start+step .. end]
 
 f x = sin x * cos x / (sinh x * cosh x)
 
@@ -27,14 +34,14 @@ integralchunk f step start end chunksize = sum cs
   quads = map quad (zip (init steps) (tail steps))
   steps = [start, start+step .. end]
 
-integralr :: (Ord a, Floating a, Enum a) => (a -> a) -> a -> a -> a -> a
-integralr f step start end = foldr (+) 0 quads
+integral :: (Ord a, Floating a, Enum a) => (a -> a) -> a -> a -> a -> a
+integral f step start end = foldr (+) 0 quads
  where
   quad (a,b) = (b-a) * f ((a+b)/2)
   quads = map quad (zip (init steps) (tail steps))
   steps = [start, start+step .. end]
 
-main = do
-  let s = 0.0000001
-  print $ integralchunk f s 0 (4*pi) 100
-  --print $ inte f s 0 (4*pi)
+
+printTimeSince t0 = do
+  t1 <- getCurrentTime
+  printf "time: %.4fs\n" (realToFrac (diffUTCTime t1 t0) :: Double)

@@ -186,7 +186,7 @@ creation of normal, new thunks. The dashed line in the figure below indicates wh
 <img src="/img/parpar-pair.png" class="inverting-image" style="width: 70%; margin: auto">
 
 The examples here are taken from Simon Marlow's book, you can play with a scripts that nicely
-illustrates what is happening [here](https://github.com/simonmar/parconc-examples/blob/master/rpar.hs)
+illustrates what is happening in [`rpar.hs`](https://github.com/simonmar/parconc-examples/blob/master/rpar.hs).
 
 Another strategy could be to return after `f y` is done by using `rseq` to evaluate `f y` to WHNF.
 ::: code-group
@@ -225,6 +225,9 @@ parMap f (a:as) = do
 ```
 
 With `parMap` we can solve a number of mazes with the solver from the [labs](/labs/lab12).
+To run the file below you need the
+[`Parser.hs`](https://github.com/aicenter/FUP/blob/main/code/Parser.hs) and
+[`Mazes.hs`](https://github.com/aicenter/FUP/blob/main/code/Mazes.hs) modules.
 ```haskell
 import System.Environment
 import Control.Parallel.Strategies
@@ -334,49 +337,54 @@ done evaluating.
 
 ### Parallel Integrals
 
-This [example is stolen from here](https://www.youtube.com/watch?v=R47959rD2yw&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV&index=33).
+As a last example we can return to our integral example. A simple, sequential implementation is
+given in the example below. Instead of naively parallelizing this example with `parListChunk` we can
+also perform the accumulation step in the fold in chunks. This will introduces some overhead in the
+but when throwing enough compute at it we get a decent speedup. The updated lines are highlighted
+below.
+
 ::: code-group
-```haskell{8} [Sequential]
-import Data.List
-import Control.Parallel.Strategies
-
-integral :: (Ord a, Floating a) -> (a -> a) -> a -> a -> a -> a
-integral f step start end = foldl' (+) 0 quads
+```haskell{2} [Sequential]
+integral :: (Ord a, Floating a, Enum a) => (a -> a) -> a -> a -> a -> a
+integral f step start end = sum quads
  where
-  quad a b = (b-a) * f ((a+b)/2)
-  quads = map quad steps
-  steps = [start, start+eps .. end]
-
-f x = sin x + cos x + sinh x + cosh x
-
-main = do
-  print $ integral f 0.00001 0 (4*pi)
+  quad (a,b) = (b-a) * f ((a+b)/2)
+  quads = map quad (zip (init steps) (tail steps))
+  steps = [start, start+step .. end]
 ```
 
-```haskell{8} [Parallel]
-import Data.List
-import Control.Parallel.Strategies
-
-integral :: (Ord a, Floating a) -> (a -> a) -> a -> a -> a -> a
-integral f step start end = foldl' (+) 0 quads
+```haskell{2,4} [Parallel]
+integralchunk :: (Ord a, Floating a, Enum a) => (a -> a) -> a -> a -> a -> Int -> a
+integralchunk f step start end chunksize = sum cs
  where
-  quad a b = (b-a) * f ((a+b)/2)
-  quads = map quad steps `using` parListChunk 100 rseq
-  steps = [start, start+eps .. end]
-
-f x = sin x + cos x + sinh x + cosh x
-
-main = do
-  print $ integral f 0.00001 0 (4*pi)
+  cs = [sum xs | xs <- chunks chunksize quads] `using` parList rseq
+  quad (a,b) = (b-a) * f ((a+b)/2)
+  quads = map quad (zip (init steps) (tail steps))
+  steps = [start, start+step .. end]
 ```
-Let's make this such that we refer to the previous lecture about foldables/monoids.
-
 :::
 
+This [example is stolen from here](https://www.youtube.com/watch?v=R47959rD2yw&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV&index=33).
 
+You can find a full script that compares the two approaches in
+[`pfold.hs`](https://github.com/aicenter/FUP/blob/main/code/pfold.hs).
+```bash
+# compile it
+$ ghc -threaded -rtsopts --make pfold.hs
 
-## Potentially useful
+# run the sequential version
+$ ./pfold 1
+0.720329759982676
+time: 2.6484s
+
+# run the parallel version
+$ ./pfold 2 +RTS -N8
+0.72032975998268
+time: 0.8188s
+```
+
+## References
 
 - [`parMap` / `parList` derived](https://well-typed.com/blog/2011/08/parallel-haskell-digest-5/)
 - [`Control.Parallel.Strategies`](https://www.scs.stanford.edu/11au-cs240h/notes/par.html)
-- [Folds and parallelism](https://www.scs.stanford.edu/11au-cs240h/notes/par.html) amon others explains `foldl'`
+- [Folds and parallelism](https://www.scs.stanford.edu/11au-cs240h/notes/par.html) among others explains `foldl'`
