@@ -43,6 +43,7 @@ export default withMermaid(
             { text: '11: Monadic Parsing', link: '/lectures/lecture11'},
             { text: '12: State Monad', link: '/lectures/lecture12'},
             { text: '13: Monoids & Foldables', link: '/lectures/lecture13'},
+            { text: '14: Parallel Programming', link: '/lectures/lecture14'},
           ]
         },
   
