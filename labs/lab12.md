@@ -161,8 +161,9 @@ Assume that there are at most eight possible moves. All possibilities are genera
 
 ```haskell
 neighbs :: Pos -> [Pos]
-neighbs (x,y) = [(x-1,y), (x+1,y), (x,y-1), (x,y+1),
-                 (x-1,y-1), (x-1,y+1), (x+1,y-1), (x+1,y+1)]
+neighbs (x,y) = [ (x-1,y-1), (x,y-1), (x+1,y-1)
+                , (x-1,y),            (x+1,y)
+                , (x-1,y+1), (x,y+1), (x+1,y+1) ]
 
 nextPos :: Pos -> Maze -> [Pos]
 nextPos p m = case getBlock p m of
