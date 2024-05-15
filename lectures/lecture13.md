@@ -1,3 +1,6 @@
+---
+outline: deep
+---
 # Monoids & Foldables
 
 The *fold* operation is one of (if not *the*) most important construction in functional
@@ -24,6 +27,8 @@ An perhaps a tiny bit more interesting, counting the number of a specific elemen
 𝝺> count 2 [1,2,1,2,2,3]
 3
 ```
+Arguable the most advanced example we seen of a fold is the monadic of mazes in `setPath` of [Lab
+12](/labs/lab12#manipulations-with-maze).
 
 Importantly, we can implement a number of important functions *in terms of fold*, so theoretically,
 we don't need much more than a datastructure being foldable. For example:
@@ -45,17 +50,35 @@ parts that make a fold. Conceptually, there are two parts to folding:
    typeclass is doing.
 :::
 
-## Monoids
+## Semigroups & Monoids
 
-What is an algebra: essentially a *domain* and an *operation*, (and some *properties*).
-A *monoid* is an algebra with an operation that accepts two thigns from the domain and returns
-another thing from the domain with the property of the operation being associative.
+Before we get to monoids represent the *aggregation* part of a fold, we will define a semigroup.
+A semigroup is an algebra with a *domain* and a *binary, associative operation*. For example,
+addition on the natural numbers forms a semigroup. The domain $\mathbb N$ with the operation $+$
+satisfies associativity: $a+(b+c) = (a+b)+c$.
 
-- $\mathbb N$, operation: $+::\mathbb N \rightarrow \mathbb N \rightarrow \mathbb N$, associativity ($a+(b+c)=(a+b)+c$)
-- $\mathbb R$, operations: $+,-,*,\div$, associativity/commutativity for $+$,$*$
-        
+Formally, we define a *semigroup* $\langle S, \diamond\rangle$ as a set $S$ is endowed with a
+binary operation $\diamond$ that satisfies
 
-*Semigroup*: a set $S$ with an operation `<> :: a -> a -> a` (i.e. binary operation that takes two elements of $S$ and produces another such element)
+$$ a \diamond (b \diamond c) = (a \diamond b) \diamond c $$
+
+A *monoid* $\langle M, \diamond, u \rangle$ is a semigroup with a *unit* $u \in M$ that satisfies
+
+$$ u \diamond a = a = a \diamond u. $$
+
+In other words, a monoid has an identity element (e.g. for $+$ this element would be $0$).
+
+Some examples of monoids are:
+
+- $\langle \mathbb N, +, 0 \rangle$ - Addition of natural numbers
+- $\langle \mathbb N, \times, 1 \rangle$ - Multiplication of natural numbers
+- $\langle$ `[a]`, `++` , `[]` $\rangle$ - Lists and concatenation
+- $\langle A^A, \circ, \text{id} \rangle$ - Selfmaps $f:A\rightarrow A$ form a monoid under
+    composition $\circ$.
+
+In Haskell, the typclass `Semigroup` defines an operation `<> :: a -> a -> a` (i.e. binary operation
+that takes two elements of type `a` and produces another such element).
+For lists we can implement semigroup simply with `++`:
 ```haskell
 class Semigroup a where
   (<>) :: a -> a -> a -- assumed to be associative
@@ -68,7 +91,8 @@ instance Semigroup [] where
 [1,2,3,4,5,6]
 ```
 
-*Monoid* is a semigroup with an *identity* element
+The `Monoid` typeclass adds the identity element `mempty`, which for the list monoid is of course
+`[]`.
 ```haskell
 class Semigroup a => Monoid a where
   mempty :: a
@@ -83,9 +107,8 @@ instance Semigroup [] where
   mempty = []
 ```
 
----
-
-We can have multiple monoids for e.g. `Int`s. An example are `+` and `*`
+For `Int`s we already noticed that we can have multiple monoids. To define a monoid over addition we
+therefore need a new type
 ```haskell
 newtype Sum a = Sum {getSum :: a}
 
@@ -95,12 +118,51 @@ instance Num a => Semigroup (Sum a) where
 
 instance Num a => Monoid (Sum a) where
   mempty = Sum 0
-```
-We can do the same as above for `Product`. *Why?*
-- *abstraction*; lets us separate aggregation from traversal
-- semigroups give us *associativity* (which we can use, e.g. we can evaluate in any order. *We can distribute large folds over a cluster*!)
----
 
+𝝺> (Sum 7) <> (Sum 4)
+Sum {getSum = 11}
+```
+
+::: tip *WHY?!*
+Great question. Why should we jump through the hoops of *defining another type for addition*?!
+1. *Abstraction*. Remember, monoids let us separate the aggregation part of a fold. This is useful
+   because we only need to define `<>` for a new type and we can immediately fold e.g. over lists,
+   trees, and anything that's foldable.
+2. Semigroups give us *associativity*, which we can use to our advantage. For example, we can
+   evaluate large expressions of `<>` in *any order*. This means, for example, that we can execute
+   huge folds in a distributed fashion:
+
+Assume that `<>` is expensive, then we can execute the first `(...)` on a different process/device
+and accumulate afterwards without having to worry about correctness.
+```haskell
+(a <> b <> c) <> (d <> e <> f)
+```
+:::
+
+
+### Simple examples of monoids
+
+`Any` (resp. `All`) is the disjunctive (resp. conjunctive) monoid on `Bool`:
+
+```haskell
+𝝺> (Any False) <> (Any True) <> (Any False)
+Any {getAny = True}
+```
+
+For a monoid `m` its dual monoid is `Dual m`
+```haskell
+𝝺> (Dual "a") <> (Dual "b") <> (Dual "c")
+Dual {getDual = "cba"}
+```
+
+Product of monoids:
+```haskell
+𝝺> (Sum 2,Product 3) <> (Sum 5,Product 7)
+(Sum {getSum = 7},Product {getProduct = 21})
+```
+
+
+### Advanced examples of monoids
 `Map` is a monoid under `union`:
 ```haskell
 𝝺> Map.fromList [(1,"a")] <> Map.fromList [(1,"b")] <> Map.fromList [(2,"c")]
@@ -123,7 +185,7 @@ MMap (
  2 : "c"
 )
 
-𝝺> fromList [('a', Sum 1)] <> fromList [('a', Sum 2)] <> fromList [('b', Sum 3)]
+𝝺> fromList [('a', Sum 1)] <> fromList [('a',Sum 2)] <> fromList [('b',Sum 3)]
 MMap (
  'a' : Sum {getSum = 3}
  'b' : Sum {getSum = 3}
@@ -133,25 +195,74 @@ MMap (
 
 ## Foldables
 
+Let $M = \langle M, \diamond, u\rangle$ be a monoid, $f : A\rightarrow M$ and `lst = [a1, ... , an]`
+a list of elements from $A$.
+
+The function `foldMap` of `lst` w.r.t. $M$ and $f$ is the composition of `map f` followed by the
+aggregation $\diamond$.
+
 ![](lecture13/foldlist.png){class="inverting-image"}
 
-
-With the definition of `Monoid`s, we have the *aggregation* part of the `fold`. Now we can can define the *traversal*-part:
-
+To make something `Foldable`, we only have to implement `foldMap`
 ```haskell
-class Foldable t where  
-  -- not that a->m is unary!
-  -- foldMap Sum [1,2]
-  foldMap :: Monoid m => (a -> m) -> t a -> m
-  -- fold [Sum 1, Sum 2]
-  fold :: Monoid m => t m -> m
-  -- foldr (+) 0 [1,2]
-  foldr :: (a -> b -> b) -> b -> t a -> b
+instance Foldable [] where
+  foldMap f = mconcat . map f
 ```
-- show `:i Foldable`
+And we will get a lot of functions for free (including `length`, `elem`, `maximum`, etc.)
+```haskell
+𝝺> :i Foldable
+type Foldable :: (* -> *) -> Constraint
+class Foldable t where
+  fold :: Monoid m => t m -> m
+  foldMap :: Monoid m => (a -> m) -> t a -> m
+  foldMap' :: Monoid m => (a -> m) -> t a -> m
+  foldr :: (a -> b -> b) -> b -> t a -> b
+  foldr' :: (a -> b -> b) -> b -> t a -> b
+  foldl :: (b -> a -> b) -> b -> t a -> b
+  foldl' :: (b -> a -> b) -> b -> t a -> b
+  foldr1 :: (a -> a -> a) -> t a -> a
+  foldl1 :: (a -> a -> a) -> t a -> a
+  toList :: t a -> [a]
+  null :: t a -> Bool
+  length :: t a -> Int
+  elem :: Eq a => a -> t a -> Bool
+  maximum :: Ord a => t a -> a
+  minimum :: Ord a => t a -> a
+  sum :: Num a => t a -> a
+  product :: Num a => t a -> a
+  {-# MINIMAL foldMap | foldr #-}
+        -- Defined in ‘Data.Foldable’
+instance Foldable (Either a) -- Defined in ‘Data.Foldable’
+instance Foldable [] -- Defined in ‘Data.Foldable’
+instance Foldable Maybe -- Defined in ‘Data.Foldable’
+instance Foldable Solo -- Defined in ‘Data.Foldable’
+instance Foldable ((,) a) -- Defined in ‘Data.Foldable’
+```
+
+For new types like `Tree a` we have to implement `foldMap` to inform Haskell about how to traverse
+it. For a tree we can define
+```haskell
+data Tree a = Leaf a | Node (Tree a) (Tree a)
+
+instance Foldable Tree where
+  foldMap :: Monoid m => (a -> m) -> Tree a -> m
+  foldMap f (Leaf x) = f x
+  foldMap f (Node l r) = foldMap f l <> foldMap f r
+
+tree :: Tree Int
+tree = Node (Leaf 7) (Node (Leaf 2) (Leaf 3))
+
+𝝺> foldMap Sum tree
+Sum {getSum = 12}
+```
+which immediately lets us fold any `Tree m` where `Monoid m => Tree m`.
 
 ![](lecture13/fold.png){class="inverting-image"}
 
+### Example: `MMap` statistics
+
+For `MMap`s we already have a monoid instance, so let's use it to compute some statistics.
+With a simple `Count` monoid we can compute how many elements of a given value are in a list:
 ```haskell
 instance Semigroup Count where
   (Count n1) <> (Count n2) = Count (n1+n2)
@@ -175,24 +286,8 @@ MMap (
 )
 ```
 
----
-
-```haskell
-data Tree a = Leaf a | Node (Tree a) (Tree a) deriving Show
-
-instance Foldable Tree where
-    foldMap f (Leaf x) = f x
-    foldMap f (Node l r) = foldMap f l <> foldMap f r
-
-tree :: Tree Int
-tree = Node (Leaf 7) (Node (Leaf 2) (Leaf 3))
-
-𝝺> foldMap Sum tree
-Sum {getSum = 12}
-```
-
----
-
+Perhaps more interestingly, we can use a product of monoids (i.e. a tuple of monoids) to compute
+statistics over a list of words:
 ```haskell
 ws = words $ map toLower "Size matters not. Look at me. Judge me by my size, do you? Hmm? Hmm. And well you should not. For my ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us and binds us. Luminous beings are we, not this crude matter. You must feel the Force around you; here, between you, me, the tree, the rock, everywhere, yes. Even between the land and the ship."
 
@@ -204,7 +299,6 @@ stats word = (count word, Min $ length word, Max $ length word)
 groupBy :: (Ord k, Monoid m) => (a -> k) -> (a -> m) -> (a -> MMap k m)
 groupBy keyf valuef a = singleton (keyf a) (valuef a)
 
--- foldMap (groupBy head (m3 count (Min . length) (Max . length))) ws
 𝝺> foldMap (groupBy head stats) ws
 MMap (
  'a' : (Count 10, Min 1, Max  6)
