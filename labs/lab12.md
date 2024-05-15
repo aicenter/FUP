@@ -165,8 +165,10 @@ neighbs (x,y) = [(x-1,y), (x+1,y), (x,y-1), (x,y+1),
                  (x-1,y-1), (x-1,y+1), (x+1,y-1), (x+1,y+1)]
 
 nextPos :: Pos -> Maze -> [Pos]
-nextPos p m = case getBlock p m of                                          -- is the input position admissible?
-                Just F -> [ p' | p' <- neighbs p, getBlock p' m == Just F]  -- if yes, take all possibilities and filter admissible positions
+nextPos p m = case getBlock p m of
+                -- if input position is admissible
+                -- take all possibilities and filter admissible positions
+                Just F -> [ p' | p' <- neighbs p, getBlock p' m == Just F]  
                 _ -> []
 
 > nextPos (1,1) maze
@@ -196,10 +198,14 @@ solve (p,q,m) = bfs [] [[p]] q m
 
 bfs :: [Pos] -> [Path] -> Pos -> Maze -> Maybe Path
 bfs _ [] _ _ = Nothing
-bfs visited (path@(p:_):paths) q m                       -- consider the first path in the queue and its head p
-    | p == q = Just $ reverse path                       -- is path a solution? If yes, return the reversed solution
-    | p `elem` visited = bfs visited paths q m           -- does path end in an already visited position? If yes, disregard it
-    | otherwise = bfs (p:visited) (paths ++ extend path m) q m  -- add p to visited positions and extend path by all possible positions
+-- consider the first path in the queue and its head p
+bfs visited (path@(p:_):paths) q m
+	-- is path a solution? If yes, return the reversed solution
+    | p == q = Just $ reverse path
+	-- does path end in an already visited position? If yes, disregard it 
+    | p `elem` visited = bfs visited paths q m
+	-- add p to visited positions and extend path by all possible positions 
+    | otherwise = bfs (p:visited) (paths ++ extend path m) q m
 
 > solve ((1,2),(3,3),maze)
 Just [(1,2),(2,3),(3,3)]
@@ -209,7 +215,6 @@ Nothing
 ```
 
 ## Type constructor Parser
-
 
 As a next task, we must create a user interface for the BFS solver. We have to allow the user to specify a maze together with a start and goal
 positions. The user provides a string containing all the necessary data via the standard input. It might look as follows:
