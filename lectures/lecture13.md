@@ -290,12 +290,21 @@ Perhaps more interestingly, we can use a product of monoids (i.e. a tuple of mon
 statistics over the first letter of a list of words:
 ```haskell
 ws = words $ map toLower "Size matters not. Look at me. Judge me by my size, do you? Hmm? Hmm. And well you should not. For my ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us and binds us. Luminous beings are we, not this crude matter. You must feel the Force around you; here, between you, me, the tree, the rock, everywhere, yes. Even between the land and the ship."
+it :: [String]
+```
 
+We can define a function that collects a bunch of monoids which we want to fold over:
+```haskell
+stats :: Foldable t => t a -> (Count, Min Int, Max Int)
 stats word = (count word, Min $ length word, Max $ length word)
 
 𝝺> stats "size"
 (Count 1,Min 4,Max 4)
+```
 
+Each of the monoids above we want to again fold over `MMap`s with the first character as keys.
+Effectively `MMap` is very similar to grouping, hence the name `groupBy`:
+```haskell
 groupBy :: (Ord k, Monoid m) => (a -> k) -> (a -> m) -> (a -> MMap k m)
 groupBy keyf valuef a = singleton (keyf a) (valuef a)
 
@@ -303,27 +312,17 @@ groupBy keyf valuef a = singleton (keyf a) (valuef a)
 MMap (
  's' : (Count 1,Min 4,Max 4)
 )
+```
 
+Finally we just have to call `foldMap` to accumulate all the `stats`.
+```haskell
 𝝺> foldMap (groupBy head stats) ws
 MMap (
  'a' : (Count 10, Min 1, Max  6)
  'b' : (Count  5, Min 2, Max  7)
  'c' : (Count  2, Min 5, Max  7)
  'd' : (Count  1, Min 2, Max  2)
- 'e' : (Count  3, Min 4, Max 11)
- 'f' : (Count  4, Min 3, Max  6)
- 'g' : (Count  1, Min 5, Max  5)
- 'h' : (Count  3, Min 4, Max  5)
- 'i' : (Count  6, Min 2, Max  3)
- 'j' : (Count  1, Min 5, Max  5)
- 'l' : (Count  4, Min 4, Max  8)
- 'm' : (Count  9, Min 2, Max  7)
- 'n' : (Count  3, Min 3, Max  4)
- 'p' : (Count  1, Min 8, Max  8)
- 'r' : (Count  1, Min 5, Max  5)
- 's' : (Count  5, Min 4, Max  9)
- 't' : (Count  8, Min 3, Max  5)
- 'u' : (Count  2, Min 2, Max  3)
+ ...
  'w' : (Count  2, Min 3, Max  4)
  'y' : (Count  6, Min 3, Max  4)
 )
