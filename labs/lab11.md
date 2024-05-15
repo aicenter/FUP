@@ -215,7 +215,6 @@ Write a function `eval :: Expr Bool -> Bool` evaluating a given Boolean expressi
  Logical operations negation, conjunction and disjunction can be respectively computed by `not, &&, ||`. The last two are infix operators.
 :::
 
-<!--
 
 ::: details Solution: `eval`
 ```haskell
@@ -236,7 +235,6 @@ getAtoms (And e1 e2) = getAtoms e1 ++ getAtoms e2
 getAtoms (Or e1 e2) = getAtoms e1 ++ getAtoms e2
 ```
 :::
--->
 
 ## Task 2
  The type constructor `Expr` from the previous task can be made into an instance of `Functor` as follows:
@@ -255,14 +253,12 @@ subst :: Functor f => [String] -> f String -> f Bool
 ```
 taking a list of strings (variables) and a data structure over strings returning the same data structure where the strings (variables) in the input list are replaced by `True` and the rest by `False`. Use the lifting by `fmap`.
 
-<!--
 ::: details Solution: `subst`
 ```haskell
 subst :: Functor f => [String] -> f String -> f Bool
 subst xs = fmap (`elem` xs)
 ```
 :::
--->
 
 Next, apply the function `subseqs :: [a] -> [[a]]` from the previous lab returning a list of all sublists of a given list.
 ```haskell
@@ -282,7 +278,6 @@ such that the Boolean expression resulting from the replacing atoms by the respe
  To check that there exists an evaluation satisfying a formula or if all evaluations satisfy the formula, use the functions `or`, `and` respectively. These functions are applicable to any list of Boolean values.
 :::
 
-<!--
 ::: details Solution: `isTaut, isSat`
 ```haskell
 check :: ([Bool] -> Bool) -> Expr String -> Bool
@@ -294,4 +289,3 @@ isTaut = check and
 isSat = check or
 ```
 :::
--->
