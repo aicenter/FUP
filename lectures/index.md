@@ -95,10 +95,19 @@ We discuss some more examples of type classes, most importantly `Functor`s.
 [`State.hs`](https://github.com/aicenter/FUP/blob/main/code/State.hs).
 [`StateIO.hs`](https://github.com/aicenter/FUP/blob/main/code/StateIO.hs).
 
+## Lecture 13: Monoids & Foldables
+
+Lecture notes coming soon!
+
+[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture13.pdf).
+[Log](https://github.com/aicenter/FUP/blob/main/code/lecture13.hs).
+[Dataset](https://github.com/aicenter/FUP/blob/main/code/FUP-hw.csv).
+
+
 ## [Lecture 14](lecture14): Parallel Haskell
 
-[Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture14.pdf).
-[Log](https://github.com/aicenter/FUP/blob/main/code/lecture14.hs).
+[`pfold.hs`](https://github.com/aicenter/FUP/blob/main/code/pfold.hs).
+[`parmaze.hs`](https://github.com/aicenter/FUP/blob/main/code/parmaze.hs).
 
 ## Old recorded lectures
 

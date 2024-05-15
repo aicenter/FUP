@@ -284,7 +284,7 @@ instance Applicative Parser where
 Just (True, "c")
 
 𝝺> parse ((/=) <$> item <*> item) "aac"
-Just (True, "c")
+Just (False, "c")
 ```
 
 
