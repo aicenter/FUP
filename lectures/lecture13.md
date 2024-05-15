@@ -299,6 +299,11 @@ stats word = (count word, Min $ length word, Max $ length word)
 groupBy :: (Ord k, Monoid m) => (a -> k) -> (a -> m) -> (a -> MMap k m)
 groupBy keyf valuef a = singleton (keyf a) (valuef a)
 
+𝝺> groupBy head stats "size"
+MMap (
+ 's' : (Count 1,Min 4,Max 4)
+)
+
 𝝺> foldMap (groupBy head stats) ws
 MMap (
  'a' : (Count 10, Min 1, Max  6)
