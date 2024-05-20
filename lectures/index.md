@@ -20,7 +20,7 @@ Focuses on Racket lists and trees. Further, it introduces the unit testing libra
 [Log](https://github.com/aicenter/FUP/blob/main/code/lecture02.rkt).
 
 
-## [Lecture 3](lecture03): Higher Order Functions
+## [Lecture 03](lecture03): Higher Order Functions
 Deals with higher-order functions like (`map`, `filter`, `foldl`), function closures and Racket
 structures.
 
@@ -28,14 +28,14 @@ structures.
 [Log](https://github.com/aicenter/FUP/blob/main/code/lecture03.rkt).
 
 
-## [Lecture 4](lecture04): Lazy Evaluation
+## [Lecture 04](lecture04): Lazy Evaluation
 Introduces pattern matching, and explains how to implement lazy evaluation and streams in Racket.
 
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture04.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/code/lecture04.rkt).
 
 
-## [Lecture 5](lecture05): Macros & Interpreters
+## [Lecture 05](lecture05): Macros & Interpreters
 
 Briefly introduces syntactic macros, and shows how to implement interpreters
 (the latter is remains to be written).
@@ -44,7 +44,7 @@ Briefly introduces syntactic macros, and shows how to implement interpreters
 [Log](https://github.com/aicenter/FUP/blob/main/code/lecture05.rkt).
 [Brainf*ck.rkt](https://github.com/aicenter/FUP/blob/main/code/lecture05-brainfuck.rkt).
 
-## [Lecture 6](lecture06): Lambda Calculus
+## [Lecture 06](lecture06): Lambda Calculus
 
 Describes the basics of lambda calculus to show you were most of the initial ideas for functional
 programming came from.
@@ -56,12 +56,12 @@ programming came from.
 For the interested read there is another lecture on immutable datastructures like random access
 lists.
 
-## [Lecture 7](lecture07): Introduction to Haskell
+## [Lecture 07](lecture07): Introduction to Haskell
 
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture07.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/code/lecture07.hs).
 
-## [Lecture 8](lecture08): Haskell Types
+## [Lecture 08](lecture08): Haskell Types
 
 Discusses the strongly-typed, static, and inferred type system of Haskell including:
 parametric polymorphism, ad-hoc polymorphism (typeclasses), and algebraic datatypes.
@@ -69,7 +69,7 @@ parametric polymorphism, ad-hoc polymorphism (typeclasses), and algebraic dataty
 [Slides](https://github.com/aicenter/FUP/blob/main/lectures/lecture08.pdf).
 [Log](https://github.com/aicenter/FUP/blob/main/code/lecture08.hs).
 
-## [Lecture 9](lecture09): Type Classes
+## [Lecture 09](lecture09): Type Classes
 
 We discuss some more examples of type classes, most importantly `Functor`s.
 
