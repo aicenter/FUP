@@ -3,7 +3,7 @@ outline: deep
 ---
 # Monoids & Foldables
 
-The *fold* operation is one of (if not *the*) most important construction in functional
+The _**fold**_ operation is one of (if not *the*) most important construction in functional
 programming. An example we have seen very often already is using `foldr` to sum a list of numbers:
 
 ```haskell
@@ -27,17 +27,17 @@ An perhaps a tiny bit more interesting, counting the number of a specific elemen
 𝝺> count 2 [1,2,1,2,2,3]
 3
 ```
-Arguable the most advanced example we seen of a fold is the monadic of mazes in `setPath` of [Lab
-12](/labs/lab12#manipulations-with-maze).
+Arguably the most advanced example we have seen of a fold is the monadic fold of mazes in `setPath`
+of [Lab 12](/labs/lab12#manipulations-with-maze).
 
-Importantly, we can implement a number of important functions *in terms of fold*, so theoretically,
+Importantly, we can implement a number of useful functions _**in terms of fold**_, so theoretically,
 we don't need much more than a datastructure being foldable. For example:
 ```haskell
 length = foldr (\_ -> (+1)) 0
 map f = foldr ((:) . f) []
 ```
 
-:::  tip
+:::  tip Fold: Aggregation & traversal
 If we take a look at the type signature of `foldr` we see that it contains a `Foldable` type
 constraint:
 ```haskell
@@ -45,24 +45,24 @@ foldr :: Foldable t => (b -> a -> b) -> b -> t a -> b
 ```
 In this lecture we will explore the essence of this `Foldable` typeclass and pick at the different
 parts that make a fold. Conceptually, there are two parts to folding:
-1. The *aggregation* - represented by the function `b -> a -> b`. We will also call this a *monoid*.
-2. The *traversal* - which walks over the foldable datastructure `t a`. This is what the `Foldable`
-   typeclass is doing.
+1. The _**aggregation**_ - represented by the function `b -> a -> b`. We will use an abstraction
+    called a [`Monoid`](#aggregation-semigroups-monoids) to treat this part of the fold separately.
+2. The _**traversal**_ - which walks over the foldable datastructure `t a`. This is what the [`Foldable`](#traversal-foldables) typeclass is doing.
 :::
 
-## Semigroups & Monoids
+## Aggregation: Semigroups & Monoids
 
-Before we get to monoids represent the *aggregation* part of a fold, we will define a semigroup.
-A semigroup is an algebra with a *domain* and a *binary, associative operation*. For example,
-addition on the natural numbers forms a semigroup. The domain $\mathbb N$ with the operation $+$
+Before we get to monoids which represent the aggregation part of a fold, we will define a semigroup.
+A _**semigroup**_ is an algebra with a *domain* and a *binary, associative operation*. For example,
+addition on the natural numbers forms a semigroup: The domain $\mathbb N$ with the operation $+$
 satisfies associativity: $a+(b+c) = (a+b)+c$.
 
-Formally, we define a *semigroup* $\langle S, \diamond\rangle$ as a set $S$ is endowed with a
+Formally, we define a *semigroup* $\langle S, \diamond\rangle$ as a set $S$ endowed with a
 binary operation $\diamond$ that satisfies
 
-$$ a \diamond (b \diamond c) = (a \diamond b) \diamond c $$
+$$ a \diamond (b \diamond c) = (a \diamond b) \diamond c. $$
 
-A *monoid* $\langle M, \diamond, u \rangle$ is a semigroup with a *unit* $u \in M$ that satisfies
+A _**monoid**_ $\langle M, \diamond, u \rangle$ is a semigroup with a *unit* $u \in M$ that satisfies
 
 $$ u \diamond a = a = a \diamond u. $$
 
@@ -132,8 +132,9 @@ Great question. Why should we jump through the hoops of *defining another type f
    evaluate large expressions of `<>` in *any order*. This means, for example, that we can execute
    huge folds in a distributed fashion:
 
-Assume that `<>` is expensive, then we can execute the first `(...)` on a different process/device
-and accumulate afterwards without having to worry about correctness.
+Assume that `<>` is an operation that is much more expensive than a simple `+`, then we can execute
+the first `(...)` on a different process/device and accumulate afterwards without having to worry
+about correctness.
 ```haskell
 (a <> b <> c) <> (d <> e <> f)
 ```
@@ -168,8 +169,11 @@ Product of monoids:
 𝝺> Map.fromList [(1,"a")] <> Map.fromList [(1,"b")] <> Map.fromList [(2,"c")]
 fromList [(1,"a"),(2,"c")]
 ```
+where `<> = Map.union` is a *left-biased* union of keys (meaning, the left-most argument with the
+same key will override the ones further to the right).
 
-We could implement another monoid instance for `Map`:
+We could implement another monoid instance for `Map`, which instead of overwriting recurring keys,
+accumulates the corresponding values. For this we need a new type we can call `MMap`:
 ```haskell
 newtype MMap k v = MMap (Map.Map k v)
 
@@ -178,7 +182,11 @@ fromList xs = MMap (Map.fromList xs)
 
 instance (Ord k, Monoid v) => Semigroup (MMap k v) where
   (MMap m1) <> (MMap m2) = MMap (Map.unionWith mappend m1 m2)
+```
+By defining `<>` via the `unionWith` function and `mappend` (monoidal append) we can
+accumulate any `MMap` that has values which are instances of `Monoid`:
 
+```haskell
 𝝺> fromList [(1,"a")] <> fromList [(1,"b")] <> fromList [(2,"c")]
 MMap (
  1 : "ab"
@@ -193,22 +201,26 @@ MMap (
 ```
 
 
-## Foldables
+## Traversal: Foldables
 
-Let $M = \langle M, \diamond, u\rangle$ be a monoid, $f : A\rightarrow M$ and `lst = [a1, ... , an]`
-a list of elements from $A$.
+With `Monoid` we have successfully abstracted away the aggregation part of folding operations.
+Now we have to formalize how to traverse datastructures we want to fold.
 
+Let $M = \langle M, \diamond, u\rangle$ be a monoid, $f : A\rightarrow M$ a function that takes a
+values of type $A$ to a monoid, and `lst = [a1, ... , an]` a list of elements from $A$.
 The function `foldMap` of `lst` w.r.t. $M$ and $f$ is the composition of `map f` followed by the
 aggregation $\diamond$.
 
 ![](lecture13/foldlist.png){class="inverting-image"}
 
-To make something `Foldable`, we only have to implement `foldMap`
+To make something `Foldable`, we only have to implement `foldMap`:
 ```haskell
 instance Foldable [] where
-  foldMap f = mconcat . map f
+  foldMap f = mconcat . fmap f
 ```
-And we will get a lot of functions for free (including `length`, `elem`, `maximum`, etc.)
+And we will get a lot of functions for free (including `length`, `elem`, `maximum`,
+etc.)
+
 ```haskell
 𝝺> :i Foldable
 type Foldable :: (* -> *) -> Constraint
@@ -238,6 +250,13 @@ instance Foldable Maybe -- Defined in ‘Data.Foldable’
 instance Foldable Solo -- Defined in ‘Data.Foldable’
 instance Foldable ((,) a) -- Defined in ‘Data.Foldable’
 ```
+
+::: details `foldr` in terms of `foldMap`
+For in depth information about `Foldable` implementations you can refer to the [Haskell
+Wiki](https://en.wikibooks.org/wiki/Haskell/Foldable). Most importantly, it shows how to implement
+`foldr` in terms of `foldMap` by exploiting the monoid of self-maps.
+:::
+
 
 For new types like `Tree a` we have to implement `foldMap` to inform Haskell about how to traverse
 it. For a tree we can define
