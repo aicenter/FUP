@@ -158,6 +158,3 @@ main = do lns <- lines <$> readFile "FUP-hw.csv"
           let rec = parseCSV lns
           print $ foldMap (groupBy fst (m3 count (Sum . snd) (Max . snd))) rec
           putStrLn $ showMap $ getStats rec
-      
-
-                     
