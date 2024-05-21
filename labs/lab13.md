@@ -64,7 +64,7 @@ as the resulting reversed list is stored in the accumulator/state. Thus we are i
 of type `[a] -> ((), [a])`. We will implement a function `reverseS :: [a] -> State [a] ()` which takes
 a list and returns a stateful computation reversing the given list (i.e., a monadic value enclosing a function of type `[a] -> ((), [a])` reversing the given list).
 
-I will show several variants. The first copies more or less the tail recursive function `reverseA`.
+We will show several variants. The first copies more or less the tail recursive function `reverseA`.
 ::: details Solution: `reverseS`
 ```haskell
 reverseS :: [a] -> State [a] ()
@@ -126,12 +126,14 @@ use the function `lookup :: Eq a => a -> [(a, b)] -> Maybe b` that returns `Noth
 `Just n` where `n` is the number of occurrences of `x`.
 :::
 
+::: details Solution: `update`
 ```haskell
 update :: Eq a => a -> Map a Int -> Map a Int
 update x m = case lookup x m of
     Nothing -> (x,1):m
     Just n -> (x,n+1):[p | p <- m, fst p /= x]
 ```
+:::
 
 Once you have that, take the inspiration from Exercise 1 and implement a function `freqS`, taking a list and returning the stateful computation
 that computes the map of occurrences once executed. E.g.
@@ -141,11 +143,14 @@ that computes the map of occurrences once executed. E.g.
 [('d',1),('l',3),('r',1),('o',2),('W',1),(' ',1),('e',1),('H',1)]
 ```
 
+::: details Solution: `freqS`
+Via `mapM_`:
 ```haskell
 freqS :: Eq a => [a] -> State (Map a Int) ()
 freqS = mapM_ (modify . update)
 ```
-::: details Alternatively you can do this
+
+Or with do-notation:
 ```haskell
 freqS [] = return ()
 freqS (x:xs) = do m <- get
@@ -301,6 +306,7 @@ with $n-m-1$ many nodes. Finally, you return `Node x ltree rtree` where `x` is a
 The base case for $n=0$ just returns `Nil`, i.e., no subtree.
 :::
 
+::: details Solution: `randTree`
 ```haskell
 randTree :: Int -> Int -> R (Tree Int)
 randTree 0 _ = return Nil
@@ -310,6 +316,7 @@ randTree n k = do m <- randR (0,n-1)
                   x <- randR (0,k-1)
                   return $ Node x ltree rtree
 ```
+:::
 
 You can use your function to generate a random binary tree with 10 nodes containing integers from $\{0,1,2\}$ as follows:
 ```haskell
