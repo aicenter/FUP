@@ -130,3 +130,6 @@ export default withMermaid(
   }),
 );
 
+// make sure that .rkt/.hs files are linked correctly (without additional .html at the end)
+process.env.VITE_EXTRA_EXTENSIONS = 'rkt,hs'  // comma separated list: 'foo,bar,baz'
+

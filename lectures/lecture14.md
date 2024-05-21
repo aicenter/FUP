@@ -225,9 +225,8 @@ parMap f (a:as) = do
 ```
 
 With `parMap` we can solve a number of mazes with the solver from the [labs](/labs/lab12).
-To run the file below you need the
-[`Parser.hs`](https://github.com/aicenter/FUP/blob/main/code/Parser.hs) and
-[`Mazes.hs`](https://github.com/aicenter/FUP/blob/main/code/Mazes.hs) modules.
+To run the file below you need the [`Parser.hs`](/code/Parser.hs) and [`Mazes.hs`](/code/Mazes.hs)
+modules.
 ```haskell
 import System.Environment
 import Control.Parallel.Strategies
@@ -367,7 +366,7 @@ integralchunk f step start end chunksize = sum cs
 This [example is stolen from here](https://www.youtube.com/watch?v=R47959rD2yw&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV&index=33).
 
 You can find a full script that compares the two approaches in
-[`pfold.hs`](https://github.com/aicenter/FUP/blob/main/code/pfold.hs).
+[`pfold.hs`](/code/pfold.hs).
 ```bash
 # compile it
 $ ghc -threaded -rtsopts --make pfold.hs

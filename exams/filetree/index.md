@@ -139,7 +139,7 @@ For splitting a string into a list of strings you can make use of the function `
 ## Haskell
 
 For the Haskell implementation you are provided with a module
-[`FTree.hs`](https://github.com/aicenter/FUP/blob/main/code/FTree.hs) which contains a `FTree` type
+[`FTree.hs`](/code/FTree.hs) which contains a `FTree` type
 including a `Data.Map` from keys to values. We quote the definition here:
 ```haskell
 import Data.Map (Map)

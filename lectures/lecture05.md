@@ -478,7 +478,7 @@ current value is zero at the beginning of the cycle, we skip its evaluation.
 ```
 
 We are done! The complete implementation of our interpreter can be found
-[here](https://github.com/aicenter/FUP/blob/main/lectures/lecture05-brainfuck.rkt). Running our
+[here](/code/lecture05-brainfuck.rkt). Running our
 interpreter on the `add-prg` will produce the following output:
 ```scheme
 > (run-prg add-prg '(2 3))
