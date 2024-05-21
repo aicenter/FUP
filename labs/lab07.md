@@ -8,7 +8,7 @@ with these notions and concepts, I implemented in Racket an interpreter of $\lam
 transforming a given $\lambda$-expression into its normal form (if it exists). It follows the normal
 order evaluation strategy. In addition, I implemented a few helpers functions to help you inspect
 $\lambda$-expressions. You can download the interpreter:
-[`lambda-calculus.rkt`](https://github.com/aicenter/FUP/blob/main/code/lambda-calculus.rkt)
+[`lambda-calculus.rkt`](/code/lambda-calculus.rkt)
 
 To follow the exercises, it is recommended to have a piece of paper, a pen, DrRacket IDE installed,
 and the interpreter. To use the interpreter, download the above-mentioned file and store it in a

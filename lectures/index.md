@@ -15,7 +15,7 @@ due to other obligations.
 | 2. | [Lists & Trees](lecture02) | Focuses on Racket lists and trees. Further, it introduces the unit testing library [Rackunit](https://docs.racket-lang.org/rackunit/index.html). | [Slides](/lectures/lecture02.pdf).  [Log](/code/lecture02.rkt).|
 | 3. | [Higher Order Functions](lecture03) | Deals with higher-order functions like `map`, `filter`, `foldl`, function closures and Racket structures.| [Slides](/lectures/lecture03.pdf).  [Log](/code/lecture03.rkt).|
 | 4. | [Lazy Evaluation](lecture04) | Introduces pattern matching, and explains how to implement lazy evaluation and streams in Racket. | [Slides](/lectures/lecture04.pdf).  [Log](/code/lecture04.rkt).|
-| 5. | [Macros & Interpreters](lecture05) | Briefly introduces syntactic macros, and shows how to implement interpreters (the latter is remains to be written). | [Slides](/lectures/lecture05.pdf).  [Log](/code/lecture05.rkt).  [Brainf*ck.rkt](https://github.com/aicenter/FUP/blob/main/code/lecture05-brainfuck.rkt). |
+| 5. | [Macros & Interpreters](lecture05) | Briefly introduces syntactic macros, and shows how to implement interpreters (the latter is remains to be written). | [Slides](/lectures/lecture05.pdf).  [Log](/code/lecture05.rkt).  [Brainf*ck.rkt](/code/lecture05-brainfuck.rkt). |
 | 6. | [Lambda Calculus](lecture06) | Describes the basics of lambda calculus to show you were most of the initial ideas for functional programming came from. | [Slides](/lectures/lecture06.pdf).  [Lambda-calculus.rkt](/code/lambda-calculus.rkt). |
 | Bonus | [Immutable datastructures](bonus) | For the interested reader there is another lecture on immutable datastructures like random access lists. |
 
@@ -29,7 +29,7 @@ due to other obligations.
 | 10. | [Haskell's IO & Monads](lecture10) | Introduces Haskell's `IO` and the typeclass `Monad`. | [Slides](/lectures/lecture10.pdf).  [Log](/code/lecture10.hs).|
 | 11. | [Monadic Parsing](lecture11) | Uses `Functor` and `Monad` instances from the previous lecture to demonstrate the elegance of monadic parsing. | [Slides](/lectures/lecture11.pdf).  [Log](/code/lecture11.hs).  [`Parser.hs`](/code/Parser.hs). |
 | 12. | [State Monad](lecture12) | Make repetitive, stateful boilerplate disappear via the `State` monad. | [Slides](/lectures/lecture12.pdf).  [Log](/code/lecture12.hs).  [`State.hs`](/code/State.hs).  [`StateIO.hs`](/code/StateIO.hs). |
-| 13. | [Lecture 13](lecture13) | Dissecting `foldr` into `Monoid`s and `Foldable`s. | [Slides](/lectures/lecture13.pdf).  [Log](/code/lecture13.hs).  [Dataset](https://github.com/aicenter/FUP/blob/main/code/FUP-hw.csv). |
+| 13. | [Lecture 13](lecture13) | Dissecting `foldr` into `Monoid`s and `Foldable`s. | [Slides](/lectures/lecture13.pdf).  [Log](/code/lecture13.hs).  [Dataset](/code/FUP-hw.csv). |
 | Bonus | [Parallel Haskell](lecture14) | Introduces Haskell's spark system and demonstrates how to use `Strategy` types for simple parallelization of existing Haskell programs. |
 
 [`pfold.hs`](/code/pfold.hs).
