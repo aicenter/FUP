@@ -30,10 +30,7 @@ due to other obligations.
 | 11. | [Monadic Parsing](lecture11) | Uses `Functor` and `Monad` instances from the previous lecture to demonstrate the elegance of monadic parsing. | [Slides](/lectures/lecture11.pdf).  [Log](/code/lecture11.hs).  [`Parser.hs`](/code/Parser.hs). |
 | 12. | [State Monad](lecture12) | Make repetitive, stateful boilerplate disappear via the `State` monad. | [Slides](/lectures/lecture12.pdf).  [Log](/code/lecture12.hs).  [`State.hs`](/code/State.hs).  [`StateIO.hs`](/code/StateIO.hs). |
 | 13. | [Lecture 13](lecture13) | Dissecting `foldr` into `Monoid`s and `Foldable`s. | [Slides](/lectures/lecture13.pdf).  [Log](/code/lecture13.hs).  [Dataset](/code/FUP-hw.csv). |
-| Bonus | [Parallel Haskell](lecture14) | Introduces Haskell's spark system and demonstrates how to use `Strategy` types for simple parallelization of existing Haskell programs. |
-
-[`pfold.hs`](/code/pfold.hs).
-[`parmaze.hs`](/code/parmaze.hs).
+| Bonus | [Parallel Haskell](lecture14) | Introduces Haskell's spark system and demonstrates how to use `Strategy` types for simple parallelization of existing Haskell programs. | [`pfold.hs`](/code/pfold.hs).  [`parmaze.hs`](/code/parmaze.hs).|
 
 ## Old recorded lectures
 
