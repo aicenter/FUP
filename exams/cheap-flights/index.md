@@ -15,7 +15,8 @@ traveling along the edge.
 Below you can see an exemplary graph with 5 nodes. The cost to travel along an edge is written next to the
 corresponding edge.
 
-<img src="/img/cheap-flights-graph.svg" style="width: 50%; margin-left: auto; margin-right: auto;"/>
+<img src="/img/cheap-flights-graph.svg" style="width: 50%; margin-left: auto; margin-right: auto;"
+class="inverting-image"/>
 
 
 ## Racket
