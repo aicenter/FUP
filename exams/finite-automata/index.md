@@ -30,7 +30,7 @@ $aba$.  On the other hand, it accept neither $ba$ nor $abab$.
 Example of NFA where $\mathcal Q=\{1,2,3,4\}$, $\Sigma=\{a,b\}$, $q_0=1$, $\mathcal F=\{2,3\}$
 and $\Delta=\{(1,a,2),(2,b,2),(1,a,3),(3,b,4),(4,a,3),(2,a,4)\}$.
 
-<img src="/img/finite-automata-dfa.svg" style="width: 40%; margin: auto;">
+<img src="/img/finite-automata-dfa.svg" style="width: 40%; margin: auto;" class="inverting-image">
 
 
 ## Haskell

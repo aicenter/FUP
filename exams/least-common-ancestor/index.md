@@ -27,7 +27,7 @@ to $5$ is $1,2,4,5$. Their common prefix is $1,2$ whose last element is $2$.
 Similarly, the least common ancestor of $5$ and $8$ is $1$. The least common ancestor of 
 $7$ and $7$ is $7$.
 
-<img src="/img/least-common-ancestor-tree.svg" style="width: 30%; margin: auto;">
+<img src="/img/least-common-ancestor-tree.svg" style="width: 30%; margin: auto;" class="inverting-image">
 
 
 ## Racket

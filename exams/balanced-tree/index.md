@@ -54,7 +54,7 @@ it swaps the parent node with its child.
 
 To implement these functions in Scheme and Haskell (especially the swapping), it is good to use pattern matching.
 
-<img src="/img/balanced-tree-algo.svg" style="width: 100%; margin: auto;">
+<img src="/img/balanced-tree-algo.svg" style="width: 100%; margin: auto;" class="inverting-image">
 
 
 ## Racket
