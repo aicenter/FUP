@@ -17,7 +17,7 @@ For example, suppose that the initial tree is just a single node (a leaf) $1$ an
 equals $(1,2),(1,3),(5,7),(2,4),(4,5),(3,6)$. By expanding the initial tree by the edges, we obtain
 the following sequence of trees:
 
-<img src="/img/building-trees-sequence.svg" style="width: 95%; margin: auto;">
+<img src="/img/building-trees-sequence.svg" style="width: 95%; margin: auto;" class="inverting-image">
 
 Note that the third edge $(5,7)$ was ignored because there is no node $5$ in the currently
 constructed tree. So the currently constructed tree remains unchanged.  
