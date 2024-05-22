@@ -1,6 +1,8 @@
 # Lab 13: State Monad
 
-This lab is focused on the state monad `State`. In the lecture, I show you how it is implemented. In this lab, we are going to use the implementation from the lecture [State.hs](https://drive.google.com/file/d/10lPsFg__39AQBT5schwiqI9FHKxpPXDY/view?usp=sharing). So include the following lines in your source file:
+This lab is focused on the state monad `State`. In the lecture, I show you how it is implemented. In
+this lab, we are going to use the implementation from the lecture [`State.hs`](/code/State.hs). So
+include the following lines in your source file:
 
 ```haskell
 import Control.Monad
@@ -13,25 +15,28 @@ The third import is important as we are going to work with pseudorandom numbers.
 
 ::: tip Hint
 If `import System.Random` doesn't work for you, you need to install the package `random` as follows:
-  - either locally into the current directory by ```bashcabal install --lib random --package-env .```
-  - or globally by ```bashcabal install --lib random```
+  - either locally into the current directory by `cabal install --lib random --package-env .`
+  - or globally by `cabal install --lib random`
 
-If you don't have `cabal` (e.g. computers in labs), put the file [Random.hs](https://drive.google.com/file/d/11C-EC-5uhlBCTHlPF-tVdHT_aY2xauSM/view?usp=sharing) into the directory containing your Lab-13 code and replace `import System.Ramdom` with `import Random`.
+If you don't have `cabal` (e.g. computers in labs), put the file [`Random.hs`](/code/Random.hs) into
+the directory containing your Lab-13 code and replace `import System.Ramdom` with `import Random`.
 :::
 
-The state monad `State s a` is a type constructor taking two parameters `s` and `a` representing type of states and output, respectively.
-You can imagine this type as
+The state monad `State s a` is a type constructor taking two parameters `s` and `a` representing
+type of states and output, respectively.  You can imagine this type as
 ```haskell
 newtype State s a = State { runState :: s -> (a, s) }
 ```
-The unary type constructor `State s` is an instance of `Monad`.
-The values enclosed in this monadic context are functions taking a state and returning a pair whose first component is an output value and the second one is a new state. Using the bind operator, we can compose such functions in order to create more complex stateful computations out of
-simpler ones.
-The function `runState :: State s a -> s -> (a, s)` is the accessor function extracting the actual function from
-the value of type `State s a`.
+The unary type constructor `State s` is an instance of `Monad`.  The values enclosed in this monadic
+context are functions taking a state and returning a pair whose first component is an output value
+and the second one is a new state. Using the bind operator, we can compose such functions in order
+to create more complex stateful computations out of simpler ones.  The function `runState :: State s
+a -> s -> (a, s)` is the accessor function extracting the actual function from the value of type
+`State s a`.
 
-As `State s` is a monad, we can use all generic functions working with monads, including the do-notation. Apart from that,
-the implementation of the state monad comes with several functions allowing to handle the state.
+As `State s` is a monad, we can use all generic functions working with monads, including the
+do-notation. Apart from that, the implementation of the state monad comes with several functions
+allowing to handle the state.
 
 ```haskell
 get :: State s s                  -- outputs the state but doesn't change it
@@ -106,7 +111,7 @@ reverseS = mapM_ (modify . (:))
 :::
 
 ## Task 1
- Suppose you are given a list of elements. Your task is to return a list of all its pairwise different elements together with the number
+Suppose you are given a list of elements. Your task is to return a list of all its pairwise different elements together with the number
 of their occurrences. E.g. for `"abcaacbb"` it should return `[('a',3),('b',3),('c',2)]` in any order. A typical imperative approach to this problem is to keep a map from elements to their number of occurrences in memory (as a state). This state is updated as we iterate through the list. With the state monad, we can implement this approach in Haskell.
 
 First, we need a data structure representing a map from elements to their numbers of occurrences. We can simply represent it as a list of pairs
@@ -118,15 +123,20 @@ type Map a b = [(a,b)]
 type Freq a = State (Map a Int) ()
 ```
 
-::: tip Hint
- First implement the following pure function taking an element `x` and a map `m` and returning an updated map. If the element
-`x` is already in `m` (i.e., there is a pair `(x,n)`), then return the updated map, which is the same as `m` except the pair `(x,n)`
-is replaced by `(x,n+1)`. If `x` is not in `m`, return the map extending `m` by `(x,1)`. To check that `x` is in `m`,
-use the function `lookup :: Eq a => a -> [(a, b)] -> Maybe b` that returns `Nothing` if `x` is not in `m` and otherwise
-`Just n` where `n` is the number of occurrences of `x`.
-:::
+First implement a pure function `update` taking an element `x` and a map `m` and returning an updated map.
+```haskell
+update :: Eq a => a -> Map a Int -> Map a Int
+```
+If the element `x` is already in `m` (i.e., there is a pair `(x,n)`), then return the updated map,
+which is the same as `m` except the pair `(x,n)` is replaced by `(x,n+1)`. If `x` is not in `m`,
+return the map extending `m` by `(x,1)`. To check that `x` is in `m`, use the function
+```haskell
+lookup :: Eq a => a -> [(a, b)] -> Maybe b
+```
+that returns `Nothing` if `x` is not in `m` and otherwise `Just n`
+where `n` is the number of occurrences of `x`.
 
-::: details Solution: `update`
+::: details Solution: `update` (just copy this if you want to practice state monads only)
 ```haskell
 update :: Eq a => a -> Map a Int -> Map a Int
 update x m = case lookup x m of
@@ -144,19 +154,24 @@ that computes the map of occurrences once executed. E.g.
 ```
 
 ::: details Solution: `freqS`
-Via `mapM_`:
-```haskell
+
+::: code-group
+```haskell [mapM_]
 freqS :: Eq a => [a] -> State (Map a Int) ()
 freqS = mapM_ (modify . update)
 ```
 
-Or with do-notation:
-```haskell
+```haskell [modify]
+freqS [] = return ()
+freqS (x:xs) = do modify (update x)
+                  freqS xs
+```
+
+```haskell [get/put]
 freqS [] = return ()
 freqS (x:xs) = do m <- get
                   let m' = update x m
                   put m'
-                  --modify (update x)  -- or replace the first 3 lines with this
                   freqS xs
 ```
 :::

@@ -361,15 +361,18 @@ digit = sat isDigit
 
 char :: Char -> Parser Char
 char c = sat (== c)
+```
 
+::: code-group 
+```haskell [do-notation]
 string :: String -> Parser String
 string [] = return []
 string (x:xs) = do char x
                    string xs
                    return (x:xs)
 ```
-::: details Alternative definition using Applicative
-```haskell
+
+```haskell [Alternative definition using Applicative]
 string :: String -> Parser String
 string [] = return []
 string (x:xs) = char x *> string xs *> pure (x:xs)
@@ -407,7 +410,8 @@ Thus `many` can handle (possibly empty) sequences (e.g., an arbitrary series of 
 (e.g., non-empty sequences of digits representing an integer). To disregard sequences of spaces, we define the following parser
 together with the function `token` that transforms any parser to omit spaces at the beginning and the end.
 
-```haskell
+::: code-group
+```haskell [do-notation]
 space :: Parser ()
 space = do many (sat isSpace)
            return ()
@@ -419,8 +423,7 @@ token p = do space
              return x
 ```
 
-::: details Alternative definition by Applicative combinators
-```haskell
+```haskell [Applicative]
 space :: Parser ()
 space = do many (sat isSpace) *> pure ()
 
@@ -476,7 +479,10 @@ Just ((3,2),"")
 
 Next, we focus on maze parsing. We define simple parsers for blocks. Out of them, we can create a parser for rows. Using the operator
 `<|>`, we can define the parser `wall <|> free` which parses either the wall or free block.
-```haskell
+
+::: details Solution: `wall`, `free`, `row`
+::: code-group
+```haskell [do-notation]
 wall :: Parser Block
 wall = do char '#'
           return W
@@ -491,9 +497,7 @@ row = do bs <- many (wall <|> free)
          return bs
 ```
 
-::: details Applicative approach
-
-```haskell
+```haskell [Applicative]
 wall :: Parser Block
 wall = char '#' *> pure W
 
@@ -508,7 +512,9 @@ Just ([F,F,W,W,W,F,W,F],"#      #\n")
 ```
 
 A maze is just a (possibly empty) sequence of rows. The input starts with the start and goal definitions, followed by a maze.
-```haskell
+::: details Solution: `file`
+::: code-group
+```haskell [do-notation]
 mapP :: Parser Maze
 mapP = do rs <- many row
           return (M rs)
@@ -520,8 +526,7 @@ file = do p <- def "start"
           return (p,q,m)
 ```
 
-::: details Functor and Applicative approach
-```haskell
+```haskell [Functor & Applicative]
 mapP :: Parser Maze
 mapP = M <$> many row
 
