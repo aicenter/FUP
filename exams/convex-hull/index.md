@@ -17,7 +17,7 @@ points of the convex hull of a given set of points.
 
 ::: tip Figure 1
 .
-<img src="/img/convex-hull-algo.svg" style="width: 100%; margin: auto;">
+<img src="/img/convex-hull-algo.svg" style="width: 100%; margin: auto;" class="inverting-image">
 
 **(A)**: Convex hull of a set of points depicted by the dashed line. The generating points in counter-clockwise order are: $P$, $A$, $B$, $C$, $D$.
 
@@ -67,7 +67,7 @@ times.
 
 ::: tip Figure 2
 .
-<img src="/img/convex-hull-algo-2.svg" style="width: 100%; margin: auto;">
+<img src="/img/convex-hull-algo-2.svg" style="width: 100%; margin: auto;" class="inverting-image">
 
 Before  \#1, the stack of points is $\mathcal
   G= [P,A,B]=[p_{i-3},p_{i-2},p_{i-1}]$. In \#1 we see that $\overrightarrow{ABE}$ is a left turn
