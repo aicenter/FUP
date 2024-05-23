@@ -19,7 +19,7 @@ If `import System.Random` doesn't work for you, you need to install the package 
   - or globally by `cabal install --lib random`
 
 If you don't have `cabal` (e.g. computers in labs), put the file [`Random.hs`](/code/Random.hs) into
-the directory containing your Lab-13 code and replace `import System.Ramdom` with `import Random`.
+the directory containing your Lab-13 code and replace `import System.Random` with `import Random`.
 :::
 
 The state monad `State s a` is a type constructor taking two parameters `s` and `a` representing
