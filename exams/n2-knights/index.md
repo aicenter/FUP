@@ -40,7 +40,8 @@ In Racket, implement the function
 
 where `board` is a list of lists representing an arbitrarily sized board containing binary values,
 where 1 denotes a knight and 0 an empty cell; The function returns `#t` if and only if no knight
-threatens another one.
+threatens another one. Your file should be called `knights.rkt` and `provide` the `is_valid?`
+function.
 
 ### Examples
 ```scheme
@@ -76,6 +77,8 @@ where
 * The function input represents an arbitrarily sized board containing `Nil` and `Knight` pieces.
 
 and the function returns `True` if and only if no knight threatens another one.
+
+Your file should be called `Knights.hs`, contain a module of the same name, and export the `is_valid` function.
 
 ### Examples
 

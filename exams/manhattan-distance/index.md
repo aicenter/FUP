@@ -64,7 +64,7 @@ $$
 
 In Racket, write a function (grid points) that accepts a list of named points and computes the
 nearest neighbour grid. The output should be a list of strings where each string represents one row
-in the grid.
+in the grid. Your file should be called `manhattan.rkt`
 
 ```scheme
 #lang racket
@@ -116,10 +116,11 @@ To construct a string from a list of characters `list->string`.
 ## Haskell Implementation
 In Haskell, write a function `grid :: [(Char,Int,Int)] -> [[Char]]` that computes the nearest
 neighbour grid. The output should be a list of strings where each string represents one row in the
-grid.
+grid. You file should be called `Manhattan.hs`, contain a module of the same name, and export the
+`grid` function:
 
 ```haskell
-module Task4 (grid) where
+module Manhattan (grid) where
 import Data.Char
 import Data.List
 

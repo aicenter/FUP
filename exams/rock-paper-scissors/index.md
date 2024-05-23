@@ -57,6 +57,8 @@ Throws will be represented as the symbols `'r`, `'p` and `'s`.
 ```
 You can use the `remove-duplicates` function to remove duplicate throws and `sort` with `symbol<?` to order throws.
 
+Your file is to be called `rps.rkt` and must provide the function `rps`.
+
 ### Examples
 
 Alice wins in the second round. Charlie loses immediately.
@@ -87,8 +89,9 @@ First two rounds are stalemates (stalemate, stalemate, win).
 ## Haskell
 
 For simplicity, throws will be represented as the characters `'r'`, `'p'` and `'s'`.
+Your task is to be called `RPS.hs` and must export the `rps` function.
 ```haskell
-module Task4 (rps) where
+module RPS (rps) where
 import Data.List
 
 isFinished xs = null xs || any null xs

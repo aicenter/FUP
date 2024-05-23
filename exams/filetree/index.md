@@ -71,6 +71,7 @@ already in the tree with the function
 (exists file tree)
 ```
 
+Your file should be called `filetree.rkt` and `provide` the `parse` and `exists` functions.
 
 ### Hints
 
@@ -126,7 +127,7 @@ already in the tree with the function
 exists :: String -> FTree String -> Bool
 ```
 
-Your filename has to end in `.hs`.
+Your file should be called `Filetree.hs`, contain a module of the same name, and export the `parse` and `exists` functions.
 
 ### Example
 

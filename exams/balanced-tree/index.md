@@ -87,13 +87,10 @@ For your convenience, you are provided with the functions
        tree)
       ))
 ```
-
-
 where `is-leaf?` determines whether a node is empty, and `show-tree` prints tree in a human readable format.
 
-Your task is to be called `task3.rkt` and must provide the `build-heap` and `is-leaf?` functions and 
-the `node` structure.
-Hence, the head of your file should read
+Your task is to be called `balanced-tree.rkt` and must provide the `build-heap` and `is-leaf?` functions and 
+the `node` structure.  Hence, the head of your file should read
 ```scheme
 #lang racket
 (provide node node-v node-left node-right is-leaf? build-heap)
@@ -162,11 +159,11 @@ instance (Show a) => Show (Tree a) where
     show tree = tostr tree 0
 ```
 
-Your task is to be called `Task4.rkt` and must export the `buildHeap` function and the `Tree` data type.
+Your task is to be called `BalancedTree.hs` and must export the `buildHeap` function and the `Tree` data type.
 Hence, the head of your file should read
 
 ```haskell
-module Task4 ( Tree (..), buildHeap) where
+module BalancedTree ( Tree (..), buildHeap) where
 data Tree a = Leaf | Node a (Tree a) (Tree a)
 ```
 

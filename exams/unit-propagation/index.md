@@ -53,9 +53,8 @@ of literals. Positive and negative literal is represented, respectively by the f
 As the resulting list of clauses returned by `propagate-units` should represent 
 a set, remove all the duplicated clauses from the list.
 
-Your task is to be called \texttt{task3.rkt} and must provide the `propagate-units` and 
-both structures `pos` and `neg`.
-Hence, the head of your file should start with
+Your task is to be called `unit-propagation.rkt` and must provide the `propagate-units` and 
+both structures `pos` and `neg`.  Hence, the head of your file should start with
 ```scheme
 #lang racket
 (provide propagate-units (struct-out pos) (struct-out neg))
@@ -119,13 +118,15 @@ instance Show Literal where
   show (Pos x) = x
 ```
 
-Your task is to be called \texttt{Task4.rkt} and must export the `propagateUnits` 
+Your task is to be called `UnitPropagation.hs` and must export the `propagateUnits` 
 function and the `Literal` data type.
 Hence, the head of your file should read
 
 ```haskell
-  module Task4 ( propagateUnits, Literal (..) ) where
-  import Data.List -- for delete, nub functions
+module UnitPropagation ( propagateUnits, Literal (..) ) where
+import Data.List -- for delete, nub functions
+
+-- your code goes here
 ```
 
 ## Hint

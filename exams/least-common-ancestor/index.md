@@ -56,7 +56,7 @@ For example,
 '(1 3 7) 
 ```
 
-Your file should be called \texttt{task3.rkt} and should export the `find-path` and 
+Your file should be called `ancestor.rkt` and should export the `find-path` and 
 `common-ancestor` functions and the structures `node` and `leaf`.
 ```scheme
 #lang racket
@@ -124,11 +124,11 @@ tree = Node 1 (Node 2 (Leaf 5) (Leaf 6)) (Node 3 (Leaf 4) (Leaf 7))
 [1,3,7]
 ```
 
-Your file should be called `Task4.hs` and should export the `commonAncestor`, 
+Your file should be called `Ancestor.hs` and should export the `commonAncestor`, 
 `findPath` functions and the type `Tree`.
 
 ```haskell
-module Task4 (findPath, commonAncestor, Tree(..)) where
+module Ancestor (findPath, commonAncestor, Tree(..)) where
 
 data Tree a = Leaf a
             | Node a (Tree a) (Tree a) deriving (Eq,Show)

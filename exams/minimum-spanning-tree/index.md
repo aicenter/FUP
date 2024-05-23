@@ -49,9 +49,8 @@ edges are represented by the following structures:
 (struct graph (nodes edges) #:transparent)
 ```
 
-Your file has to be called `task3.rkt` and must provide the function
-`minimum-spanning-tree` and the above structures so 
-it should start like this:
+Your file has to be called `spanning-tree.rkt`, provide the function
+`minimum-spanning-tree` and the above structures so it should start like this:
 ```scheme
 #lang racket
 (provide minimum-spanning-tree (struct-out edge) graph)
@@ -104,8 +103,7 @@ allowing sorting w.r.t. a given comparing function, e.g.,
 
 # Haskell
 
-In Haskell, we represent the weighted graph and edges by the following
-types:
+In Haskell, we represent the weighted graph and edges by the following types:
 ```haskell
 data Edge a b = Edge { u :: a,
                        v :: a,
@@ -145,7 +143,7 @@ The returned list of edges might be ordered arbitrarily.  Each edge might be ord
 well.  For instance, it does not matter if your output contains `Edge {u='C', v='F', weight=5}` or
 `Edge {u='F', v='C', weight=5}`. However, do not include both variants in your output.
 
-Your file has to be called `Task4.hs` and must export the function
+Your file has to be called `SpanningTree.hs` and must export the function
 `minSpanningTree` and the data types `Graph a b`,
 `Edge a b` so it should start like this:
 ```haskell
