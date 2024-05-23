@@ -48,7 +48,7 @@ Write a function `(cheapflight a b gr)` which takes a starting node `a`, a desti
 graph `gr`, and returns a list containing the cheapest path from start to destination, as well as the
 total cost. If there is no path from `a` to `b` return `#f`
 
-Your solution must be in a file called `task2.rkt` and has to `provide` the `cheapflight` function.
+Your solution must be in a file ending in `.rkt` and has to `provide` the `cheapflight` function.
 Your file should therefore start like this:
 ```scheme
 #lang racket
@@ -227,11 +227,11 @@ p3 = [2,5,4,3] -- cost: 6
 Write a function `cheapflight :: Node -> Node -> Graph -> Maybe (Path,Cost)` which takes a starting
 `Node`, a destination `Node`, a `Graph`, and returns the cheapest path from start to destination, as
 well as the total cost.
-Your solution must be in a module called `Task3.hs` and export the defined
+Your solution must be in a module called `Flight.hs` and export the defined
 types as well was the `cheapflight` function. Your file should therefore start like this:
 
 ```haskell
-module Task3 (cheapflight,Node,Cost,Edge,Graph,Path) where
+module Flight (cheapflight,Node,Cost,Edge,Graph,Path) where
 import Data.List -- needed for sorting (see hints)
 
 -- ... your code goes here ...
@@ -272,7 +272,7 @@ sortBy lowcost [([1,3],2.0) ([1,2,3],0.3)]
 
 ::: details Solution
 ```haskell
-module Task3 (cheapflight,Node,Cost,Edge,Graph,Path) where
+module Flight (cheapflight,Node,Cost,Edge,Graph,Path) where
 import Data.List
 
 type Node = Int
