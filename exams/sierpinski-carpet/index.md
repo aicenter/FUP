@@ -68,6 +68,8 @@ Enter row1 row2 col1 col2:
 _Make sure your program outputs the messages as in the examples_ (i.e. `Enter n:`, etc).  Otherwise
 the automatic evaluation will fail.
 
+Your file has to be called `Sierpinsky.hs`.
+
 ## Hints
 
 To join the boxes represented as lists of strings in the top figure you may find the function

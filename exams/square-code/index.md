@@ -43,7 +43,7 @@ $c$ is the smallest natural number greater than or equal to $\sqrt{n}$.
 
 In Racket, implement a function `(encode str)` that accepts a string
 and returns the encoded string as described above.
-Your file is to be called \texttt{task3.rkt} and must provide the function `encode`.
+Your file is to be called `square-code.rkt` and must provide the function `encode`.
 Hence, the head of your file should start with
 ```scheme
 #lang racket
@@ -104,12 +104,11 @@ The following shows the behaviour of the `encode` function.
 
 In Haskell, implement a function `encode :: String -> String` that accepts a string 
 and returns the encoded string as described above.
-Your task is to be called \texttt{Task4.rkt} and must export the `encode` 
-function.
+Your task is to be called `SquareCode.hs` and must export the `encode` function.
 Hence, the head of your file should read
 
 ```haskell
-module Task4 ( encode ) where
+module SquareCode ( encode ) where
 import Data.Char
 
 -- your code goes here
