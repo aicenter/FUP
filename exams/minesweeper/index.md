@@ -44,7 +44,7 @@ $$
 
 ## Racket
 
-Your file should have the extension `.rkt`. You may assume the input is rectangular and non-empty.
+Your file should be called `minesweeper.rkt`. You may assume the input is rectangular and non-empty.
 The functions `string->list` and `string-split` might be useful to parse the output of the function
 `port-lines` which reads from stdin. You can use the following skeleton. 
 ```scheme
@@ -121,7 +121,7 @@ ghci> readInput
 ["...","...","..."]  <-- this is the function output
 ```
 
-Your file should have the extension `.hs`.
+Your file should have the extension `Minesweeper.hs`.
 
 ```haskell
 -- for converting ints to chars

@@ -57,7 +57,7 @@ For example,
 (node 1 (list (leaf 3) (node 2 (list (leaf 4))))) ; not correct
 ```
 
-Your file should be called `task3.rkt` and should export the `add-edge` and 
+Your file should be called `building-trees.rkt` and should export the `add-edge` and 
 `build-tree` functions and the structures `node` and `leaf`.
 ```scheme
 #lang racket
@@ -191,11 +191,11 @@ the typeclass `Ord`. For example,
                          Node {val = 2, kids = [Leaf {val = 4}]}]} -- not correct
 ```
 
-Your file should be called `Task4.hs` and should export the `buildTree`, 
+Your file should be called `BuildingTrees.hs` and should export the `buildTree`, 
 `addEdge` functions and the type `Tree`.
 
 ```haskell
-module Task4 (addEdge, buildTree, Tree(..)) where
+module BuildingTrees (addEdge, buildTree, Tree(..)) where
 import Data.List
 
 data Tree a = Leaf { val :: a } 

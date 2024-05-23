@@ -54,7 +54,7 @@ A matrix is represented as a list of its rows, e.g. $\mathbf{S}_3$ is represente
   (7 6 5))
 ```
 
-Your file is to be called `task3.rkt` and must provide the function `spiral-matrix`.
+Your file is to be called `spiral-matrix.rkt` and must provide the function `spiral-matrix`.
 Hence, the head of your file should start with
 ```scheme
 #lang racket
@@ -134,15 +134,15 @@ A matrix is represented as a list of its rows by data type
 ```
 
 
-Your task is to be called `Task4.rkt` and must export the `spiralMatrix` 
+Your task is to be called `SpiralMatrix.rkt` and must export the `spiralMatrix` 
 function.
 Hence, the head of your file should read
 
 ```haskell
-  module Task4 ( spiralMatrix ) where
-  type Matrix = [[Int]]
+module SpiralMatrix ( spiralMatrix ) where
+type Matrix = [[Int]]
 
-  -- your code goes here
+-- your code goes here
 ```
 
 ### Hint

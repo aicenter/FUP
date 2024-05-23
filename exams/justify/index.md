@@ -86,6 +86,9 @@ Constraints:
 
 ## Racket
 
+
+Your file should be called `justify.rkt`, and `provide` the `justify` function.
+
 ::: details Solution
 ```scheme
 #lang racket
@@ -232,8 +235,11 @@ Constraints:
 
 ## Haskell
 
+Your file should be called `Justify.hs`, contain a module of the same name, and export the `justify` function.
+
 ::: details Solution
 ```haskell
+module Justify (justify) where
 import Data.List (intercalate)
 
 pad :: [String] -> Int -> String
