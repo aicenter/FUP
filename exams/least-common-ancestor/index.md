@@ -66,7 +66,7 @@ Your file should be called `ancestor.rkt` and should export the `find-path` and
          (struct-out node)
          (struct-out leaf))
 
-(struct node (val kids) #:transparent)
+(struct node (val left right) #:transparent)
 (struct leaf (val) #:transparent)
 
 (define (find-path x tree)
