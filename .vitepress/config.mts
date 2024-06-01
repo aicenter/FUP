@@ -91,7 +91,7 @@ export default withMermaid(
             { text: '6.  Text Justification', link: '/exams/justify/' },
             { text: '7.  Photographing Skyscrapers', link: '/exams/photo-skyscraper/' },
             { text: '8.  Non-deterministic Finite Automata', link: '/exams/finite-automata/' },
-            { text: '9.  Least Common Anchestor', link: '/exams/least-common-ancestor/' },
+            { text: '9.  Least Common Ancestor', link: '/exams/least-common-ancestor/' },
             { text: '10. Building Trees', link: '/exams/building-trees/' },
             { text: '11. Square Code', link: '/exams/square-code/' },
             { text: '12. Rock, Paper, Scissors', link: '/exams/rock-paper-scissors/' },
