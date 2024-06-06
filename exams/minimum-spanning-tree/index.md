@@ -13,7 +13,7 @@ $E'\subseteq E$, $T$ is a tree (i.e., a connected graph without cycles) and $\su
 minimum possible among such trees. The figure shows an example of a connected weighted
 graph and its minimum spanning tree.
 
-![Left: A connected, weighted graph. Right: Its minimum spanning tree of weight 16.](/img/minimum-spanning-tree-graph.svg){class="inverting-image"}
+![Left: A connected, weighted graph. Right: Its minimum spanning tree of weight 16.](/img/minimum-spanning-tree-graph.svg){style="width: 100%; margin: auto", class="inverting-image"}
 
 Your task is to implement an algorithm computing the minimum spanning tree, i.e.,
 a function returning for a given connected weighted graph $(V,E)$ the subset $E'$

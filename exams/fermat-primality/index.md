@@ -26,13 +26,13 @@ respective number, are avoided when testing your implementation of this task.
 To generate pseudorandom numbers in a given interval, use 
 the *Linear Congruential Generator (LCG)* 
 $$
-  x_{n+1} = (A x_n + C) \ \texttt{mod }M,
+  x_{n+1} = (A x_n + C) \ \texttt{mod}\, M,
 $$
 where $A$, $C$ and $M$ are constants. This equation generates the next pseudorandom number $x_{n+1}$ from the previous $x_n$. The number $x_0$ is the seed.
 
 The number $b$ drawn from $(1)$ can be transformed to the interval $b^\text{lower} \leq b' < b^\text{upper}$ as 
 $$
-  b' = (b \ \texttt{mod } (b^\text{upper} - b^\text{lower})) + b^\text{lower}. 
+  b' = (b \ \texttt{mod}\, (b^\text{upper} - b^\text{lower})) + b^\text{lower}.
 $$
 
 
