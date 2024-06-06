@@ -73,7 +73,7 @@ To that end, implement the function
 ```haskell
 accepts :: (Eq a, Eq b) => Automaton a b -> [b] -> Bool
 ```
-which takes and automaton and a list of symbols that represents the word, and returns \texttt{True}
+which takes and automaton and a list of symbols that represents the word, and returns **True**
 iff the word is accepted. Notice, `a` and `b` are instances of `Eq`.  The function is used as
 follows.
 ```haskell

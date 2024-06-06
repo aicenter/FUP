@@ -192,25 +192,25 @@ the type we define:
 3. Parsers can return un-parsed strings as partial results.
 
 With can start with 1.) and define a parser as a type that contains a function which accepts a
-string and returns `Expr a`.
+string and returns some parsed type `a`.
 ```haskell
-newtype Parser a = P (String -> Expr a)
+newtype Parser a = P (String -> a)
 ```
 
 Next, we can include 3.) the un-parsed/rest string:
 ```haskell
-newtype Parser a = P (String -> (Expr a, String))
+newtype Parser a = P (String -> (a, String))
 ```
 
 Finally, parsers can fail, so we get:
 ```haskell
-newtype Parser a = P (String -> Maybe (Expr a, String))
+newtype Parser a = P (String -> Maybe (a, String))
 ```
 
 To conveniently access the function contained in a parser, we give it a name and arrive at the final
 type definition:
 ```haskell
-newtype Parser a = P { parse :: String -> Maybe (Expr a, String)}
+newtype Parser a = P { parse :: String -> Maybe (a, String)}
 ```
 
 With this datatype, and by leveraging what we know about functors, monads, and applicatives, we will
@@ -228,7 +228,7 @@ A `Char` parser always succedes as long as the given string is not empty. We wil
 `item`, because it parses an arbitrary item from the input string. To define this parser we use the
 data constructor `P`, pass a function accepting a string, and return a `Maybe (Char, String)`:
 ```haskell
-newtype Parser a = P { parse :: String -> Maybe (Expr a, String)}
+newtype Parser a = P { parse :: String -> Maybe (a, String)}
 
 item :: Parser Char
 item = P (\input -> case input of
@@ -258,7 +258,7 @@ instance Functor Parser where
 𝝺> parse (fmap (=='c') item) "cde"
 Just (True, "de")
 ```
-In this case `fmap` runs a given parser `p`, and, if it succedes, applies the function `f` to the
+In this case `fmap` runs a given parser `p`, and, if it succeeds, applies the function `f` to the
 resulting value that was parsed.
 
 #### `Applicative Parser`

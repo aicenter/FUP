@@ -35,7 +35,7 @@ $7$ and $7$ is $7$.
 In Racket, implement a function `(common-ancestor x y tree)` that takes 
 two nodes `x`, `y` and a binary tree `tree`, and returns the least common-ancestor
 of `x` and `y` in `tree`. If `x` or `y` does not belong to `tree`,
-the function returns \Verb|#f|.
+the function returns `#f`.
 
 To represent binary trees in Racket, use the following structures:
 ```scheme
@@ -66,7 +66,7 @@ Your file should be called `ancestor.rkt` and should export the `find-path` and
          (struct-out node)
          (struct-out leaf))
 
-(struct node (val kids) #:transparent)
+(struct node (val left right) #:transparent)
 (struct leaf (val) #:transparent)
 
 (define (find-path x tree)

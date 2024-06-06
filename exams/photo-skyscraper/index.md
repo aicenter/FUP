@@ -34,7 +34,7 @@ visible.
 
 In Racket, write a function `(best-view city)` that outputs the direction with the most roofs
 visible, along with the number of roofs visible from that direction. The direction should be one of
-four symbols: `'N`, `'S`, `'E`, and `'N`. The result should be a pair of the format
+four symbols: `'N`, `'S`, `'E`, and `'W`. The result should be a pair of the format
 `'(direction . number)`.
 
 ```scheme
