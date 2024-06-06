@@ -10,7 +10,7 @@ outline: deep
 The *Sierpiński carpet* is a plane fractal first described by Wacław Sierpiński in 1916.
 Your task is to generate this fractal in a text format represented as a list of strings. 
 Each string represent a single row in the picture. The picture $f(n)$ is defined recursively.
-For $n=0$, we define $f(0)="\#"$. For $n>0$, we define $f(n)$ as the picture depicted below.
+For $n=0$, we define $f(0) = \texttt{"\#"}$. For $n>0$, we define $f(n)$ as the picture depicted below.
 In other words, $f(n)$ consists of eigth copies of $f(n-1)$ and 
 the middle box of the same size as $f(n-1)$ filled with spaces.
 
