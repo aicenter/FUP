@@ -9,33 +9,50 @@ outline: deep
  
 The *Sierpiński carpet* is a plane fractal first described by Wacław Sierpiński in 1916.
 Your task is to generate this fractal in a text format represented as a list of strings. 
-Each string represent a single row in the picture. The picture $f(n)$ is defined recursively.
-For $n=0$, we define $f(0) = \texttt{"\#"}$. For $n>0$, we define $f(n)$ as the picture depicted below.
-In other words, $f(n)$ consists of eigth copies of $f(n-1)$ and 
-the middle box of the same size as $f(n-1)$ filled with spaces.
+Each string represents a single row in the picture. The picture $f(n)$ is defined recursively.
+For $n=0$, we define $f(0) = \texttt{"\#"}$. For $n>0$, we define $f(n)$ as shown below.
 
 <img src="/img/sierpinski-carpet-construction.svg" style="width: 50%; margin: auto;">
 
-
-The first iterations $f(1)$ and $f(2)$ look as follows:
+In other words, $f(n)$ consists of eight copies of $f(n-1)$ and 
+the middle box of the same size as $f(n-1)$ filled with spaces.
+The first iterations $f(0)$, $f(1)$, $f(2)$, and $f(3)$ look as follows:
 ```
-###                #########
-# #                # ## ## #
-###                #########  
-                   ###   ###
-                   # #   # #
-                   ###   ###  
-                   #########
-                   # ## ## #
-                   #########  
+#     ###      #########      ###########################
+      # #      # ## ## #      # ## ## ## ## ## ## ## ## #
+      ###      #########      ###########################
+               ###   ###      ###   ######   ######   ###
+               # #   # #      # #   # ## #   # ## #   # #
+               ###   ###      ###   ######   ######   ###
+               #########      ###########################
+               # ## ## #      # ## ## ## ## ## ## ## ## #
+               #########      ###########################
+                              #########         #########
+                              # ## ## #         # ## ## #
+                              #########         #########
+                              ###   ###         ###   ###
+                              # #   # #         # #   # #
+                              ###   ###         ###   ###
+                              #########         #########
+                              # ## ## #         # ## ## #
+                              #########         #########
+                              ###########################
+                              # ## ## ## ## ## ## ## ## #
+                              ###########################
+                              ###   ######   ######   ###
+                              # #   # ## #   # ## #   # #
+                              ###   ######   ######   ###
+                              ###########################
+                              # ## ## ## ## ## ## ## ## #
+                              ###########################
 ```
 
-The size of the picture grows exponentially with $n$, namely it is $3^n$.
+The size of the picture grows exponentially with $3^n$.
 
 ## IO Program
 
 In Haskell, implement a function of type `Int -> [String]` that for a given
-natural number $n$ returns the Sierpi\'nski carpet $f(n)$ represented as a list of strings.
+natural number $n$ returns the Sierpiński carpet $f(n)$ represented as a list of strings.
 Further, create an IO program allowing the user to enter the number $n$. As the size of 
 the carpet quickly grows, it also asks the user to enter a window to be displayed.
 More precisely, the user enters four numbers `row1`, `row2`, `col1`,
