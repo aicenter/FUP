@@ -16,7 +16,7 @@ $$
 a^{p-1} \equiv 1\ (\texttt{mod }p).
 $$
 
-If $(1)$ holds for all numbers $a$, it is highly probable that $p$ is prime.
+If $(2)$ holds for all numbers $a$, it is highly probable that $p$ is prime.
 This probabilistic primality test is known as the *Fermat Primality Test*.  Note, the
 *Carmichael numbers*, which are composite yet pass the test for all $a$ relatively prime to the
 respective number, are avoided when testing your implementation of this task. 
