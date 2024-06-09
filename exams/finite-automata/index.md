@@ -188,13 +188,13 @@ $\mathcal{F}$.
 The particular automaton from  the figure is defined as follows.
 ```scheme
 (define nfa
-  (make-automaton
-   (list (make-trans 1 #\a 2)
-         (make-trans 2 #\b 2)
-         (make-trans 1 #\a 3)
-         (make-trans 3 #\b 4)
-         (make-trans 4 #\a 3)
-         (make-trans 2 #\a 4))
+  (automaton
+   (list (transition 1 #\a 2)
+         (transition 2 #\b 2)
+         (transition 1 #\a 3)
+         (transition 3 #\b 4)
+         (transition 4 #\a 3)
+         (transition 2 #\a 4))
    1
    (list 2 3)))
 ```
