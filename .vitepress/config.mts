@@ -8,9 +8,9 @@ export default withMermaid(
   defineConfig({
     title: "Functional Programming",
     description: "Course materials for the functional programming course at the Czech Technical University.",
-  
+
     base: "/FUP/",
-  
+
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
       nav: [
@@ -20,11 +20,11 @@ export default withMermaid(
         { text: 'Homework', link: '/homework/' },
         { text: 'Exams', link: '/exams/' },
       ],
-  
+
       sidebar: [
-  
+
         { text: 'Organization', link: '/organization' },
-  
+
         {
           text: 'Lectures',
           link: '/lectures/',
@@ -35,7 +35,6 @@ export default withMermaid(
             { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04'},
             { text: '05: Macros & Interpreters', link: '/lectures/lecture05'},
             { text: '06: Lambda Calculus', link: '/lectures/lecture06'},
-            { text: 'Bonus: Immutable datastructures', link: '/lectures/bonus'},
             { text: '07: Haskell Basics', link: '/lectures/lecture07'},
             { text: '08: Haskell Types', link: '/lectures/lecture08'},
             { text: '09: Type Classes', link: '/lectures/lecture09'},
@@ -43,10 +42,9 @@ export default withMermaid(
             { text: '11: Monadic Parsing', link: '/lectures/lecture11'},
             { text: '12: State Monad', link: '/lectures/lecture12'},
             { text: '13: Monoids & Foldables', link: '/lectures/lecture13'},
-            { text: '14: Parallel Programming', link: '/lectures/lecture14'},
           ]
         },
-  
+
         {
           text: 'Labs',
           link: '/labs/',
@@ -66,7 +64,7 @@ export default withMermaid(
             { text: '13: State Monad', link: '/labs/lab13' },
           ]
         },
-  
+
         {
           text: 'Homework',
           link: '/homework/',
@@ -77,7 +75,7 @@ export default withMermaid(
             { text: '04: Parser of λ-programs', link: '/homework/hw04' },
           ]
         },
-  
+
         {
           text: 'Exams',
           link: '/exams/',
@@ -105,22 +103,22 @@ export default withMermaid(
             { text: '20. Convex Hull', link: '/exams/convex-hull/' },
           ]
         },
-  
+
       ],
-  
+
       socialLinks: [
         { icon: 'github', link: 'https://github.com/aicenter/FUP' }
       ],
-  
+
       editLink: {
         pattern: 'https://github.com/aicenter/FUP/edit/main/:path'
       },
-  
+
       search: {
         provider: 'local'
       },
     },
-  
+
     markdown: {
       config: (md) => {
         md.use(markdownItMathjax3);
