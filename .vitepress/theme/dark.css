@@ -1,7 +1,0 @@
-:root.dark .inverting-image {
-    filter: invert(1) hue-rotate(180deg);
-}
-
-.VPLink {
-    font-variant-numeric: tabular-nums;
-}

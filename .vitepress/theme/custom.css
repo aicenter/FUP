@@ -1,0 +1,15 @@
+:root.dark .inverting-image {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+.VPLink {
+    font-variant-numeric: tabular-nums;
+}
+
+:root {
+    --vp-font-family-base: "Inter", sans-serif;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
