@@ -2,6 +2,23 @@
 outline: deep
 ---
 
+# Homework
+
+We will publish four homework assignments for **50 points** in total:
+
+| Assignment | Language | Opening | Deadline | Points |
+| - | -------- | ------- | -------- | ------:|
+| [ASCII Art](/homework/hw01.md) | Racket   | 05.03.  | 25.03.   |     10 |
+| [SVGen Interpreter](/homework/hw02.md) | Racket   | 19.03.  | 08.04.   |     15 |
+| [λ-Calculus Evaluator](/homework/hw03.md) | Haskell  | 09.04.  | 02.05.   |     12 |
+| [Parser of λ-Programs](/homework/hw04.md) | Haskell  | 30.04.  | 20.05.   |     13 |
+
+## Requirements
+
+You have to reach at least **25 points** in total, and You need **at least one point** from every homework. For each day that a homework assignment is submitted past the deadline, a penalty of one point will be deducted, until only one point is left on your score.
+
+Keep in mind our academic principles — [no plagiarism](https://cw.fel.cvut.cz/wiki/help/common/plagiaty_opisovani), avoid sharing code snippets directly, and try to come up with a solution by yourself first.
+
 ## Note on the private test data
 
 A part of any programming assignment is generating test cases and testing the produced algorithm. It
