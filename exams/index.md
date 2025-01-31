@@ -1,6 +1,6 @@
 # Exam
 
-The final exam consists of The *programming* part, followed by an optional *oral* exam:
+The final exam consists of a practical *programming* part, followed by an optional *oral* exam:
 
 - **30 points:** In the *programming* exam, you will have 3 hours to solve one Racket assignment (15 points) and one Haskell assignment (15 points). You have to reach at least 16 points in total to pass the programming exam. You will have access to all course materials on this webpage, as well as the Racket documentation and Hoogle, but you will not have access to the internet.
 - **20 points:** You can take an optional 15-minute *oral exam* after you pass the programming exam. We will ask you about the theoretical underpinnings of functional programming, Racket, and Haskell. You can earn up to 20 extra points, and you cannot lose any points.
