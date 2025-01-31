@@ -1,7 +1,7 @@
 ---
 outline: deep
 ---
-# Immutable data structures
+# Immutable Data Structures
 
 I already discussed that all data structures in purely functional programs are immutable; see
 [Lecture 1](lecture01#immutability). In this lecture, I will introduce some examples of

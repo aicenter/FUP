@@ -2,7 +2,7 @@
 outline: deep
 ---
 
-# Higher-order functions
+# Higher-order Functions
 
 In the previous lecture, we saw how to iterate through a list by means of recursion. In particular,
 we implemented a recursive function filtering a given list according to a Boolean function which was

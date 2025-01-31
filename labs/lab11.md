@@ -1,14 +1,14 @@
 # Lab 11: Functors and IO
 
 ## Exercise 1
- This is a warm-up exercise. Write a function converting a string into a CamelCase format. It takes a string, splits particular words separated by whitespace characters, changes the first letter of each word to uppercase, and joins all the words into a single string. E.g. `" no air"` is converted into `"NoAir"`. Moreover, make the function polymorphic so that it works over any functor instance over `String`, i.e., our function should have the following type:
+This is a warm-up exercise. Write a function converting a string into a CamelCase format. It takes a string, splits particular words separated by whitespace characters, changes the first letter of each word to uppercase, and joins all the words into a single string. E.g. `" no air"` is converted into `"NoAir"`. Moreover, make the function polymorphic so that it works over any functor instance over `String`, i.e., our function should have the following type:
 
 ```haskell
 toCamelCaseF :: Functor f => f String -> f String
 ```
 
 ### Solution
- First, we need a function converting an alphabetic character into uppercase. In the library `Data.Char` there is a function `toUpper` doing that. We will implement this function ourselves. To represent the relation between lowercase and uppercase letters, we take a list of tuples `[('a','A'), ('b','B'),...]`. This can be created by zipping `['a'..'z']` and `['A'..'Z']`. For a character `c` if it is a lowercase letter, then we return the corresponding uppercase letter; otherwise we return just `c`. To do that we can use the function
+First, we need a function converting an alphabetic character into uppercase. In the library `Data.Char` there is a function `toUpper` doing that. We will implement this function ourselves. To represent the relation between lowercase and uppercase letters, we take a list of tuples `[('a','A'), ('b','B'),...]`. This can be created by zipping `['a'..'z']` and `['A'..'Z']`. For a character `c` if it is a lowercase letter, then we return the corresponding uppercase letter; otherwise we return just `c`. To do that we can use the function
 ```haskell
 lookup :: Eq a => a -> [(a, b)] -> Maybe b
 ```
@@ -58,7 +58,7 @@ Just "NoAir"
 ```
 
 ## Exercise 2
- A deterministic finite automaton (DFA) is a tuple $\langle Q,\Sigma,\delta,init,F\rangle$, where $Q$ is a set of states, $\Sigma$ is a finite alphabet, $\delta\colon Q\times\Sigma\to Q$ is a transition function, $init\in Q$ is an initial state and $F\subseteq Q$ is a set of final states. DFAs play a crucial role in applications of regular expressions as each regular expression can be converted into an equivalent DFA accepting the language defined by the regular expression. For instance, the regular expression `[0-9]+\.[0-9][0-9]` defines a language of numbers having the decimal point followed by two digits, e.g. $123.00$, $0.12$, $3476.25$. The equivalent automaton is depicted below. It has states `Before, Digit, Dot, First, Second`. `Before` is the initial state and `Second` is the only final state. Automaton reads the input characters and changes its state according to $\delta$. After the whole input is read, it accepts the input string iff it is in a final state. At the beginning, it is in `Before`. Once it reads a digit, the state changes to `Digit` and remains there until `.` is read. Then the next digit changes the state to `First` and finally the second digit after the decimal point changes the state to `Second` which is final. Anything else leads to the state `Fail`.
+A deterministic finite automaton (DFA) is a tuple $\langle Q,\Sigma,\delta,init,F\rangle$, where $Q$ is a set of states, $\Sigma$ is a finite alphabet, $\delta\colon Q\times\Sigma\to Q$ is a transition function, $init\in Q$ is an initial state and $F\subseteq Q$ is a set of final states. DFAs play a crucial role in applications of regular expressions as each regular expression can be converted into an equivalent DFA accepting the language defined by the regular expression. For instance, the regular expression `[0-9]+\.[0-9][0-9]` defines a language of numbers having the decimal point followed by two digits, e.g. $123.00$, $0.12$, $3476.25$. The equivalent automaton is depicted below. It has states `Before, Digit, Dot, First, Second`. `Before` is the initial state and `Second` is the only final state. Automaton reads the input characters and changes its state according to $\delta$. After the whole input is read, it accepts the input string iff it is in a final state. At the beginning, it is in `Before`. Once it reads a digit, the state changes to `Digit` and remains there until `.` is read. Then the next digit changes the state to `First` and finally the second digit after the decimal point changes the state to `Second` which is final. Anything else leads to the state `Fail`.
 
 ![](/img/automaton.png){class="inverting-image" style="width: 100%; margin: auto;" }
 
@@ -79,7 +79,7 @@ parseNumF :: Functor f => f String -> f (Maybe Float)
 ```
 
 ### Solution
- To model an automaton, we need the transition function $\delta\colon Q\times\Sigma\to Q$, the initial and final states.
+To model an automaton, we need the transition function $\delta\colon Q\times\Sigma\to Q$, the initial and final states.
 We make the type `DFA a` parametric over a type `a` representing states as we wish to work with automata whose states might be integers or strings or other data types. We could also make `DFA a` parametric over a type `b` representing the alphabet $\Sigma$ but for this example we set $\Sigma=$ `Char`. Thus the transition function $\delta$ is of type `a -> Char -> a`. The initial state is of type `a` and the set of final states can be represented as a predicate of type `a -> Bool`.
 ```haskell
 data DFA a = Automaton (a->Char->a) a (a->Bool)
@@ -157,10 +157,10 @@ Nothing
 ```
 
 ## Exercise 3
- Using the function `parseNumF` from the previous exercise, write a function `parseIO :: IO ()` that displays a string "Enter number:\n" and then reads from the keyboard a string. If the string has the correct format (i.e., number with two digits after the decimal point), then it displays "Ok"; otherwise it asks for the user's input again.
+Using the function `parseNumF` from the previous exercise, write a function `parseIO :: IO ()` that displays a string "Enter number:\n" and then reads from the keyboard a string. If the string has the correct format (i.e., number with two digits after the decimal point), then it displays "Ok"; otherwise it asks for the user's input again.
 
 ### Solution
- First, we execute the action `putStrLn` displaying the string "Enter number:". Then we execute the action `parseNumF getLine :: IO (Maybe Float)`. Depending of its result, we either display "Ok" or execute the whole action `parseIO` again. We can either use the monadic operators as follows:
+First, we execute the action `putStrLn` displaying the string "Enter number:". Then we execute the action `parseNumF getLine :: IO (Maybe Float)`. Depending of its result, we either display "Ok" or execute the whole action `parseIO` again. We can either use the monadic operators as follows:
 ::: details Solution: `using bind`
 ```haskell
 parseIO :: IO ()
@@ -185,7 +185,7 @@ parseIO = do putStrLn "Enter number:"
 :::
 
 ## Task 1
- Consider the following data type representing Boolean propositional formulas built up from atoms by negations, conjunctions, and disjunctions.
+Consider the following data type representing Boolean propositional formulas built up from atoms by negations, conjunctions, and disjunctions.
 
 ```haskell
 data Expr a = Atom a
@@ -237,7 +237,7 @@ getAtoms (Or e1 e2) = getAtoms e1 ++ getAtoms e2
 :::
 
 ## Task 2
- The type constructor `Expr` from the previous task can be made into an instance of `Functor` as follows:
+The type constructor `Expr` from the previous task can be made into an instance of `Functor` as follows:
 
 ```haskell
 instance Functor Expr where

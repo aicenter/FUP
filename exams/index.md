@@ -1,14 +1,14 @@
 # Exam
 
-- To be admitted to the exam, you should have to fulfill the conditions for passing the
-[homework requirements](/homework/#requirements).
+The final exam consists of The *programming* part, followed by an optional *oral* exam:
 
-- The [_**programming exam**_](#programming-exam-details):
-    - You have to solve *one Racket assignment* (15 points) and *one Haskell assignment* (15
-      points), which you have to finish in 3 hours.
-    - You have to reach at least **16 points** in the programming exam *to pass the exam*.
-    - You have access to *all course materials* on this webpage, to the racket documentation, to
-      Hoogle, but of course no internet.
+- **30 points:** In the *programming* exam, you will have 3 hours to solve one Racket assignment (15 points) and one Haskell assignment (15 points). You have to reach at least 16 points in total to pass the programming exam. You will have access to all course materials on this webpage, as well as the Racket documentation and Hoogle, but you will not have access to the internet.
+- **20 points:** You can take an optional 15-minute *oral exam* after you pass the programming exam. We will ask you about the theoretical underpinnings of functional programming, Racket, and Haskell. You can earn up to 20 extra points, and you cannot lose any points.
+
+To be eligible for the exam, your homework solutions must meet at least the [minimum requirements](/homework/#requirements).
+
+
+### Programming exam details
 
 ::: danger Important
 Please make sure you know your lab computer password. You can [change it
@@ -18,17 +18,6 @@ here](https://www.felk.cvut.cz/labpass/).
 ::: tip Course material
 *Make use of the search* (Ctrl+K / ⌘+K) on the course webpage!
 :::
-
-- The (optional) _**oral exam**_:
-    - You can take this part of the exam *only if you passed the programming exam*.
-    - Approximately 15 minuates. No materials. Just pen and paper.
-    - We will ask you about the theoretical underpinnings of functional programming, Racket, and
-      Haskell.
-    - You can earn an extra **20 points**, but *you cannot loose any points* not matter what you say
-      in this part of the exam.
-
-
-### Programming exam details
 
 The programming exam will consist of solving two of the tasks listed on this webpage - without access to their solutions. We suggest not looking at the text of the assignments before you have time to attempt to solve it. Most of the tasks have a Racket and a Haskell version. During the exam you have to solve *one task in one language* and another task in another language. So an exam could look like:
 
@@ -42,13 +31,4 @@ You will upload your exam solutions to BRUTE like you are used to from the homew
 immediate feedback on how many points you achieved. You can upload your solution as many times as
 you want.
 
-We offer the following exam dates for the summer semester of 2024:
-
-| Exam | Date                       | Time |
-| ---- | -------------------------- |----- |
-| 1    | Tuesday,  28th of May      | 10am |
-| 2    | Monday,   3rd of June      | 10am |
-| 3    | Monday,   10th of June     | 10am |
-| 4    | Monday,   17th of June     | 10am |
-| 5    | Thursday, 27th of June     | 10am |
-| 6    | Monday,   2nd of September | 10am |
+The exam dates for 2025 are not decided yet.

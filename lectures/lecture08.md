@@ -2,7 +2,7 @@
 outline: deep
 ---
 
-# Haskell's type system
+# Haskell's Type System
 
 - _**Strong**_: Haskell *guarantees* that your program does not have any type-level errors. Strong
     also means that it will not do automatic type coercion (i.e. casting/type conversion).
@@ -35,7 +35,7 @@ Some examples:
 ```
 :::
 
-## Function types
+## Function Types
 
 Functions have types, too! The type signatures that you wrote/saw are created by the type
 constructor `->`, which is right associative:

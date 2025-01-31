@@ -8,9 +8,9 @@ export default withMermaid(
   defineConfig({
     title: "Functional Programming",
     description: "Course materials for the functional programming course at the Czech Technical University.",
-  
     base: "/FUP/",
-  
+    head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/FUP/lambda_auto.svg' }]],
+
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
       nav: [
@@ -20,11 +20,11 @@ export default withMermaid(
         { text: 'Homework', link: '/homework/' },
         { text: 'Exams', link: '/exams/' },
       ],
-  
+
       sidebar: [
-  
+
         { text: 'Organization', link: '/organization' },
-  
+
         {
           text: 'Lectures',
           link: '/lectures/',
@@ -35,7 +35,6 @@ export default withMermaid(
             { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04'},
             { text: '05: Macros & Interpreters', link: '/lectures/lecture05'},
             { text: '06: Lambda Calculus', link: '/lectures/lecture06'},
-            { text: 'Bonus: Immutable datastructures', link: '/lectures/bonus'},
             { text: '07: Haskell Basics', link: '/lectures/lecture07'},
             { text: '08: Haskell Types', link: '/lectures/lecture08'},
             { text: '09: Type Classes', link: '/lectures/lecture09'},
@@ -43,10 +42,9 @@ export default withMermaid(
             { text: '11: Monadic Parsing', link: '/lectures/lecture11'},
             { text: '12: State Monad', link: '/lectures/lecture12'},
             { text: '13: Monoids & Foldables', link: '/lectures/lecture13'},
-            { text: '14: Parallel Programming', link: '/lectures/lecture14'},
           ]
         },
-  
+
         {
           text: 'Labs',
           link: '/labs/',
@@ -66,7 +64,7 @@ export default withMermaid(
             { text: '13: State Monad', link: '/labs/lab13' },
           ]
         },
-  
+
         {
           text: 'Homework',
           link: '/homework/',
@@ -77,50 +75,49 @@ export default withMermaid(
             { text: '04: Parser of λ-programs', link: '/homework/hw04' },
           ]
         },
-  
+
         {
           text: 'Exams',
           link: '/exams/',
-          collapsed: true,
           items: [
-            { text: '1.  Minesweeper', link: '/exams/minesweeper/' },
-            { text: '2.  Cheap Flights', link: '/exams/cheap-flights/' },
-            { text: '3.  Manhattan Distance', link: '/exams/manhattan-distance/' },
-            { text: '4.  N²-Knights', link: '/exams/n2-knights/' },
-            { text: '5.  Filetree', link: '/exams/filetree/' },
-            { text: '6.  Text Justification', link: '/exams/justify/' },
-            { text: '7.  Photographing Skyscrapers', link: '/exams/photo-skyscraper/' },
-            { text: '8.  Non-deterministic Finite Automata', link: '/exams/finite-automata/' },
-            { text: '9.  Least Common Ancestor', link: '/exams/least-common-ancestor/' },
-            { text: '10. Building Trees', link: '/exams/building-trees/' },
-            { text: '11. Square Code', link: '/exams/square-code/' },
-            { text: '12. Rock, Paper, Scissors', link: '/exams/rock-paper-scissors/' },
-            { text: '13. Sierpinski Carpet', link: '/exams/sierpinski-carpet/' },
-            { text: '14. Spiral Matrix', link: '/exams/spiral-matrix/' },
-            { text: '15. Unit Propagation', link: '/exams/unit-propagation/' },
-            { text: '16. Balanced Binary Tree', link: '/exams/balanced-tree/' },
-            { text: '17. Minimum Spanning Tree', link: '/exams/minimum-spanning-tree/' },
-            { text: '18. Pretty Printing Binary Numbers', link: '/exams/pretty-binary-numbers/' },
-            { text: '19. Fermat Primality Test', link: '/exams/fermat-primality/' },
-            { text: '20. Convex Hull', link: '/exams/convex-hull/' },
+            { text: '01: Minesweeper', link: '/exams/minesweeper/' },
+            { text: '02: Cheap Flights', link: '/exams/cheap-flights/' },
+            { text: '03: Manhattan Distance', link: '/exams/manhattan-distance/' },
+            { text: '04: N²-Knights', link: '/exams/n2-knights/' },
+            { text: '05: Filetree', link: '/exams/filetree/' },
+            { text: '06: Text Justification', link: '/exams/justify/' },
+            { text: '07: Photographing Skyscrapers', link: '/exams/photo-skyscraper/' },
+            { text: '08: Non-deterministic Finite Automata', link: '/exams/finite-automata/' },
+            { text: '09: Least Common Ancestor', link: '/exams/least-common-ancestor/' },
+            { text: '10: Building Trees', link: '/exams/building-trees/' },
+            { text: '11: Square Code', link: '/exams/square-code/' },
+            { text: '12: Rock, Paper, Scissors', link: '/exams/rock-paper-scissors/' },
+            { text: '13: Sierpinski Carpet', link: '/exams/sierpinski-carpet/' },
+            { text: '14: Spiral Matrix', link: '/exams/spiral-matrix/' },
+            { text: '15: Unit Propagation', link: '/exams/unit-propagation/' },
+            { text: '16: Balanced Binary Tree', link: '/exams/balanced-tree/' },
+            { text: '17: Minimum Spanning Tree', link: '/exams/minimum-spanning-tree/' },
+            { text: '18: Pretty Printing Binary Numbers', link: '/exams/pretty-binary-numbers/' },
+            { text: '19: Fermat Primality Test', link: '/exams/fermat-primality/' },
+            { text: '20: Convex Hull', link: '/exams/convex-hull/' },
           ]
         },
-  
+
       ],
-  
+
       socialLinks: [
         { icon: 'github', link: 'https://github.com/aicenter/FUP' }
       ],
-  
+
       editLink: {
         pattern: 'https://github.com/aicenter/FUP/edit/main/:path'
       },
-  
+
       search: {
         provider: 'local'
       },
     },
-  
+
     markdown: {
       config: (md) => {
         md.use(markdownItMathjax3);

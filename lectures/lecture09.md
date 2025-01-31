@@ -1,6 +1,5 @@
 # Typeclasses
 
-
 During the last lecture we introduced [ad-hoc polymorphism](lecture08#polymorphism) via *typeclasses*.
 For examples, we learnt about `Eq`, which gave us a way to implement the equality operator `==` for
 any type. Haskell makes extensive use of typeclasses to define many kinds of abstractions and common
@@ -179,7 +178,7 @@ Map.fromList [('a',2), ('b',3)]
 ## *Kinds* of types
 To figure out what kinds of types we can implement `Functor` for, we have to look at which arguments
 `Functor` accepts. But `Functor` is a type constructor... How do we look at the type of a type
-constructor...? 
+constructor...?
 
 In Haskell, "types" of types, are called *kinds*, and we can inspect them via `:kind`:
 ```haskell
