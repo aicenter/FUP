@@ -6,15 +6,15 @@ outline: deep
 ---
 
 # Sierpinski Carpet
- 
+
 The *Sierpiński carpet* is a plane fractal first described by Wacław Sierpiński in 1916.
-Your task is to generate this fractal in a text format represented as a list of strings. 
+Your task is to generate this fractal in a text format represented as a list of strings.
 Each string represents a single row in the picture. The picture $f(n)$ is defined recursively.
 For $n=0$, we define $f(0) = \texttt{"\#"}$. For $n>0$, we define $f(n)$ as shown below.
 
-<img src="/img/sierpinski-carpet-construction.svg" style="width: 50%; margin: auto;">
+<img class="inverting-image" src="/img/sierpinski-carpet-construction.svg" style="width: 50%; margin: auto;">
 
-In other words, $f(n)$ consists of eight copies of $f(n-1)$ and 
+In other words, $f(n)$ consists of eight copies of $f(n-1)$ and
 the middle box of the same size as $f(n-1)$ filled with spaces.
 The first iterations $f(0)$, $f(1)$, $f(2)$, and $f(3)$ look as follows:
 ```
@@ -53,11 +53,11 @@ The size of the picture grows exponentially with $3^n$.
 
 In Haskell, implement a function of type `Int -> [String]` that for a given
 natural number $n$ returns the Sierpiński carpet $f(n)$ represented as a list of strings.
-Further, create an IO program allowing the user to enter the number $n$. As the size of 
+Further, create an IO program allowing the user to enter the number $n$. As the size of
 the carpet quickly grows, it also asks the user to enter a window to be displayed.
 More precisely, the user enters four numbers `row1`, `row2`, `col1`,
-and `col2` separated by spaces. The program then displays the part of the 
-carpet $f(n)$ starting on the row `row1` and the column `col1`, and ending on 
+and `col2` separated by spaces. The program then displays the part of the
+carpet $f(n)$ starting on the row `row1` and the column `col1`, and ending on
 the row `row2-1` and the column `col2-1`. The rows and columns are indexed from $0$.
 You may assume only valid inputs.
 
@@ -69,7 +69,7 @@ Enter n:
 Enter row1 row2 col1 col2:
 0 4 0 8
 ########
-# ## ## 
+# ## ##
 ########
 ###   ##
 ```
@@ -91,11 +91,11 @@ Your file has to be called `Sierpinsky.hs`.
 
 To join the boxes represented as lists of strings in the top figure you may find the function
 ```haskell
-zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]  
+zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
 ```
-usefule, which, for a ternary function $g$ and three lists $[x_1,x_2,\ldots]$, 
+usefule, which, for a ternary function $g$ and three lists $[x_1,x_2,\ldots]$,
 $[y_1,y_2,\ldots]$, $[z_1,z_2,\ldots]$ creates a list of values
-$[g(x_1,y_1,z_1),g(x_2,y_2,z_2),\ldots]$. 
+$[g(x_1,y_1,z_1),g(x_2,y_2,z_2),\ldots]$.
 
 To generate lists of a repeated value, you can use the function:
 ```haskell
@@ -105,7 +105,7 @@ replicate :: Int -> a -> [a]
 To truncate a list e.g. from `st` to `end` use the following function:
 ```haskell
 cut :: Int -> Int -> [a] -> [a]
-cut st end = take (end-st) . drop st  
+cut st end = take (end-st) . drop st
 ```
 
 ::: details Solution
