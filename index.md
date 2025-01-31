@@ -6,9 +6,9 @@ hero:
   name: "Functional Programming (FUP)"
   text: "Course materials"
   tagline: Taught at the Czech Technical University.
-  image: 
-    light: /lambda.png
-    dark: /lambdadark.png
+  image:
+    light: /lambda_light.svg
+    dark: /lambda_dark.svg
 
 features:
   - title: Lectures

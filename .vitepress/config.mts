@@ -8,8 +8,8 @@ export default withMermaid(
   defineConfig({
     title: "Functional Programming",
     description: "Course materials for the functional programming course at the Czech Technical University.",
-
     base: "/FUP/",
+    head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/FUP/lambda_auto.svg' }]],
 
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
