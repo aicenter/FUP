@@ -2,10 +2,11 @@
 outline: deep
 ---
 
+# Pattern Matching & Lazy Evaluation
 
-# Pattern matching & Lazy evaluation
+Introduces pattern matching, and explains how to implement lazy evaluation and streams in Racket.
 
-## Pattern matching
+## Pattern Matching
 
 We often need to branch the computation according to the content of a data structure. This can be
 tedious, especially if the data structure is complex. We must extract the determining values and

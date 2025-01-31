@@ -1,4 +1,4 @@
-# Hierarchical data structures
+# Hierarchical Data Structures
 
 In the previous lecture, I mentioned only basic data types representing numbers, characters,
 strings, etc. This lecture introduces variable-sized data structures like lists and trees.
@@ -33,7 +33,7 @@ particularly pairs again. For example, the following pair
 ```
 is a pair whose first component is another pair consisting of the value `1` and a pair of values `2`
 and `3`. The second component of the pair is a pair consisting of the symbol `'b` and the false
-value `#f`. 
+value `#f`.
 
 As we can nest pairs arbitrarily, one can encode lists as nested sequences of pairs.
 
@@ -51,18 +51,18 @@ rest of the list.  If we evaluate the above expression in the REPL, the result i
 '(1 2 3 4)
 ```
 It would be tedious to encode lists as nested pairs. Fortunately, Racket introduces more convenient
-ways to create lists even though they are physically encoded via pairs. 
+ways to create lists even though they are physically encoded via pairs.
 
 There are several ways to construct a list.
 
-1. One can construct a list by nesting pairs using the function `cons`. 
+1. One can construct a list by nesting pairs using the function `cons`.
 
 2. The next method is the function `list` that takes any sequence of expressions and returns the
-   list of values produced by evaluating the expressions.  For example, 
+   list of values produced by evaluating the expressions.  For example,
 ```scheme
 (list 1 2 3 4) => '(1 2 3 4)
 ```
-returns the same 4-element list as above. Another example showing that `list` evaluates the given expressions: 
+returns the same 4-element list as above. Another example showing that `list` evaluates the given expressions:
 ```scheme
 (list 1 2 (+ 2 1) 4) => '(1 2 3 4)
 ```
@@ -73,11 +73,11 @@ returns the same 4-element list as above. Another example showing that `list` ev
 ```scheme
 (quote (1 2 (+ 2 1) 4)) => '(1 2 (+ 2 1) 4)
 ```
-As the function quote is needed quite often, the expression 
+As the function quote is needed quite often, the expression
 ```scheme
 (quote exp)
 ```
-can be shortened as follows: 
+can be shortened as follows:
 ```scheme
 'exp
 ```
@@ -110,7 +110,7 @@ To get the list after removing the first element, apply `cdr`:
 (cdr (list 1 2 3 4)) => '(2 3 4)
 ```
 
-Further elements can be accessed by composing functions `cdr` and `car`, e.g., 
+Further elements can be accessed by composing functions `cdr` and `car`, e.g.,
 ```scheme
 (car (cdr (cdr (list 1 2 3 4)))) => 3
 ```
@@ -137,7 +137,7 @@ concept in Racket.
 Racket has several functions to test the equality of two values. So we need to choose the right one
 depending on the data type. The most general equality function in Racket is `equal?`. It works for
 all data types, but it is the slowest one. It recursively inspects all the values stored in the data
-structures.  
+structures.
 
 ```scheme
 (equal? '(1 2 3) (cons 1 (cons 2 (cons 3 '())))) => #t
@@ -167,7 +167,7 @@ It compares if the data are stored in the same chunk of memory. It is mostly use
 between symbolic values (consult the
 [documentation](https://docs.racket-lang.org/reference/Equality.html) for details).
 
-## Recursive list processing 
+## Recursive list processing
 
 Now I continue with the example illustrating how to iterate through a list. Suppose we want to
 implement a function `my-filter` that takes a value `val` and a list `lst` and returns a list
@@ -244,7 +244,7 @@ languages have [first-class functions](https://en.wikipedia.org/wiki/First-class
 
 Below is the code of `my-filter-2` where I replace the argument `val` with a predicate `pred` (i.e.,
 a Boolean function). Moreover, the equality test is replaced with the test of whether the element
-`(car lst)` satisfies the predicate. 
+`(car lst)` satisfies the predicate.
 ```scheme
 (define (my-filter-3 pred lst [acc '()])
   (cond
@@ -316,7 +316,7 @@ value of a list.
 It consists of two nested conditions. The first condition tests if the list is empty. In that case,
 the negative infinity `-inf.0` is returned. Otherwise, we recursively compute the maximum of `(cdr
 lst)` and compare it with the first element. We return either the first element or the maximum of
-`(cdr lst)` depending on the result. 
+`(cdr lst)` depending on the result.
 
 Note that the recursive call appears twice in the body, i.e., the function `bad-maxlist` is tree
 recursive. Consequently, it might generate an exponential evaluation process. In particular, if the
@@ -354,7 +354,7 @@ Now, we can rewrite the function `bad-maxlist` so it is linear recursive.
       -inf.0
       (let ([m (better-maxlist (cdr lst))])
         (if (> (car lst) m) (car lst) m))))
-```        
+```
 The same performance test produces a much better result now.
 ```scheme
 (time (better-maxlist (range 30))) => 29
@@ -533,7 +533,7 @@ recursive function iterating through the list and calling the function on each e
 there is already such a function called
 [`map`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Fmap..rkt%29._map%29%29).
 In its simplest form `(map f lst)`, it takes a function `f` and a list `lst`, and returns a new list
-whose members are images under `f`. For example, 
+whose members are images under `f`. For example,
 ```scheme
 (map (lambda (x) (* x x)) '(1 2 3)) => '(1 4 9)
 (map car '((a b) (c d))) => '(a c)
@@ -546,7 +546,7 @@ following expression fails:
 ```scheme
 (+ '(1 2 3)) => fails
 ```
-because we need to "unwrap" the values from the list. Racket implements a function that does that for us. It is called 
+because we need to "unwrap" the values from the list. Racket implements a function that does that for us. It is called
 [`apply`](https://docs.racket-lang.org/reference/procedures.html#%28def._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._apply%29%29). It takes a function and a list and applies the function to the arguments from the list.
 For example,
 ```scheme
@@ -586,14 +586,14 @@ Rackunit defines three levels of tests:
 1. *Checks* check conditions and report failure if not met.
 2. *Test cases* are named collections of sequential checks.
 3. *Test suites* are named collections of test cases.
- 
+
 The most common checks are equality tests via `check-equal?`. Given two expressions, it checks
 whether they are evaluated by equal values w.r.t. `equal?`. For instance,
 ```scheme
 (check-equal? (cons 'a (cons 'b '())) '(a b))
 ```
 We can also pass an optional message as the last parameter displayed when the check fails.
-```scheme 
+```scheme
 (check-equal? (cons 'a (cons 'c '())) '(a b) "optional message")
 --------------------
 . FAILURE
@@ -623,7 +623,7 @@ actual:     3
 expected:   0
 --------------------
 ```
-If we need a named single check, it is possible to define it by `test-equal?`, e.g., 
+If we need a named single check, it is possible to define it by `test-equal?`, e.g.,
 ```scheme
 (test-equal? "eval literal" (eval-expr 13) 13)
 ```
@@ -647,14 +647,14 @@ Note Line 2, which is exporting the definition of `square` so that we can import
 module. Next, we design a test module in a separate file, e.g., `square-tests.rkt`.
 ```scheme:line-numbers
 #lang racket
-(require rackunit 
+(require rackunit
          "square.rkt")
 
 (test-case "square tests"
            (check-equal? (square 10) 100)
            (check-equal? (square -10) 100))
 ```
-Lines 2-3 import Rackunit and our file `square.rkt`. 
+Lines 2-3 import Rackunit and our file `square.rkt`.
 
 This way, the tests are entirely separated from the actual code. It suffices to execute the test
 module `square-tests.rkt` whenever we need to run tests.
@@ -678,7 +678,7 @@ further test dependencies, use `module+` as follows:
 We again created a Racket file exporting the function `square`. In addition, we defined a submodule
 test. Lines 4-5 import Rackunit into the submodule. Lines 9-12 add tests into the submodule. Now if
 we run this file in DrRacket, the tests will be automatically performed. Importing this file into
-another file does not run the tests or even trigger loading the test code if the module is compiled. 
+another file does not run the tests or even trigger loading the test code if the module is compiled.
 
 # Summary
 

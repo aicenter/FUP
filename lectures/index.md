@@ -13,7 +13,7 @@ The following lecture notes cover most of the course material.
 | 2. | [Lists & Trees](lecture02) | Focuses on Racket lists and trees. Further, it introduces the unit testing library [Rackunit](https://docs.racket-lang.org/rackunit/index.html). | [Slides](/slides/lecture02.pdf).  [Log](/code/lecture02.rkt).|
 | 3. | [Higher Order Functions](lecture03) | Deals with higher-order functions like `map`, `filter`, `foldl`, function closures and Racket structures.| [Slides](/slides/lecture03.pdf).  [Log](/code/lecture03.rkt).|
 | 4. | [Lazy Evaluation](lecture04) | Introduces pattern matching, and explains how to implement lazy evaluation and streams in Racket. | [Slides](/slides/lecture04.pdf).  [Log](/code/lecture04.rkt).|
-| 5. | [Macros & Interpreters](lecture05) | Briefly introduces syntactic macros, and shows how to implement interpreters (the latter is remains to be written). | [Slides](/slides/lecture05.pdf).  [Log](/code/lecture05.rkt).  [Brainf*ck.rkt](/code/lecture05-brainfuck.rkt). |
+| 5. | [Macros & Interpreters](lecture05) | Briefly introduces syntactic macros, and shows how to implement interpreters. | [Slides](/slides/lecture05.pdf).  [Log](/code/lecture05.rkt).  [Brainf*ck.rkt](/code/lecture05-brainfuck.rkt). |
 
 ## Lambda Calculus
 
@@ -38,7 +38,7 @@ The following lecture notes cover most of the course material.
 | # | Title | Content | Files |
 |-|-|-|-|
 | 1. | [Immutable datastructures](bonus_immutable) | For the interested reader there is another lecture on immutable datastructures like random access lists. |
-| 2. | [Parallel Haskell](lecture_parallel) | Introduces Haskell's spark system and demonstrates how to use `Strategy` types for simple parallelization of existing Haskell programs. | [`pfold.hs`](/code/pfold.hs).  [`parmaze.hs`](/code/parmaze.hs).|
+| 2. | [Parallel Haskell](bonus_parallel) | Introduces Haskell's spark system and demonstrates how to use `Strategy` types for simple parallelization of existing Haskell programs. | [`pfold.hs`](/code/pfold.hs).  [`parmaze.hs`](/code/parmaze.hs).|
 
 
 # Old Recorded Lectures

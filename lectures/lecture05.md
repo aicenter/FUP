@@ -4,7 +4,9 @@ outline: deep
 
 # Macros & Interpreters
 
-## Syntactic macros
+Briefly introduces syntactic macros, and shows how to implement interpreters.
+
+## Syntactic Macros
 
 The following section should only briefly introduce syntactic macros. At the
 same time, I will explain a related topic on how Racket processes source files.
