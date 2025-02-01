@@ -4,27 +4,23 @@ outline: deep
 
 # Lab 1: Introduction to Racket
 
-In this lab you will familiarize yourself with the IDE we will use to write Racket  programs.
+In this lab you will familiarize yourself with the IDE we will use to write Racket programs.
 
-## Dr. Racket IDE
+## DrRacket IDE
 
-The IDE can be downloaded for free for Linux, Windows, and MAC from: https://racket-lang.org/
+You can use [the free DrRacket IDE](https://racket-lang.org/) (for Linux, Windows, and MAC) that is pre-installed on the lab computers, or you can install it on your own laptop.
+If you use a package manager to install Racket, the IDE usually comes bundled in. Don't hesitate to ask for help!
 
-You can use the one installed in the lab computers or install it on your own laptop. Don't hesitate
-to ask for help!
+The documentation for Racket and DrRacket is accessible directly via the **Help / Help-Desk** menu; Use it To get familiar with the software.
 
-To get familiar with the definition window and REPL in DrRacket you can:
-* Read documentation of implemented functions which is accessible via **Help Desk** in the menu.
-
-DrRacket allows writing programs in several languages. We focus on Racket, so your first line in the
-code should be:
+DrRacket supports multiple languages. To select *Racket*, your first line of code should be:
 ```scheme
 #lang racket
 ```
 
 ## Exercises - Racket basics
-Start interaction in REPL. Racket uses prefix notation for all functions. Try and compute a
-simple formulas, e.g.,  $2+3/5$.
+Start with an interactive session in the REPL. Keep in mind that Racket uses prefix notation for all functions, and try to compute a
+simple formula, such as $2+3/5$.
 
 ### Exercise 1
 Write a recursive function `my-even?` that decides whether a number is even using

@@ -3,19 +3,9 @@ outline: deep
 ---
 # Organization
 
-This course introduces students to the techniques of _**functional programming**_, the advantages
-and disadvantages of this programming paradigm, and its use in practice.
-This approach is **declarative** in the sense that the programmer symbolically describes the problem to be solved
-rather than specifying the exact sequence of operations required to solve it. It allows focusing on
-the essence of the solved problem and implementing even more complex algorithms compactly.
-Functional programming has notable advantages for **parallelization** and **automated verification**
-of algorithms, and the most useful functional programming concepts are increasingly often introduced
-to standard programming languages. Because of the focus of functional programming on symbols rather
-than numbers, functional programming has been heavily used in artificial intelligence fields, such
-as agent systems or symbolic machine learning.
+This course introduces students to the techniques of _**functional programming**_, exploring their advantages, and practical applications. Functional programming takes a **declarative** approach, where the programmer describes the problem  symbolically rather than through explicit step-by-step instructions. This paradigm focuses on the essence of problems, and enables compact implementations of complex algorithms. Functional programming has notable advantages for **parallelization** and **automated verification** of algorithms. Useful functional programming concepts are increasingly often introduced to standard programming languages. Due to its symbolic nature, functional programming has been heavily used in artificial intelligence, particularly in agent systems and symbolic machine learning.
 
-The course consists of weekly [lectures](lectures/) and [labs](labs/) which will be published
-as we go along the course.
+The course consists of weekly [lectures](lectures/) and [labs](labs/), which will be published progressively throughout the semester.
 
 ## Course Outline
 
