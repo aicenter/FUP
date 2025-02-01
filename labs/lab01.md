@@ -9,14 +9,16 @@ In this lab you will familiarize yourself with the IDE we will use to write Rack
 ## DrRacket IDE
 
 You can use [the free DrRacket IDE](https://racket-lang.org/) (for Linux, Windows, and MAC) that is pre-installed on the lab computers, or you can install it on your own laptop.
-If you use a package manager to install Racket, the IDE usually comes bundled in. Don't hesitate to ask for help!
+If you use a package manager to install Racket, the IDE usually comes bundled in. *Don't hesitate to ask for help!*
 
 The documentation for Racket and DrRacket is accessible directly via the **Help / Help-Desk** menu; Use it To get familiar with the software.
 
+::: tip
 DrRacket supports multiple languages. To select *Racket*, your first line of code should be:
 ```scheme
 #lang racket
 ```
+:::
 
 ## Exercises - Racket basics
 Start with an interactive session in the REPL. Keep in mind that Racket uses prefix notation for all functions, and try to compute a
@@ -24,7 +26,7 @@ simple formula, such as $2+3/5$.
 
 ### Exercise 1
 Write a recursive function `my-even?` that decides whether a number is even using
-only functions `+`, `-`, `=` (without mutual recursion).
+only the functions `+`, `-`, and `=`. The function should not use mutual recursion.
 
 ::: details Solution of `my-even?`
 ```scheme
@@ -116,9 +118,7 @@ Try to solve the following individual tasks.
 
 ### Task 1
 
-Write a function `num-of-digits` which takes an integer `n` and computes the number of digits `n`
-has in the standard decimal representation. For example `(num-of-digits 123) => 3` or
-`(num-of-digits -3456) => 4`.
+Write a function `num-of-digits` that takes an integer `n` and computes the number of digits in its standard decimal representation. For example, `(num-of-digits 123)` is 3 and `(num-of-digits -3456)` is 4.
 
 ::: tip
 The number of digits can be computed by successive dividing the input number by 10. For
@@ -135,11 +135,7 @@ Thank you for the improved solution <u>@Denis Pak</u>!
 :::
 
 ### Task 2
-Write a function `(num->str n [radix 10])` taking as input an integer `n` together
-with `radix` denoting the number of symbols used to represent the number `n` (for example 2,10,16
-for binary, decimal, hexadecimal representation respectively). This function returns a string
-containing the representation of `n` in the corresponding numerical system. For the representation,
-use the standard symbols 0123456789ABCDEF.
+Write a function `(num->str n [radix 10])` that takes an integer `n` as input, along with an optional `radix` parameter specifying the base in which to represent `n` (e.g., 2 for binary, 10 for decimal, or 16 for hexadecimal). The function returns a string representing `n` in the specified numerical system. Use the standard symbols `0123456789ABCDEF` for the representation.
 
 Examples:
   * `(num->str 52) => "52"`,
