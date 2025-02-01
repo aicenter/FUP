@@ -201,8 +201,8 @@ number e.g. `3` or `(/ 35 10)`.
 
 ## Task 2
 Given a graph $G=(V,E)$, a subset of nodes $S\subseteq V$ is called a vertex cover, if for every
-edge $\{u,v\}\in E$, we have $u\in S$ or $v\in S$. If $S$ is smallest possible, it is called minimum
-vertex cover (see [wikipedia](https://en.wikipedia.org/wiki/Vertex_cover)).
+edge $\{u,v\}\in E$, we have $u\in S$ or $v\in S$. If $S$ is smallest possible, it is called [a minimum
+vertex cover](https://en.wikipedia.org/wiki/Vertex_cover).
 
 Write a function `(min-vertex-cover g)` taking a graph `g` and returning a minimum vertex cover of
 `g`. E.g.
