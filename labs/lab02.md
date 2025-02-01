@@ -21,7 +21,7 @@ follows:
 |-------------|------------------------|
 | '(b c)      | '(a)                   |
 | '(c)        | '(b a)                 |
-| '()         | '(c b a)               | 
+| '()         | '(c b a)               |
 :::
 
 
@@ -50,19 +50,19 @@ string-downcase -> string->list -> filter-alphabetic -> sort
   -> group-same -> join-lengths -> sort
 ```
 - The function `string-downcase` translates all characters into lowercase letters, and it is
-  implemented in Racket. 
+  implemented in Racket.
 - The function `string->list` is implemented as well, and it decomposes a given string into a list
-  of its characters. 
+  of its characters.
 - Then non-alphabetic characters can be filter out by `filter` function using the predicate
-  `char-alphabetic?`. 
+  `char-alphabetic?`.
 - To compute the number of occurrences of characters, we apply the `sort` function, which groups
   together the same characters, e.g., `(sort '(#\c #\z #\c) char<?) => (#\c #\c #\z)`. The function
   `sort` takes a boolean function as its second argument, taking two arguments and comparing them.
 - The function `group-same` scans the input list and returns a list consisting of lists of the same
-  consecutive characters, e.g., `(group-same '(#\c #\c #\z)) => ((#\c #\c) (#\z))`. 
+  consecutive characters, e.g., `(group-same '(#\c #\c #\z)) => ((#\c #\c) (#\z))`.
 - The function `join-lengths` creates for each group of the same character a pair of the for `(char .
   num)` where the number of occurrences num is computed by function `length`.
-- Finally, the output is sorted by the number of occurrences. 
+- Finally, the output is sorted by the number of occurrences.
 
 The function `group-same` is the only recursive function in our program. It has to keep a partially
 built group of the same character as an intermediate result. If the new character `(car l)` coming
@@ -71,7 +71,8 @@ this character. Once the new character `(car l)` differs from the current charac
 the partial group is closed, joined to the output, and a new group is created.
 
 ::: details Solution
-```scheme
+::: code-group
+```scheme [nested]
 (define (group-same lst)
   (define (iter l gr)
     (cond
@@ -85,7 +86,6 @@ the partial group is closed, joined to the output, and a new group is created.
 (define (join-lengths grs)
   (map (lambda (g) (cons (car g) (length g))) grs))
 
-
 (define (letter-frequencies str)
   (sort
    (join-lengths
@@ -95,9 +95,21 @@ the partial group is closed, joined to the output, and a new group is created.
       char<?)))
    >
    #:key cdr))
-   
-; Might be more readable:
-#|
+```
+```scheme [let*]
+(define (group-same lst)
+  (define (iter l gr)
+    (cond
+      [(null? l) (list gr)]
+      [(eqv? (car gr) (car l)) (iter (cdr l) (cons (car gr) gr))]
+      [else (cons gr (iter (cdr l) (list (car l))))]))
+  (if (null? lst)
+      '()
+      (iter (cdr lst) (list (car lst)))))
+
+(define (join-lengths grs)
+  (map (lambda (g) (cons (car g) (length g))) grs))
+
 (define (letter-frequencies-2 str)
   (let* [(lowercase (string-downcase str))
          (listified (string->list lowercase))
@@ -107,8 +119,6 @@ the partial group is closed, joined to the output, and a new group is created.
          (joined (join-lengths grouped))
          (sorted-occurs (sort joined > #:key cdr))]
     sorted-occurs))
-|#
-
 ```
 :::
 
@@ -121,7 +131,7 @@ frequencies in English alphabet [Wikipedia](https://en.wikipedia.org/wiki/Letter
 
 ## Task 1
 Write a function `(average-list lst)` taking a list of numbers `lst` and returning their
-arithmetical average. E.g. `(average-lst '(1 2 3)) => 2`. The function should be tail-recursive. 
+arithmetical average. E.g. `(average-lst '(1 2 3)) => 2`. The function should be tail-recursive.
 
 **Hint:** As the function should be tail-recursive, it has to use an accumulator storing a partial
 sum of elements from the list. Finally, the resulting sum is divided by the number of all elements
@@ -137,7 +147,7 @@ your implementation function can return precise rational numbers like `(average-
     (if (null? l)
         acc
         (iter (cdr l) (+ acc (car l)))))
-  (exact->inexact (/ (iter lst 0) (length lst))))      
+  (exact->inexact (/ (iter lst 0) (length lst))))
 ```
 :::
 
@@ -173,7 +183,7 @@ list to complete the `n`-tuple of consecutive elements.
       [(zero? k) (cons segment (iter l n '()))]
       [else (iter (cdr l) (- k 1) (append segment (list (car l))))]))
   (iter lst n '()))
-  
+
 (define (n-block-average n lst)
   (map average-list (split-list n lst)))
 ```

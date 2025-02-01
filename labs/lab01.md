@@ -26,7 +26,7 @@ simple formula, such as $2+3/5$.
 Write a recursive function `my-even?` that decides whether a number is even using
 only functions `+`, `-`, `=` (without mutual recursion).
 
-::: details Solution
+::: details Solution of `my-even?`
 ```scheme
 (define (my-even? n)
   (cond
@@ -40,49 +40,48 @@ only functions `+`, `-`, `=` (without mutual recursion).
 
 
 ### Exercise 2
+Using the function `string-append`, create a function `(string-repeat n str)` which takes as arguments an
+integer `n`, a string `str`, and returns a string consisting of `n` repetitions of `str`. For example
+`(string-repeat 3 "abc") => "abcabcabc"`.
 
-Using the function `string-append`, create a function `(copy-str n str)` taking as arguments an
-integer `n`, a string `str` and returns a string consisting of `n`-many copies of `str`. For example
-`(copy-str 3 "abc") => "abcabcabc"`.
-
-::: details Solution
+::: details Solution of `string-repeat`
 ```scheme
-(define (copy-str n str)
+(define (string-repeat n str)
   (if (<= n 0)
       ""
-      (string-append str (copy-str (- n 1) str))))
+      (string-append str (string-repeat (- n 1) str))))
 ```
 :::
 
 
 ### Exercise 3
-
 Rewrite the function from Exercise 2 so that it uses tail recursion.
 
-::: details Solution
+::: details Solution for a tail recursive `string-repeat`
 ```scheme
-(define (copy-str n str [acc ""])
+(define (string-repeat n str [acc ""])
   (if (<= n 0)
       acc
-      (copy-str (- n 1) str (string-append acc str))))
+      (string-repeat (- n 1) str (string-append acc str))))
 ```
 :::
 
 ### Exercise 4
-Write a function `(consecutive-chars fst lst)` which takes two characters and returns a string
+Write a function `(char-inclusive-range fst lst)` which takes two characters and returns a string
 consisting of a sequence of consecutive characters starting with `fst`, ending with `lst`, and
 following the order in the ASCII table.
-For example `(consecutive-chars #\A #\D) => "ABCD"` or  `(consecutive-chars #\z #\u) => "zyxwvu"`.
+For example `(char-inclusive-range #\A #\D) => "ABCD"` or  `(char-inclusive-range #\z #\u) => "zyxwvu"`.
 For converting characters into positions in the ASCII table, use functions
 `char->integer` and `integer->char`. To convert a character into a
 string, apply the function `string`.
 
-::: details Solution
-```scheme
+::: details Solution: `char-inclusive-range`
+::: code-group
+```scheme [basic]
 (define (integer->string i)
   (string (integer->char i)))
 
-(define (consecutive-chars fst lst)
+(define (char-inclusive-range fst lst)
   (define first-index (char->integer fst))
   (define last-index (char->integer lst))
   (define step (if (< first-index last-index) 1 -1))
@@ -94,22 +93,22 @@ string, apply the function `string`.
   (iter first-index ""))
 ```
 
-Alternatively, and maybe slightly more elegantly, you can define two helper functions `char+1` and
-`char-1` and use an accumulator:
-```scheme
+```scheme [helpers]
+; Alternatively, and maybe slightly more elegantly, you can define two helper
+; functions `char+1` and `char-1` and use an accumulator:
+
 (define (char+1 c) (integer->char (add1 (char->integer c))))
 (define (char-1 c) (integer->char (sub1 (char->integer c))))
 
-(define (consecutive-chars fst lst [acc ""])
+(define (char-inclusive-range fst lst [acc ""])
   (cond
     [(char=? fst lst) (string-append acc (string fst))]
     [(char<? fst lst)
-     (consecutive-chars (char+1 fst) lst (string-append acc (string fst)))]
+     (char-inclusive-range (char+1 fst) lst (string-append acc (string fst)))]
     [(char>? fst lst)
-     (consecutive-chars (char-1 fst) lst (string-append acc (string fst)))]))
+     (char-inclusive-range (char-1 fst) lst (string-append acc (string fst)))]))
 ```
 :::
-
 
 ## Tasks
 
