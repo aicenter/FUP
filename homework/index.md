@@ -4,7 +4,7 @@ outline: deep
 
 # Homework
 
-We will publish four homework assignments for **50 points** in total:
+We will publish four homework assignments on [BRUTE](https://cw.felk.cvut.cz/brute) for **50 points** in total:
 
 | Assignment | Language | Opening | Deadline | Points |
 | - | -------- | ------- | -------- | ------:|

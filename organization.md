@@ -29,16 +29,16 @@ This course explores:
 You will receive points for solving [Homework Assignments](/homework/) and the final [Practical and Oral Exams](/exams/).
 
 
-|Part                   |  Points  |
-|-----------------------|----------|
-| Homework Assignments  |       50 |
-| Practical Exam        |       30 |
-| (optional) Oral Exam  |       20 |
+| Part                 | Points |
+|----------------------|-------:|
+| Homework Assignments |     50 |
+| Practical Exam       |     30 |
+| (optional) Oral Exam |     20 |
 
 Our grading scale is as follows:
 
 |  A   |  B  |  C  |  D  |  E  |  F  |
-|------|-----|-----|-----|-----|-----|
+|:----:|:---:|:---:|:---:|:---:|:---:|
 |91-100|81-90|71-80|61-70|51-60| 0-50|
 
 

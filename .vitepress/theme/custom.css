@@ -2,7 +2,7 @@
     filter: invert(1) hue-rotate(180deg);
 }
 
-.VPLink {
+.VPLink, table {
     font-variant-numeric: tabular-nums;
 }
 

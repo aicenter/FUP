@@ -8,7 +8,7 @@ The following lecture notes cover most of the course material.
 ## Racket
 
 | # | Title | Content | Files |
-|-|-|-|-|
+|-:|-|-|-|
 |1. | [Introduction](lecture01) | Discusses the key ideas behind functional programming. It further introduces the programming language [Racket](https://racket-lang.org/).  | [Slides](/slides/lecture01.pdf).  [Log](/code/lecture01.rkt).  |
 | 2. | [Lists & Trees](lecture02) | Focuses on Racket lists and trees. Further, it introduces the unit testing library [Rackunit](https://docs.racket-lang.org/rackunit/index.html). | [Slides](/slides/lecture02.pdf).  [Log](/code/lecture02.rkt).|
 | 3. | [Higher Order Functions](lecture03) | Deals with higher-order functions like `map`, `filter`, `foldl`, function closures and Racket structures.| [Slides](/slides/lecture03.pdf).  [Log](/code/lecture03.rkt).|
@@ -18,13 +18,13 @@ The following lecture notes cover most of the course material.
 ## Lambda Calculus
 
 | # | Title | Content | Files |
-|-|-|-|-|
+|-:|-|-|-|
 | 6. | [Lambda Calculus](lecture06) | Describes the basics of lambda calculus to show you were most of the initial ideas for functional programming came from. | [Slides](/slides/lecture06.pdf).  [Lambda-calculus.rkt](/code/lambda-calculus.rkt). |
 
 ## Haskell
 
 | # | Title | Content | Files |
-|-|-|-|-|
+|-:|-|-|-|
 |  7. | [Introduction to Haskell](lecture07) | Introduces Haskell as a compiled, statically-typed, and lazy language. | [Slides](/slides/lecture07.pdf).  [Log](/code/lecture07.hs). |
 |  8. | [Haskell Types](lecture08) | Discusses the strongly-typed, static, and inferred type system of Haskell including: parametric polymorphism, ad-hoc polymorphism (typeclasses), and algebraic datatypes. | [Slides](/slides/lecture08.pdf).  [Log](/code/lecture08.hs). |
 |  9. | [Type Classes](lecture09) | We discuss some more examples of type classes, most importantly `Functor`s. | [Slides](/slides/lecture09.pdf).  [Log](/code/lecture09.hs).|
@@ -36,7 +36,7 @@ The following lecture notes cover most of the course material.
 ## Bonus
 
 | # | Title | Content | Files |
-|-|-|-|-|
+|-:|-|-|-|
 | 1. | [Immutable datastructures](bonus_immutable) | For the interested reader there is another lecture on immutable datastructures like random access lists. |
 | 2. | [Parallel Haskell](bonus_parallel) | Introduces Haskell's spark system and demonstrates how to use `Strategy` types for simple parallelization of existing Haskell programs. | [`pfold.hs`](/code/pfold.hs).  [`parmaze.hs`](/code/parmaze.hs).|
 
