@@ -12,6 +12,11 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    --vp-c-brand-1: #0065BD;
+}
+
+:root.dark {
+    --vp-c-brand-1: #6AADE4;
 }
 
 p {
