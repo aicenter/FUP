@@ -24,7 +24,7 @@ Another example is the function
 [`apply`](https://docs.racket-lang.org/reference/procedures.html#%28def._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._apply%29%29)
 of two arguments. The first is a function, and the second is a list. `apply` unwraps the members of
 the list and applies the function to them. For example,
-```scheme
+```racket
 > (apply + '(1 2 3 4))
 10
 > (apply append '((a b c) (d e f) (g h)))
@@ -53,7 +53,7 @@ transformations we may like to apply:
 ### `filter`
 
 Here are a few examples of filtering a list:
-```scheme
+```racket
 > (filter (lambda (x) (> x 0)) '(0 1 -2 3 -4))
 '(1 3)
 
@@ -74,7 +74,7 @@ sublists starting with the symbol `'a`.
 The function `map` applies a given function to each member of a list and returns the list of their images.
 More precisely, for a function $f$ and a list $(a_1,a_2,\ldots,a_n)$, it returns $(f(a_1),f(a_2),\ldots,f(a_n))$.
 For example,
-```scheme
+```racket
 > (map (lambda (x) (* 2 x)) '(1 2 3))
 '(2 4 6)
 
@@ -100,13 +100,13 @@ So if we view the input lists as rows of a matrix, `map` applies $f$ column-wise
 Note that all the input lists must be of the same length.
 
 As an example, consider vector addition. If the input lists represent vectors, we can add them as follows:
-```scheme
+```racket
 > (map + '(1 2 3) '(3 2 1) '(-4 -4 -4))
 '(0 0 0)
 ```
 
 If the vectors are in a list (i.e., they form a matrix), we must unwrap them using the function `apply`:
-```scheme
+```racket
 > (apply map + '((1 2 3)
                  (3 2 1)
                  (-4 -4 -4)))
@@ -114,7 +114,7 @@ If the vectors are in a list (i.e., they form a matrix), we must unwrap them usi
 ```
 
 Another nice application of `map` is the function computing the transpose of a matrix. Consider the following example:
-```scheme
+```racket
 > (apply map list '((1 2 3)
                     (4 5 6)
                     (7 8 9)))
@@ -123,24 +123,24 @@ Another nice application of `map` is the function computing the transpose of a m
  (3 6 9))
 ```
 Note that `apply` unwraps the rows from the list. So the above expression is equivalent to this one:
-```scheme
+```racket
 (map list '(1 2 3)
           '(4 5 6)
           '(7 8 9))
 ```
 Next, `map` apply the function `list` column-wise. Thus it collects elements from each column and creates a list.
 The results are collected in a list. Using quasiquoting, we can write it down as follows:
-```scheme
+```racket
 > `(,(list 1 4 7) ,(list 2 5 8) ,(list 3 6 9))
 '((1 4 7) (2 5 8) (3 6 9))
 ```
 Note that a special case of the matrix transposition is the useful [zipping](https://en.wikipedia.org/wiki/Zipping_(computer_science)) of two (or more) lists. For two lists of the same length, their zipping is the list consisting of the pairs of respective elements. E.g.,
-```scheme
+```racket
 > (map list '(1 2 3) '(a b c))
 '((1 a) (2 b) (3 c))
 ```
 One more example of `map` extracts the diagonal of a matrix. It applies the function [`list-ref`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28quote._~23~25kernel%29._list-ref%29%29) that takes a list and a position and returns the element on that position. To extract the diagonal, we need to get the first element from the first row, the second element from the second row, etc. Note that lists are indexed from zero.
-```scheme
+```racket
 > (map list-ref '((1 2 3)
                   (4 5 6)
                   (7 8 9)) (range 0 3))
@@ -184,7 +184,7 @@ $$
 We can view $b_i$s as intermediate results, which get updated by the function $f$ based on $a_i$s.
 
 Now, it is time for some concrete examples. We can sum all the elements in a list as follows:
-```scheme
+```racket
 > (foldl + 0 '(1 2 3))
 > (+ 3 (+ 2 (+ 1 0)))
 6
@@ -197,7 +197,7 @@ Note the difference between `foldl` and `foldr`.
 
 Following the example above, one can multiply the elements of a list or compute their minimum or maximum. E.g.,
 the following expression computes the minimum:
-```scheme
+```racket
 > (foldl min +inf.0 '(0 -3 2))
 -3.0
 ```
@@ -205,7 +205,7 @@ the following expression computes the minimum:
 More exciting examples of folding are situations when the function $f$ operates over different sets $A$ and $B$. Consider a robot that can move up, down, left, or right in a grid. Its position is determined by a vector $(x,y)\in\mathbb{Z}^2$. Any movement changes its position by $\pm 1$ in the respective coordinate. Given an initial position and a sequence of actions, we want to compute the resulting robot's position.
 
 We represent the robot's actions by the symbols `'up`, `'down`, `'left`, and `'right`. First, we need to implement a function `move` that computes a new position from a given action and the current position.
-```scheme
+```racket
 (define (move cmd pos)
   (cond
     [(eq? cmd 'up) (map + pos '(0 1))]
@@ -216,7 +216,7 @@ We represent the robot's actions by the symbols `'up`, `'down`, `'left`, and `'r
 Note that we apply the vector addition via the function `map`.
 
 Now it is a simple application of folding to compute the resulting position from any initial state for a sequence of actions. For example,
-```scheme
+```racket
 > (foldl move '(0 0) '(up right right up left))
 '(1 2)
 ```
@@ -238,21 +238,21 @@ Let us see a concrete example. Suppose that $f\colon\mathbb{R}\times\mathbb{R}\t
 The above currying process can be generalized to functions of any arity larger than 2. For example, currying transforms a ternary function $f\colon A\times B\times C\to D$ into a function $$\hat{f}\colon A\to(B\to(C\to D)).$$
 
 We can apply currying to Racket functions as well. A function [`curry`](https://docs.racket-lang.org/reference/procedures.html#%28def._%28%28lib._racket%2Ffunction..rkt%29._curry%29%29) transforms any Racket function into its curried version. For example, if we currify the multiplication and supply only a single argument, we get a function:
-```scheme
+```racket
 > ((curry *) 2)
 #<procedure:curried:*>
 ```
 If we supply both successively, we get the result:
-```scheme
+```racket
 > (((curry *) 2) 3)
 6
 ```
 Thus `((curry *) 2)` represents the function "multiply by two". Actually the notation `((curry *) 2)` can be simplified as follows:
-```scheme
+```racket
 (curry * 2)
 ```
 Currying helps to simplify our code if we need partially evaluated functions. Suppose, for instance, we need to multiply each list element by two. Compare the following possibilities:
-```scheme
+```racket
 > (map (lambda (x) (* 2 x)) '(1 2 3))
 '(2 4 6)
 > (map (curry * 2) '(1 2 3))
@@ -260,7 +260,7 @@ Currying helps to simplify our code if we need partially evaluated functions. Su
 ```
 Another situation is if we need to implement a curried function. For instance, if we know that we will use that function partially evaluated. We can define it as usual and then apply `curry`. However, that would be too complicated. It is better to define our function directly in the curried form. It is easy to do. We use the lambda abstraction to return a function. For example,
 consider the function [`list-ref`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28quote._~23~25kernel%29._list-ref%29%29) returning the element of a list at a given position. We can create a curried `list-ref` as follows:
-```scheme
+```racket
 (define (curried-list-ref lst)
   (lambda (i) (list-ref lst i)))
 
@@ -268,13 +268,13 @@ consider the function [`list-ref`](https://docs.racket-lang.org/reference/pairs.
 'c
 ```
 Racket allows simplifying the above construction with the lambda abstraction by adding parentheses:
-```scheme
+```racket
 (define ((curried-list-ref lst) i)
   (list-ref lst i))
 ```
 
 A further higher-order function I would like to mention is [`compose`](https://docs.racket-lang.org/reference/procedures.html#%28def._%28%28lib._racket%2Fprivate%2Flist..rkt%29._compose%29%29). It allows writing programs in the so-called point-free style. Functions in Racket are usually formulated as function applications to its arguments. For example, suppose we want to implement a function taking a string and removing all characters that are not alphabetical. A standard approach looks as follows:
-```scheme
+```racket
 (define (str->alpha str)
   (list->string (filter char-alphabetic? (string->list str))))
 
@@ -282,7 +282,7 @@ A further higher-order function I would like to mention is [`compose`](https://d
 "abcde"
 ```
 Thus we first convert the string into a list, then apply a filter keeping only alphabetical characters, and finally convert the list back to a string. Note that the name of the string `str` is not important for the definition. It would be sufficient to say that our function `str->alpha` is a composition of three functions without specifying the string name `str`. The function `compose` can do this. It represents the ordinary mathematical function composition operation $\circ$.
-```scheme
+```racket
 (define str->alpha
   (compose list->string
            (curry filter char-alphabetic?)
@@ -336,55 +336,55 @@ The visualization for $w_{10}$ is depicted below:
 Now I will discuss generating these images in Racket using higher-order functions and currying. We
 will use the same turtle library as [before](lecture01#drawing-trees) to draw the pictures. Thus our
 code starts with the following line:
-```scheme
+```racket
 (require graphics/value-turtles)
 ```
 
 Next, we need to represent the generating morphism $\phi$. Since we will use our code to generate different morphic sequences, it is reasonable to implement a function returning the morphism $\phi$ based on the images of $0$ and $1$. Using currying, we can do it as follows:
 
-```scheme
+```racket
 (define ((phi im0 im1) x)
   (cond
     [(= x 0) im0]
     [(= x 1) im1]))
 ```
 The higher-order function `phi` takes two values, `im0` and `im1`, and returns a function mapping $0$ to `im0` and $1$ to `im1`. Thus to create the morphism $\phi_1$ from the first example, we just call
-```scheme
+```racket
 (phi '(0 1 1) '(0))
 ```
 Note that we represent words as lists.
 
 Next, we need to be able to apply $\phi$ to a word, i.e., a list of $0$s and $1$s. As we need to apply $\phi$ to each element in the word, this can be handled by `map`. However, there is a small problem. Consider the following expression:
 
-```scheme
+```racket
 > (map (phi '(0 1 1) '(0)) '(0 1 1))
 '((0 1 1) (0) (0))
 ```
 
 It is not evaluated to `'(0 1 1 0 0)` as we need, but to `'((0 1 1) (0) (0))`. Thus it is necessary to append the inner lists.
-```scheme
+```racket
 > (apply append (map (phi '(0 1 1) '(0)) '(0 1 1)))
 '(0 1 1 0 0)
 ```
 So we can define a function applying any $\phi$ to any word.
-```scheme
+```racket
 (define (apply-morphism morphism w)
   (apply append (map morphism w)))
 ```
 Using `apply-morphism`, we can apply $\phi$ once, but we must repeat it several times. We start with an initial word $w_0$ and $k$-times apply $\phi$ obtaining a word $w_k=\phi(\phi(\ldots\phi(w_0)\ldots))$. This resembles the folding function successively updating an intermediate result by a function. Our function `apply-morphism` takes a morphism $\phi$ and an intermediate state $w_i$ and returns $w_{i+1}$. If we create a list consisting of $k$ many functions $\phi$, we can use `foldl` to compute $w_k$ as follows:
-```scheme
+```racket
 > (foldl apply-morphism '(0) (make-list 3 (phi '(0 1 1) '(0))))
 '(0 1 1 0 0 0 1 1 0 1 1)
 ```
 The function [`make-list`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Flist..rkt%29._make-list%29%29) creates a list of length $k$ with a constant value $v$. E.g.,
-```scheme
+```racket
 > (make-list 5 'a)
 '(a a a a a)
 ```
 Thus in the above `foldl` code, we created the list of three copies of $\phi_1$ and applied it successively to $w_0=0$.
 To make it general, we define a function generating $w_k$ for a given morphism $\phi$, an initial word $w_0$, and the number of iterations $k$.
 
-```scheme
+```racket
 (define (generate-seq morphism w0 k)
   (foldl apply-morphism w0 (make-list k morphism)))
 ```
@@ -392,42 +392,42 @@ To make it general, we define a function generating $w_k$ for a given morphism $
 Alternatively, we could exploit function composition to define `generate-seq`. To compute $w_k$, we need to compose $\phi$ with itself $k$ times and apply the composed function to $w_0$, i.e., $w_k=\phi^{(k)}(w_0)$ where $\phi^{(k)}=\underbrace{\phi\circ\cdots\circ\phi}_{k\text{ times}}$. -->
 
 Now we define the two morphic sequences from the above examples:
-```scheme
+```racket
 (define morphic-seq (generate-seq (phi '(0 1 1) '(0)) '(0) 15))
 (define morphic-seq2 (generate-seq (phi '(0 0) '(1 0 1)) '(1) 10))
 ```
 
 Next, we must generate a program for the turtle for a generated word $w_k$. Analogously to the definition of `phi`, we define a curried function `alpha` returning the function $\alpha$ for given angles `ang0` and `ang1` corresponding to $0$ and $1$, respectively.
-```scheme
+```racket
 (define ((alpha ang0 ang1) x)
   (cond
     [(= x 0) ang0]
     [(= x 1) ang1]))
 ```
 To create the sequences of turning angles for the turtle defined respectively by $\alpha_1$ and $\alpha_2$ from our morphic sequences, we can simply use `map` as follows:
-```scheme
+```racket
 (define angle-seq (map (alpha (/ (* 7 pi) 9) (/ (* -2 pi) 9)) morphic-seq))
 (define angle-seq2 (map (alpha (/ (* 5 pi) 16) (/ (* -29 pi) 60)) morphic-seq2))
 ```
 
 Finally, it remains to create an initial empty picture for the turtle and transform the angle sequences into its commands.
 The initial picture is of size 800x800:
-```scheme
+```racket
 (define init (turtles 800 800))
 ```
 For a turning angle and an intermediate image, we define a function `turn-draw`, turning the turtle by that angle and moving it one step ahead. The step length is given as a parameter to make `turn-draw` more flexible.
-```scheme
+```racket
 (define ((turn-draw length) angle img)
   (draw length (turn/radians angle img)))
 ```
 To draw the curves, it suffices to apply `foldl` to `turn-draw`, the initial picture `img`, and the sequence of angles:
-```scheme
+```racket
 (foldl (turn-draw 12) init angle-seq)
 (foldl (turn-draw 12) init angle-seq2)
 ```
 
 Below you can find the complete code:
-```scheme
+```racket
 #lang racket
 ;;; Example - morphic sequences
 (require graphics/value-turtles)
@@ -467,47 +467,47 @@ Below you can find the complete code:
 
 We have seen that higher-order functions can return a value that is a function. Such a function value is created by lambda abstraction. I will discuss a bit more what is this function value. For example, the following curried addition returns a function:
 
-```scheme
+```racket
 (define (make-adder x) (lambda (y) (+ x y)))
 ```
 This lambda expression defines the returned value:
-```scheme
+```racket
 (lambda (y) (+ x y))
 ```
 If we inspect the body of the returned function, we can spot the variable `x`, which is not among the arguments. Such a variable is called *free*. The question is how `x` will be evaluated if we call the returned function. Apparently, if we create such a function value, for instance, by calling
-```scheme
+```racket
 (make-adder 5)
 ```
 the returned function should interpret `x` as `5`. Similarly, the function returned by
-```scheme
+```racket
 (make-adder 7)
 ```
 should interpret `x` as `7`. This means that the above-returned function values are different.
 The next question is how these function values are actually represented. A naive approach would be to substitute for `x` particular values and store them as follows:
-```scheme
+```racket
 (lambda (y) (+ 5 y))
 (lambda (y) (+ 7 y))
 ```
 Nevertheless, it is done differently. The function values are represented as pairs packing the lambda expression together with the values of free variables. Such a pair is called [*function closure*](https://en.wikipedia.org/wiki/Closure_(computer_programming)) because the values of free variables are enclosed within the function value.
 
 More precisely, whenever in a Racket program, an expression like this
-```scheme
+```racket
 (lambda (y) (+ x y))
 ```
 gets evaluated (i.e., a new function is defined), a function closure is created. At that moment, the values of the free variables are enclosed in the closure. It is important to remember that the values of the free variables are determined at the moment of a function definition. Such an approach is called *lexical scoping*. Lexical scoping is used by most modern programming languages, particularly Racket. However, there is also another approach called *dynamic scoping*. It determines the values of the free variables when the function's body gets evaluated.
 
 Function closures are sometimes used (not only in Racket) to create a data structure that keeps some values. Suppose we want to build data structures representing points with two coordinates $x$, $y$. It is possible to do it via function closures. We simply enclose $x$ and $y$ inside the closure as follows:
-```scheme
+```racket
 (define (point x y)
   (lambda (m) (m x y)))
 ```
 The function `point` works as a constructor for our points. Once we call it with particular coordinates, it defines a function and creates a closure that keeps the function and coordinates. For example, we can make a point $p=(3,10)$ as follows:
-```scheme
+```racket
 (define p (point 3 10))
 ```
 Note that the function returned by `point` has a single argument `m`. If we call it, `m` is interpreted as a function applied to the coordinates. Thus we can easily access the coordinates by supplying suitable functions for `m`.
 
-```scheme
+```racket
 (define (get-x p)
   (p (lambda (x y) x)))
 
@@ -520,7 +520,7 @@ Note that the function returned by `point` has a single argument `m`. If we call
 10
 ```
 Note that the functions in the definitions of `get-x` and `get-y` are just projections returning the first and the second argument, respectively:
-```scheme
+```racket
 (lambda (x y) x))
 (lambda (x y) y))
 ```
@@ -529,17 +529,17 @@ Note that the functions in the definitions of `get-x` and `get-y` are just proje
 
 Racket allows defining record types called [*structures*](https://docs.racket-lang.org/reference/structures.html). They are composed of a number of named fields. If we define such a type, Racket automatically defines a constructor and accessor functions for us. For example, a new structure `person` can be defined as follows:
 
-```scheme
+```racket
 (struct person (first-name surname age))
 ```
 To define an instance of the data type `person`, call the constructor `person`:
-```scheme
+```racket
 (define p (person "John"
                   "Down"
                   33))
 ```
 To access the fields, use the accessor functions:
-```scheme
+```racket
 > (person-first-name p)
 "John"
 > (person-surname p)
@@ -548,12 +548,12 @@ To access the fields, use the accessor functions:
 33
 ```
 However, if we evaluate the instance `p`, we get no information on the field values:
-```scheme
+```racket
 > p
 #<person>
 ```
 If you want to inspect the field values, change your definition as follows:
-```scheme
+```racket
 (struct person (first-name surname age) #:transparent)
 (define p (person "John"
                   "Down"
@@ -563,7 +563,7 @@ If you want to inspect the field values, change your definition as follows:
 (person "John" "Down" 33)
 ```
 Racket further automatically defines a predicate `person?` testing if a value is of the type `person`.
-```scheme
+```racket
 > (person? p)
 #t
 > (person? 3)

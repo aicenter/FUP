@@ -23,7 +23,7 @@ From the general perspective, we distinguish two kinds of data structures:
   part might be mutated.
 
 To illustrate the issues with sharing mutable data, consider the following code in Racket:
-```scheme
+```racket
 (define x '(0 1 2 3 4))
 (define y (cdr x))
 ```
@@ -56,7 +56,7 @@ given position or modifying it also requires linear time $O(n)$.
 Let us see in more detail what happens if we concatenate two lists. Appending a list `ys` to a list
 `xs`, requires linear time in the length of `xs`. The append function can be implemented in Racket
 as follows:
-```scheme
+```racket
 (define (my-append xs ys)
   (if (null? xs)
       ys
@@ -67,7 +67,7 @@ to `(cdr xs)` and prepend `(car xs)` to the result of the recursive call. The fu
 above is not tail recursive. I chose this version because it is conceptually simple and better for
 further explanation. If you wonder how to implement `append` as a tail-recursive function, you can
 check it below:
-```scheme
+```racket
 (define (my-append-tailrec xs ys)
   (define (iter l acc)
     (if (null? l)
@@ -77,7 +77,7 @@ check it below:
 ```
 
 Now return to the first implementation of `my-append`. To practice pattern matching, let me reimplement it via `match`:
-```scheme
+```racket
 (define (my-append xs ys)
   (match xs
     [(list) ys]
@@ -85,7 +85,7 @@ Now return to the first implementation of `my-append`. To practice pattern match
 ```
 
 Suppose we append a list `ys` to a list `xs` and name the resulting list `zs`:
-```scheme
+```racket
 (define zs (my-append xs ys))
 ```
 What happens is that `xs` is recursively decomposed and copied so that its copied version is connected to `ys`.
@@ -100,7 +100,7 @@ Both original lists `xs` and `ys` are persistent, i.e., none is destroyed. Moreo
 An analogous situation occurs if we need to modify an element at a given position in a list. It
 requires linear time $O(n)$ because we must copy all the list members before the modified element.
 
-```scheme
+```racket
 (define (my-list-set lst pos val)
   (match (cons lst pos)
     [(cons (list) _) (error "Incorrect index")]
@@ -127,7 +127,7 @@ function `head` reading the first element of the queue.
 
 The question is how to implement queues in a purely functional language. A naive solution would use
 just lists as follows:
-```scheme
+```racket
 (define naive-head car)
 (define naive-tail cdr)
 (define (naive-snoc x q) (append q (list x)))
@@ -153,7 +153,7 @@ must be sufficiently many dequeuing steps working in constant time $O(1)$. These
 compensate for the expensive reverse operation.
 
 The implementation of the improved queue in Racket is below:
-```scheme
+```racket
 (struct queue (front rear) #:transparent)
 
 (define empty-queue (queue '() '()))
@@ -190,29 +190,29 @@ Let us see how the improved queue works. If we enqueue a symbol `'a` to the empt
 `'a` into the rear list. As the front list is empty, the function `check` reverses the rear list and
 makes it the front list.
 
-```scheme
+```racket
 (snoc 'a empty-queue) => (queue '(a) '())
 ```
 If we continue adding new elements into the queue, they are consed to the rear list.
-```scheme
+```racket
 (snoc 'c (snoc 'b (snoc 'a empty-queue))) => (queue '(a) '(c b))
 ```
 
 Once we dequeue the first element, the front list becomes empty again, so `check` must fix the
 invariant by reversing the rear list.
-```scheme
+```racket
 (tail (snoc 'c (snoc 'b (snoc 'a empty-queue)))) => (queue '(b c) '())
 ```
 
 If we add further elements, they are consed to the rear list.
-```scheme
+```racket
 (snoc 'd (tail (snoc 'c (snoc 'b (snoc 'a empty-queue))))) => (queue '(b c) '(d))
 ```
 
 Now we can compare the performance of the naive queue and the improved one. To test the performance,
 we generate a list of random queue commands consisting either of the symbol `'tail` or a symbol to
 be enqueued.
-```scheme
+```racket
 (define (make-data n)
   (define rnd-lst (map random (make-list n 2)))
   (define (generate-event k)
@@ -226,13 +226,13 @@ Line 2 generates a random sequence of zeros and ones. The function `generate-eve
 [`gensym`](https://docs.racket-lang.org/reference/symbols.html#%28def._%28%28quote._~23~25kernel%29._gensym%29%29)).
 Finally, Line 7 creates testing data. The output of `make-data` might look as follows:
 
-```scheme
+```racket
 (make-data 10) =>
 '(g6642396 g6642397 g6642398 tail tail g6642399 g6642400 g6642401 g6642402 tail)
 ```
 
 Next, we need a function applying the testing data to a particular queue.
-```scheme
+```racket
 (define (test-data q0 empty? enq deq data)
   (define (exec cmd q)
     (match cmd
@@ -244,7 +244,7 @@ The function `test-data` accepts an initial queue `q0`, a predicate testing queu
 
 Now it remains to measure the times needed to evaluate `test-data`. We first create testing data `data` and then compare the performance. To prevent displaying the large queues on the screen, we can enclose the call of `test-data` inside
 [`begin`](https://docs.racket-lang.org/reference/begin.html#%28form._%28%28quote._~23~25kernel%29._begin%29%29) and returns just a value `'done`.
-```scheme
+```racket
 (define data (make-data 1000000))
 (time (begin (test-data empty-queue queue-empty? snoc tail data) 'done))
 (time (begin (test-data '() null? naive-snoc naive-tail data) 'done))
@@ -281,14 +281,14 @@ The chunks corresponding to non-zero bits are the binary trees. Their leaves (ye
 
 Now we can discuss how to implement this representation in Racket. We define two structures—one for the inner nodes and the other for the leaves.
 
-```scheme
+```racket
 (struct node (size left right) #:transparent)
 (struct leaf (val) #:transparent)
 ```
 
 Thus the inner node is a triple consisting of the number of leaves below it and left and right subtrees. The leaf contains only a value. So the above-depicted list of trees is represented in Racket as follows:
 
-```scheme
+```racket
 (list (node 2 (leaf 0)
               (leaf 1))
       (node 8 (node 4 (node 2 (leaf 2)
@@ -328,7 +328,7 @@ Now we have a correct representation for the array of size $12=1\cdot 2^2+1\cdot
 
 To compare the sizes of trees, we need a helper function returning the size of a tree/chunk, i.e., the number of leaves in a tree.
 
-```scheme
+```racket
 (define (size t)
   (match t
     [(node w _ _) w]
@@ -338,14 +338,14 @@ To compare the sizes of trees, we need a helper function returning the size of a
 The function `size` matches the root node of the input tree. If it is a leaf, then the size is $1$. Otherwise, the size is extracted from the root node.
 
 Further, it is necessary to implement a function joining two trees of sizes $2^i$ and returning a tree of size $2^{i+1}$.
-```scheme
+```racket
 (define (link t1 t2)
   (node (+ (size t1) (size t2)) t1 t2))
 ```
 The function `link` joins two trees and adds a new root node with the sum of their sizes.
 
 The following function `cons-el` inserts an element into a random access list `lst`.
-```scheme
+```racket
 (define (cons-el el lst)
   (cons-tree (leaf el) lst))
 
@@ -361,7 +361,7 @@ The element is added to `lst` as a tree `(leaf el)` of size $1$ via a recursive 
 The helper function inserts a tree `t` into `lst`. It matches `lst` and, based on its structure, decides how to insert `t`. If `lst` is empty (Line 6), we return a singleton list containing only `t`. If `lst` is non-empty (Line 7), we extract its first tree `t2`. We must compare the sizes of `t` and `t2` (Line 8). When `t` is strictly smaller than `t2`, we simply cons `t` to `lst` (Line 9). We can do that because no tree in `lst` has the same size as `t`. Otherwise, the sizes must be equal. Thus we must join the trees and recursively insert the joined tree (Line 10).
 
 Let us see the first few calls of `cons-el` if we build a random access list from the empty one.
-```scheme
+```racket
 (cons-el 'a '()) => (list (leaf 'a))
 
 (cons-el 'b (cons-el 'a '())) => (list (node 2 (leaf 'b)
@@ -380,7 +380,7 @@ Let us see the first few calls of `cons-el` if we build a random access list fro
 Inserting the first element `'a` creates a list containing only `(leaf 'a)` (Line 1). Adding the second element `'b` must join two leaves; thus we end up with a single binary tree of size $2$ (Lines 3-4). The third element `'c` is included as `(leaf 'c)` (Lines 6-8). Finally, inserting the forth element `'d'` results in a single tree of size $4=0\cdot 2^0+0\cdot 2^1+1\cdot 2^2$ (Lines 11-14).
 
 One can also implement a function `tail` removing the first element from a given random access list `lst`. It extracts the first tree/chunk `t` from `lst` and removes its first element by the function `tail-tree`. If `t` is a leaf, we just discard it. Otherwise, we split the tree into the left and right subtrees. The right subtree is preserved, and we recursively remove the first element from the left subtree.
-```scheme
+```racket
 (define (tail lst)
   (match lst
     [(list) (error "empty list")]
@@ -394,7 +394,7 @@ One can also implement a function `tail` removing the first element from a given
 
 Now, we know how to build random access lists. The next question is how to implement the lookup and update functions running in logarithmic time. We assume that elements stored in a random access list are indexed from zero. The function `lookup` extracts the element from a given random access list `lst` whose index is `i`. It must first identify the right chunk/tree where the element is stored.
 
-```scheme
+```racket
 (define (lookup i lst)
   (match lst
     [(list) (error "incorrect index")]
@@ -407,7 +407,7 @@ Now, we know how to build random access lists. The next question is how to imple
 We throw an error if `lst` is empty (Line 3). Otherwise, we extract the first chunk/tree `t` and the rest `ts` (Line 4). If the index `i` is smaller than the size of `t` (Line 6), we know the element we seek is inside `t`. So we extract it by calling a helper function `lookup-tree` (Line 7). If `i` is greater than or equal to the size of `t`, we know that the element is not in `t`. Thus we subtract from `i` the size of `t` and recursively look up in the remaining chunks/trees `ts` (Line 8).
 
 The following helper function looks up an element inside a given chunk/tree `t` whose index is `i`.
-```scheme
+```racket
 (define (lookup-tree i t)
   (match (cons i t)
     [(cons 0 (leaf x)) x]
@@ -423,7 +423,7 @@ The $0$-th element in a leaf is the element stored in that leaf (Line 3). Leaves
 Note that `lookup` runs in logarithmic time $O(\log n)$ in size $n$ of the random access list. To see that, observe that there are only logarithmically many trees/chunks. Thus it takes $O(\log n)$ steps to find the right tree/chunk. Next, the elements are stored in complete binary trees. Thus it again requires $O(\log n)$ steps to locate the desired element inside a tree/chunk. Altogether, we need twice $O(\log n)$ steps, which is just $O(\log n)$.
 
 The update function is analogous to the lookup function. The only difference is that we must build the updated random access list.
-```scheme
+```racket
 (define (update i y lst)
   (match lst
     [(list) (error "incorrect index")]
@@ -449,7 +449,7 @@ Note Lines 7-8; they build the updated random access list. If the modified eleme
 The complexity analysis of `update` is the same as for `lookup`, i.e., $O(\log n)$.
 
 Let us check how `update` works:
-```scheme
+```racket
 (define ral (cons-el 'c (cons-el 'b (cons-el 'a '()))))
 
 ral => (list (leaf 'c)
@@ -462,13 +462,13 @@ ral => (list (leaf 'c)
 ```
 
 Now, let us compare the performance between the random access and regular lists. First, we define a function converting a standard list into a random access list.
-```scheme
+```racket
 (define (build-ra-lst lst)
   (foldl cons-el '() lst))
 ```
 
 In our experiment, we create an array with ten million elements. Then we look up the last element and update it to the symbol `'a`. The results for the random access lists are below:
-```scheme
+```racket
 (define ra-lst (time (build-ra-lst (range 9999999 -1 -1))))
 (time (lookup 9999999 ra-lst))
 (time (begin (update 9999999 'a ra-lst) 'done))
@@ -482,7 +482,7 @@ cpu time: 0 real time: 0 gc time: 0
 Note that it took approximately 2.8s to build the random access list holding numbers from $0$ to $9999999$. On the other hand, the times for lookup and update were negligible.
 
 I used the standard built-in functions implemented in Racket to compare the results with the regular lists.
-```scheme
+```racket
 (define lst (time (range 10000000)))
 (time (list-ref lst 9999999))
 (time (begin (list-set lst 9999999 'a) 'done))

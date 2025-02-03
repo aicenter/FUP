@@ -26,7 +26,7 @@ follows:
 
 
 ::: details Solution
-```scheme
+```racket
 (define (my-reverse lst [acc '()])
   (if (null? lst)
       acc
@@ -45,7 +45,7 @@ The string `str` should be first converted into lowercase characters, so that `#
 represent the same character. Non-alphabetic characters should be removed.
 
 **Idea:** The function `letter-frequencies` is just a composition of several functions.
-```scheme
+```racket
 string-downcase -> string->list -> filter-alphabetic -> sort
   -> group-same -> join-lengths -> sort
 ```
@@ -72,7 +72,7 @@ the partial group is closed, joined to the output, and a new group is created.
 
 ::: details Solution
 ::: code-group
-```scheme [nested]
+```racket [nested]
 (define (group-same lst)
   (define (iter l gr)
     (cond
@@ -96,7 +96,7 @@ the partial group is closed, joined to the output, and a new group is created.
    >
    #:key cdr))
 ```
-```scheme [let*]
+```racket [let*]
 (define (group-same lst)
   (define (iter l gr)
     (cond
@@ -141,7 +141,7 @@ your implementation function can return precise rational numbers like `(average-
 `exact->inexact`, transforming the result into the imprecise floating-point representation.
 
 ::: details Solution
-```scheme
+```racket
 (define (average-list lst)
   (define (iter l acc)
     (if (null? l)
@@ -156,12 +156,12 @@ your implementation function can return precise rational numbers like `(average-
 Taking an inspiration from the `group-same` function, write a function `(split-list n lst)` which
 takes a natural number `n` and a list `lst` and returns a list of lists consisting of `n`-tuples of
 consecutive elements from `lst`, e.g.:
-```scheme
+```racket
 (split-list 2 '(a b 1 2 3 4)) => ((a b) (1 2) (3 4))
 ```
 In case the number of elements is not divisible by `n`, make the last list in the output shorter,
 e.g.:
-```scheme
+```racket
 (split-list 3 '(a b 1 2)) => ((a b 1) (2))
 ```
 
@@ -175,7 +175,7 @@ built segment of consecutive elements. The second tracks how many elements we mu
 list to complete the `n`-tuple of consecutive elements.
 
 ::: details Solution
-```scheme
+```racket
 (define (split-list n lst)
   (define (iter l k segment)
     (cond

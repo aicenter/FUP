@@ -9,6 +9,16 @@ hero:
   image:
     light: /lambda_light.svg
     dark: /lambda_dark.svg
+  actions:
+    - theme: brand
+      text: Course Organization
+      link: /organization
+    - theme: alt
+      text: BRUTE
+      link: https://cw.felk.cvut.cz/brute
+    - theme: alt
+      text: Forum
+      link: https://cw.felk.cvut.cz/forum/
 
 features:
   - title: Lectures

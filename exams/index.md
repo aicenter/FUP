@@ -16,19 +16,16 @@ here](https://www.felk.cvut.cz/labpass/).
 :::
 
 ::: tip Course material
-*Make use of the search* (Ctrl+K / ⌘+K) on the course webpage!
+Make use of *the search feature* (Ctrl+K / ⌘+K) on the course webpage!
 :::
 
-The programming exam will consist of solving two of the tasks listed on this webpage - without access to their solutions. We suggest not looking at the text of the assignments before you have time to attempt to solve it. Most of the tasks have a Racket and a Haskell version. During the exam you have to solve *one task in one language* and another task in another language. So an exam could look like:
+The programming exam will consist of solving two of the tasks listed on this webpage - without access to their solutions. We suggest not looking at the assignments before you have time to solve them. Most of the tasks have a Racket and a Haskell version. During the exam you will have to solve one task in *Haskell* and one task in *Racket*. For example, an exam could look like:
 
 - Solve [$N^2$-Knights](/exams/minesweeper/) in Racket (for 15 points)
 - Solve [Filetree](/exams/filetree/) in Haskell (for 15 points)
 
-You will have 3 hours for the whole exam, so you should be able to solve each of them in roughly 90
-minutes to get a perfect score.
+You will have 3 hours for the whole exam, so you should be able to solve each task in roughly 90 minutes to get a perfect score.
 
-You will upload your exam solutions to BRUTE like you are used to from the homework, and get
-immediate feedback on how many points you achieved. You can upload your solution as many times as
-you want.
+You will upload your exam solutions to BRUTE, like you are used to from the homework, and get immediate feedback on how many points you achieved. You can upload your solution as many times as you want.
 
-The exam dates for 2025 are not decided yet.
+The exam dates for 2025 have not yet been decided.

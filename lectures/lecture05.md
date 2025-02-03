@@ -29,7 +29,7 @@ source.rkt` in a shell?
    some Racket syntactic constructions are implemented as transformations on AST.
    For example, the expression `(and exp1 exp2 exp3)` is transformed into
 
-```scheme
+```racket
 (if exp1
     (if exp2
         exp3
@@ -63,7 +63,7 @@ parameters must be passed as thunks.  We cannot eliminate those thunks because
 the parameters get evaluated before the function body. However, injecting them
 before the compilation by a macro is possible.
 
-```scheme
+```racket
 (define-syntax-rule (macro-if c a b)
   (my-if c (thunk a) (thunk b)))
 
@@ -91,7 +91,7 @@ python> [x for x in range(20) if x % 2 == 0]
 [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
 ```
 We want to define a similar syntax for Racket via a macro. We will express the above Python examples in Racket as follows:
-```scheme
+```racket
 > (list-comp (* x x) : x <- (range 5))
 '(0 1 4 9 16)
 
@@ -100,7 +100,7 @@ We want to define a similar syntax for Racket via a macro. We will express the a
 ```
 
 We must define a macro with two syntax rules to make the new syntax work—one for the comprehension term without and one for the comprehension term with an if clause.
-```scheme:line-numbers
+```racket:line-numbers
 (define-syntax list-comp
   (syntax-rules (: <- if)
     [(list-comp <expr> : <id> <- <lst>)
@@ -281,13 +281,13 @@ and quoting). We will substitute them by `@` and `*`, respectively:
 | [ `code` ] | [`code`]  | While the number at the data pointer is not zero, execute `code`.            |
 
 With the substitutions we can define our addition program as
-```scheme
+```racket
 (define add-prg '(@ > @ [- < + >] < *))
 ```
 
 Our final implementation will define a function `run-prg` which accepts a
 program and some input, for example:
-```scheme
+```racket
 > (run-prg add-prg '(12 34))
 46
 ```
@@ -307,7 +307,7 @@ Racket's vectors are fixed-length arrays with
 constant-time access and update of their elements numbered from 0.
 
 For the purposes of this initial interpreter implementation we only need the following functions:
-```scheme
+```racket
 > (define v (vector 1 2 3))
 > v
 '#(1 2 3)
@@ -325,7 +325,7 @@ For the purposes of this initial interpreter implementation we only need the fol
 :::
 
 Our tape will be represented by a mutable vector of numbers which we can initialize with
-```scheme
+```racket
 > (define SIZE 10)
 > (define t (make-tape SIZE 0))
 '#(0 0 0 0 0 0 0 0 0 0)
@@ -341,7 +341,7 @@ We will implement the tape and the possible operations on the tape by defining a
 [closure](lecture03#closures).  The closure will hold the tape itself, a pointer `ptr` to the
 current position, and will accept a number of messages `msg` that trigger operations on the tape:
 
-```scheme
+```racket
 (define (make-tape size)
   (define tape (make-vector size 0))
   (define ptr 0)
@@ -353,7 +353,7 @@ current position, and will accept a number of messages `msg` that trigger operat
 ```
 
 The tape can then be used like this:
-```scheme
+```racket
 > (define tp (make-tape SIZE))
 > (tp 'tape) ; output tape and pointer
 '(#(0 0 0 0 0 0 0 0 0 0) 0)
@@ -369,7 +369,7 @@ The tape can then be used like this:
 Implementing the operations for the commands `<`, `>`, `+`, `-`, `@`, and `.` is now
 straightforward:
 
-```scheme
+```racket
 (define (make-tape size)
   (define tape (make-vector size 0))   ; initialize fresh tape
   (define ptr 0)                       ; pointer points to the first element
@@ -398,7 +398,7 @@ straightforward:
 
 Wit the code above we can already manually run instructions on our tape that resemble Brainf*ck
 programs:
-```scheme
+```racket
 > (define t (make-tape SIZE))
 > (t 'tape)
 '(#(0 0 0 0 0 0 0 0 0 0) 0)
@@ -419,7 +419,7 @@ programs:
 In order to evaluate whole Brainf*ck programs we now just have to implement a function that accepts
 a program (as a nested list of operations) and a list of inputs. The user-facing function of our
 interpreter, `run-prg` will look very simple:
-```scheme
+```racket
 (define (run-prg prg input)
   (tape 'reset)              ; fill tape by zeros
   (eval-prg prg input)       ; evaluate program
@@ -432,7 +432,7 @@ With pattern matching the `eval-prg` function can conveniently be split into fou
 3. If the current element in the `prg` list is again a list, we execute a separate cycle function.
 4. Otherwise we call our tape operations according to the current symbol.
 
-```scheme
+```racket
 (define (eval-prg prg input)
   (log prg input)
   (match prg
@@ -444,7 +444,7 @@ With pattern matching the `eval-prg` function can conveniently be split into fou
 
 
 The last case where we just need to translate symbols to tape operations is the simplest to implement:
-```scheme
+```racket
 (define (eval-cmd cmd prg input)
   (match cmd
     ['+ (tape 'plus)]
@@ -460,7 +460,7 @@ to `eval-prg` to continue processing the rest of the program.
 
 If we want to read from an input, we strip on element off the `input`, store it on the tape, and
 again continue the evaluation of the rest of `prg`.
-```scheme
+```racket
 (define (eval-comma prg input)
   (cond
     [(null? input) (error "Empty input")]
@@ -471,7 +471,7 @@ again continue the evaluation of the rest of `prg`.
 To run a cycle, we check that the current value is not zero, evaluate the cycle,
 and then call `eval-cycle` again (with potentially changed input list).  If the
 current value is zero at the beginning of the cycle, we skip its evaluation.
-```scheme
+```racket
 (define (eval-cycle cycle prg input)
   (if (= (tape 'dot) 0)                         ; is cycle is finished?
       (eval-prg prg input)                      ; if yes, recursive call preocessing further commands
@@ -482,7 +482,7 @@ current value is zero at the beginning of the cycle, we skip its evaluation.
 We are done! The complete implementation of our interpreter can be found
 [here](/code/lecture05-brainfuck.rkt). Running our
 interpreter on the `add-prg` will produce the following output:
-```scheme
+```racket
 > (run-prg add-prg '(2 3))
 tape: (#(0 0 0 0 0 0 0 0 0 0) 0)  input: (2 3)  cmd: @
 tape: (#(2 0 0 0 0 0 0 0 0 0) 0)  input:   (3)  cmd: >

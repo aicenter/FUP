@@ -100,7 +100,7 @@ computed by the program.
 A lambda term $\lambda x.t$ represents an anonymous function with an argument $x$ and body $t$. The
 term $\lambda x.t$ corresponds to the following expression in Racket:
 
-```scheme
+```racket
 (lambda (x) t)
 ```
 
@@ -137,20 +137,20 @@ A free occurrence of a variable in $e$ may become bound after the $\beta$-reduct
 $$(\lambda x.(\lambda y.xy))y \to^\beta \lambda y.xy[x:=y]\equiv \lambda y.\textcolor{red}{y}y$$
 
 The above reduction step is not valid. The reason is that functions do not depend on the names of their arguments. Consider the following Racket program:
-```scheme
+```racket
 (define y 5)
 (define (cadd x) (lambda (y) (+ x y)))
 ```
 If we now call
-```scheme
+```racket
 (cadd y)
 ```
 the resulting function cannot be
-```scheme
+```racket
 (lambda (y) (+ y y))
 ```
 which would be doubling its argument. Instead, it should be the function adding $y=5$ to its argument. To see that, we can simple rename the argument $y$, for instance, to $z$:
-```scheme
+```racket
 > (define (cadd x) (lambda (z) (+ x z)))
 > (cadd y) => (lambda (z) (+ y z))
 (lambda (z) (+ 5 z))
@@ -397,7 +397,7 @@ $$\langle t,s\rangle\equiv \lambda z.zts$$
 Thus the pair $\langle t,s\rangle$ is a function of argument $z$ that is applied to the pair's
 components. Note that this is exactly how we encoded a 2D point as a function closure in [Lecture
 3](lecture03#closures).
-```scheme
+```racket
 (define (point x y)
   (lambda (m) (m x y)))
 ```
@@ -496,7 +496,7 @@ $\mathsf{R}$'.
 To see an example, we implement a function computing for a given natural number $n$ the sum
 $\sum_{i=0}^n i$. We can define the function recursively using the fact $\sum_{i=0}^n
 i=n+\sum_{i=0}^{n-1} i$. In Racket, we would implement such a function as follows:
-```scheme
+```racket
 (define (sum-to n)
   (if (= n 0)
       0

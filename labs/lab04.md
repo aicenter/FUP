@@ -7,7 +7,7 @@ outline: deep
 ## Exercise 1
 Write a function `(permutations lst)` taking a list `lst` and returning all its
 permutations. For example
-```scheme
+```racket
 > (permutations '(1 2 3))
 '((1 2 3) (2 1 3) (2 3 1) (1 3 2) (3 1 2) (3 2 1))
 ```
@@ -20,7 +20,7 @@ For instance, `((2 3) (3 2))`
 are all permutations of the list `(2 3)`. If
 we want to compute all permutations of `(1 2 3)`, we take each permutation of length 2 and
 interleave the element `1` into it as follows:
-```scheme
+```racket
 (2 3) => ((1 2 3) (2 1 3) (2 3 1))
 (3 2) => ((1 3 2) (3 1 2) (3 2 1))
 ```
@@ -31,7 +31,7 @@ inserting the element into the list.  Using this function, devise the function `
 using the recursion on the length of `lst`.
 
 ::: details Solution
-```scheme
+```racket
 (define (interleave el lst)
   (if (null? lst)
       ; there is only a single way one can insert el into '()
@@ -74,11 +74,11 @@ defined by the path. Example of a Boolean function and its binary decision tree:
 ![](/img/bdd.png){ style="width: 70%; margin: auto;" class="inverting-image"}
 
 We will represent the inner variable nodes as Racket structures:
-```scheme
+```racket
 (struct node (var left right) #:transparent)
 ```
 For instance, the above tree is represented as follows:
-```scheme
+```racket
 (define bool-tree
   (node 'x1
         (node 'x2
@@ -94,7 +94,7 @@ Your task is to implement two functions. The first one `(evaluate tree vals)` ta
 decision tree `tree`
 representing a Boolean function $f(x_1,\ldots,x_n)$, a list `vals` of
 values of variables $x_1,\ldots,x_n$ and returns $f(x_1,\ldots,x_n)$. E.g.
-```scheme
+```racket
 (evaluate bool-tree '(1 0 1)) => 0
 (evaluate bool-tree '(0 1 1)) => 1
 ```
@@ -103,11 +103,11 @@ tree `tree`
 representing a Boolean function $f(x_1,\ldots,x_n)$ and returns all its satisficing evaluations,
 i.e., those for which $f(x_1,\ldots,x_n)=1$. To represent a variable assignment, we introduce the
 following structure:
-```scheme
+```racket
 (struct assignment (var val) #:transparent)
 ```
 An evaluation is a list of assignments for all variables occurring in the tree. Thus the output of `satisficing-evaluations` might look as follows:
-```scheme
+```racket
 (satisficing-evaluations bool-tree) =>
 (list
  (list (assignment 'x1 0) (assignment 'x2 0) (assignment 'x3 0))
@@ -119,7 +119,7 @@ An evaluation is a list of assignments for all variables occurring in the tree. 
 We devise two versions of `evaluate`. The first is the recursive function consuming consecutively values of $x_1,\ldots,x_n$ and, based on its value, recursively evaluates either the left or right subtree. Once all the values are consumed, we should be in a leaf specifying the value of $f(x_1,\ldots,x_n)$.
 
 ::: details Soluiton: `evaluate` #1
-```scheme
+```racket
 (define (evaluate tree vals)
   (match vals
     [(list) tree]
@@ -135,7 +135,7 @@ into the list of functions `node-left`,
 Finally, it applies their composition to `tree`.
 
 ::: details Solution: `evaluate` #2
-```scheme
+```racket
 (define (evaluate2 tree vals)
   (define (left-right x)                         ; define function 0 -> node-left, 1 -> node-right
     (if (zero? x) node-left node-right))
@@ -149,7 +149,7 @@ keeping partial evaluation as we traverse the tree.
 It recursively finds all satisficing evaluations of the left and right subtree, extends them by $0$ (resp. $1$) if they come from left (resp. right), and append them together.
 
 ::: details Solution `satisficing-evaluations`
-```scheme
+```racket
 (define (satisficing-evaluations tree [ev '()])
   (match tree
     [1 (list (reverse ev))]        ; we reverse the evaluation so that the root variable comes first
@@ -163,7 +163,7 @@ It recursively finds all satisficing evaluations of the left and right subtree, 
 ## Task 1
 Write a function `(sub-seq lst)`
 taking a list `lst` and returning a list of all its sublists/subsequences. E.g.
-```scheme
+```racket
 (sub-seq '(1 2 3)) =>
   (() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3))
 ```
@@ -173,7 +173,7 @@ Code it as a recursive function using the following facts. 1) There is only a si
 :::
 
 ::: details Solution
-```scheme
+```racket
 (define (sub-seq lst)
   (if (null? lst)
       '(())
@@ -186,11 +186,11 @@ Code it as a recursive function using the following facts. 1) There is only a si
 
 ## Task 2
 Consider a binary tree representing a tournament. Each internal node corresponds to a match. We represent it as the following structure:
-```scheme
+```racket
 (struct mtch (winner left right) #:transparent)
 ```
 Leaves are of the form `'<team>`. E.g.
-```scheme
+```racket
 (define tour
   (mtch 'F
         (mtch 'D
@@ -226,7 +226,7 @@ use nested patterns in pattern matching to find out the losers.
 :::
 
 ::: details Solution
-```scheme
+```racket
 (define (beaten-teams tree [acc '()])
   (match tree
     [(mtch win win r) (cons r acc)]

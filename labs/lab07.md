@@ -13,7 +13,7 @@ $\lambda$-expressions. You can download the interpreter:
 To follow the exercises, it is recommended to have a piece of paper, a pen, DrRacket IDE installed,
 and the interpreter. To use the interpreter, download the above-mentioned file and store it in a
 directory where you want to create your own code. Then create a new Racket file starting as follows:
-```scheme
+```racket
 #lang racket
 (require "lambda-calculus.rkt")
 ```
@@ -21,7 +21,7 @@ directory where you want to create your own code. Then create a new Racket file 
 $\lambda$-expressions are represented in the interpreter as S-expressions. It does not allow to use
 of any conventions regarding parenthesis. So you need to place them all explicitly. For instance,
 the $\lambda$-expression $\lambda xy.xy(\lambda ab.b)$ has to be represented as follows:
-```scheme
+```racket
 '(λ x : (λ y : ((x y) (λ a : (λ b : b)))))
 ```
 So we had to add the outermost parenthesis, expand the shortcuts $\lambda xy.$ to $\lambda
@@ -42,7 +42,7 @@ The module `lambda-calculus.rkt` provides the following functions:
 Draw the syntax tree of the $\lambda$-expression $(\lambda x.y(xx))(\lambda y.y(xx))$ and determine which variable occurrences are free and which are bound.
 
 We will use the helper function `draw-expr`. First, create the correct representation as an S-expression:
-```scheme
+```racket
 '((λ x : (y (x x))) (λ y : (y (x x))))
 ```
 Then evaluate the following function call:
@@ -57,7 +57,7 @@ An occurrence of a variable $v$ is bound if it is in the syntax tree below the n
 Draw the syntax tree of the $\lambda$-expression $\lambda y.xy(\lambda ab.b)$ and determine which variable occurrences are free and which are bound.
 
 Try first to draw the tree on paper. Then compare your result with the result returned by the function `draw-expr`. The $\lambda$-expression is represented in Racket as follows:
-```scheme
+```racket
 '(λ y : ((x y) (λ a : (λ b : b))))
 ```
 
@@ -67,11 +67,11 @@ Find all redexes in $(\lambda x.x y) z ((\lambda u.u) ((\lambda v.v) z))$. Which
 ::: tip Hint
 Try to find the redexes. Then call `(draw-expr expr)`
 for `expr` being the following S-expression:
-```scheme
+```racket
 '(((λ x : (x y)) z) ((λ u : u) ((λ v : v) z)))
 ```
 The roots of redexes are colored red. To check that your reduction was correct, call
-```scheme
+```racket
 (reduce '(((λ x : (x y)) z) ((λ u : u) ((λ v : v) z))))
 ```
 :::
@@ -85,7 +85,7 @@ $\lambda sz.z$ and $\lambda sz.sz$ respectively.
 
 ::: tip Hint
 Once you do it on paper, check your result in Racket. You can use Racket definitions and semiquoting to make your $\lambda$-expression more readable.
-```scheme
+```racket
 (define zero '(λ s : (λ z : z)))
 (define one '(λ s : (λ z : (s z))))
 (define M '(λ a : (λ b : (λ c : (a (b c))))))
@@ -107,7 +107,7 @@ $$
 $$
 We can even define a `cons` function by $CONS \equiv \lambda abz.zab$. In Racket, you can define all
 these constructions as follows (the final two calls check that it behaves as expected):
-```scheme
+```racket
 (define T '(λ x : (λ y : x)))
 (define F '(λ x : (λ y : y)))
 
@@ -130,12 +130,12 @@ $\lambda pz.z(pF)(pT)$
 :::
 
 Once you have it, define `SWAP` and check that it correctly swaps the components:
-```scheme
+```racket
 (eval `(,SWAP ((,CONS a) b))) => '(λ z : ((z b) a))
 ```
 
 ::: details Solution
-```scheme
+```racket
 (define SWAP `(λ p : (λ z : ((z (p ,F)) (p ,T)))))
 ```
 :::
@@ -143,7 +143,7 @@ Once you have it, define `SWAP` and check that it correctly swaps the components
 ## Exercise 6
 Since we can create pairs, we can create lists as in Racket. We represent the empty list by the false value $F$. Now we can
 create a list `'(a b)` by
-```scheme
+```racket
 (define lst `((,CONS a) ((,CONS b) ,F)))
 
 (eval `(,lst ,T))  => 'a
@@ -174,7 +174,7 @@ $\lambda p.p(\lambda ab.\neg)T$
 Check your solution in Racket.
 
 ::: details Code
-```scheme
+```racket
 (define neg `(λ x : ((x ,F) ,T)))
 (define NULL? `(λ p : ((p (λ a : (λ b : ,neg))) ,T)))
 
@@ -198,7 +198,7 @@ You also need the successor function
 $$S\equiv \lambda wyx.y(wyx)$$
 for adding $1$. The computation of the desired $\lambda$-expression can be expressed in Racket as
 follows:
-```scheme
+```racket
 (define len
   (lambda (p) (if (null? p)
                     0
@@ -216,7 +216,7 @@ $LEN \equiv \lambda rp.NULL?p0(S(r(pF)))$
 Check your solution in Racket:
 
 ::: details Code
-```scheme
+```racket
 (define S '(λ w : (λ y : (λ x : (y ((w y) x))))))
 (define Y '(λ y : ((λ x : (y (x x))) (λ x : (y (x x))))))
 

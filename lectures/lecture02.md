@@ -9,12 +9,12 @@ We start with a simple data structure called **pair**. As its name suggests, a p
 values. It is ordered so that we can distinguish its first value and the second one. To construct a
 pair given two values, `a` and `b`, we use the function `cons`, e.g., a pair consisting of the
 character `A` and the number `65` is constructed as follows:
-```scheme
+```racket
 (cons #\A 65) => '(#\A . 65)
 ```
 Conversely, given a pair, we can extract its first value by the function `car`. The function
 `cdr`[^pair-names] extracts the second value. For example:
-```scheme
+```racket
 (define p (cons #\A 65))
 (car p) => #\A
 (cdr p) => 65
@@ -28,7 +28,7 @@ Conversely, given a pair, we can extract its first value by the function `car`. 
 So far, it does not seem very powerful, as pairs contain only two values. However, we can build more
 complex data structures from pairs because the pair's components can be arbitrary values,
 particularly pairs again. For example, the following pair
-```scheme
+```racket
 (cons (cons 1 (cons 2 3)) (cons 'b #f))
 ```
 is a pair whose first component is another pair consisting of the value `1` and a pair of values `2`
@@ -42,12 +42,12 @@ As we can nest pairs arbitrarily, one can encode lists as nested sequences of pa
 A *list* is a sequence of values. The length of the list can be arbitrary. The empty list is denoted
 either `'()` or `null`. Using the fact that pairs can be nested, we can encode a non-empty list
 $(1,2,3,4)$ as a nested sequence of pairs:
-```scheme
+```racket
 (cons 1 (cons 2 (cons 3 (cons 4 '()))))
 ```
 Thus the first component of any pair holds the actual data, and the second component contains the
 rest of the list.  If we evaluate the above expression in the REPL, the result is:
-```scheme
+```racket
 '(1 2 3 4)
 ```
 It would be tedious to encode lists as nested pairs. Fortunately, Racket introduces more convenient
@@ -59,70 +59,70 @@ There are several ways to construct a list.
 
 2. The next method is the function `list` that takes any sequence of expressions and returns the
    list of values produced by evaluating the expressions.  For example,
-```scheme
+```racket
 (list 1 2 3 4) => '(1 2 3 4)
 ```
 returns the same 4-element list as above. Another example showing that `list` evaluates the given expressions:
-```scheme
+```racket
 (list 1 2 (+ 2 1) 4) => '(1 2 3 4)
 ```
 
 3. The third method is the function `quote`. Unlike `list` that evaluates all the given arguments,
    `quote` takes a single S-expression and returns a list of the expression's components without
    evaluating them. For example,
-```scheme
+```racket
 (quote (1 2 (+ 2 1) 4)) => '(1 2 (+ 2 1) 4)
 ```
 As the function quote is needed quite often, the expression
-```scheme
+```racket
 (quote exp)
 ```
 can be shortened as follows:
-```scheme
+```racket
 'exp
 ```
 4. Lastly, there is a combination of the above method called *quasiquoting*. It is useful when we
    need to evaluate only some expressions representing the list members. Using the function
    `quasiquote`, we can create a list from an S-expression. Moreover, if we want to evaluate any
    subexpressions, it suffices to wrap it by `unquote` function.
-```scheme
+```racket
 (quasiquote (* 1 (unquote (+ 1 1)) 2)) => '(* 1 2 2)
 ```
 Again, the above example can be compactly written as follows:
-```scheme
+```racket
 `(* 1 ,(+ 1 1) 2) => '(* 1 2 2)
 ```
 
 Apart from the above list-construction methods, we can construct new lists by combining existing
 ones. For example, appending several lists together creates a new list.
-```scheme
+```racket
 (append '(1) '(2) '(3 4)) => '(1 2 3 4)
 ```
 
 Knowing how to construct lists, we also need to discuss how to deconstruct them. In other words, how
 to access its members. As lists are nested pairs, it is possible to deconstruct them by the
 functions `car` and `cdr`. For example, to access the first element, use `car`:
-```scheme
+```racket
 (car (list 1 2 3 4)) => 1
 ```
 To get the list after removing the first element, apply `cdr`:
-```scheme
+```racket
 (cdr (list 1 2 3 4)) => '(2 3 4)
 ```
 
 Further elements can be accessed by composing functions `cdr` and `car`, e.g.,
-```scheme
+```racket
 (car (cdr (cdr (list 1 2 3 4)))) => 3
 ```
 To make it more compact, Racket defines a lot of
 [shorthands](https://docs.racket-lang.org/reference/pairs.html#%28part._.Pair_.Accessor_.Shorthands%29)
 for these compositions, e.g.:
-```scheme
+```racket
 (caddr (list 1 2 3 4)) => 3
 ```
 
 To test if a given list is empty can be done by the function `null?`, e.g.,
-```scheme
+```racket
  (null? (list 1 2 3 4)) => #f
  (null? '()) => #t
 ```
@@ -139,7 +139,7 @@ depending on the data type. The most general equality function in Racket is `equ
 all data types, but it is the slowest one. It recursively inspects all the values stored in the data
 structures.
 
-```scheme
+```racket
 (equal? '(1 2 3) (cons 1 (cons 2 (cons 3 '())))) => #t
 (equal? "foobar" (string-append "foo" "bar")) => #t
 (equal? '() null) => #t
@@ -152,7 +152,7 @@ Note the last example showing that `3` and `3.0` are not equal w.r.t. `equal?`. 
 
 To test equality on numbers, one can rely on the function `=`. For example,
 
-```scheme
+```racket
 (= 1 2)        => #f
 (= 42 (* 6 7)) => #t
 (= 3 3.0)      => #t
@@ -179,7 +179,7 @@ to filter, and we return the empty list. Otherwise, we extract `(car lst)`, the 
 result of the recursive call applied to the remaining list. If `(car lst)` differs from `val`, we
 recursively remove `val` from the remaining list and prepend `(car lst)`.
 
-```scheme
+```racket
 (define (my-filter val lst)
   (cond
     [(null? lst) '()]
@@ -189,7 +189,7 @@ recursively remove `val` from the remaining list and prepend `(car lst)`.
 
 Thus except for the base case when `lst` is empty, we recursively evaluate `my-filter` on `(cdr
 lst)` and prepend `(car lst)` based on the equality testing. An example of its evaluation:
-```scheme
+```racket
 (my-filter 'a '(1 a 2 a)) => (cons 1 (my-filter 'a '(a 2 a)))
                           => (cons 1 (my-filter 'a '(2 a)))
                           => (cons 1 (cons 2 (my-filter 'a '(a))))
@@ -205,7 +205,7 @@ we need to append the first element to its end. That could be done as follows:
 
 [^accumulator]: Such a parameter is typically called an *accumulator*.
 
-```scheme
+```racket
 (append acc (car lst))
 ```
 However, this is not a good idea because lists are represented as linked lists, so the function
@@ -214,7 +214,7 @@ we will prepend the first element to `acc` by `cons`. In the end, `acc` contains
 reversely ordered. Calling the function
 [`reverse`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Flist..rkt%29._reverse%29%29),
 we output the result in the correct order.
-```scheme
+```racket
 (define (my-filter-2 val lst [acc '()])
   (cond
     [(null? lst) (reverse acc)]
@@ -224,7 +224,7 @@ we output the result in the correct order.
 
 Now the evaluation proceeds as follows (to make it more readable, I replace the nested `cons` functions with the corresponding lists):
 
-```scheme
+```racket
 (my-filter-2 'a '(1 a 2 a)) => (my-filter-2 'a '(a 2 a) '(1))
                             => (my-filter-2 'a '(2 a) '(1))
                             => (my-filter-2 'a '(a) '(2 1))
@@ -245,7 +245,7 @@ languages have [first-class functions](https://en.wikipedia.org/wiki/First-class
 Below is the code of `my-filter-2` where I replace the argument `val` with a predicate `pred` (i.e.,
 a Boolean function). Moreover, the equality test is replaced with the test of whether the element
 `(car lst)` satisfies the predicate.
-```scheme
+```racket
 (define (my-filter-3 pred lst [acc '()])
   (cond
     [(null? lst) (reverse acc)]
@@ -253,7 +253,7 @@ a Boolean function). Moreover, the equality test is replaced with the test of wh
     [else (my-filter-3 pred (cdr lst) acc)]))
 ```
 For example, we can apply the above function as follows:
-```scheme
+```racket
 (my-filter-3 symbol? '(b 2 a 3 a 4)) => '(b a a)
 ```
 The function
@@ -271,24 +271,24 @@ anonymous function. It can be handy when a function needs to return a function o
 functions as arguments if we do not want to give them a name.  The construction of such a function
 is called *lambda abstraction*. In Racket, it is done as follows:
 
-```scheme
+```racket
 (lambda (arg1 ... argN) exp)
 ```
 where `ar1`,...,`argN` are the function arguments and `exp` is its body. For example, an anonymous
 function assigning to a number its square can be defined by
-```scheme
+```racket
 (lambda (x) (* x x))
 ```
 In fact, the definition
-```scheme
+```racket
 (define (square x) (* x x))
 ```
 we know from the previous lecture is just a shorthand for
-```scheme
+```racket
 (define square (lambda (x) (* x x)))
 ```
 Examples of applications of anonymous functions:
-```scheme
+```racket
 (filter (lambda (x) (> x 5)) '(1 7 3 8)) => '(7 8)
 (filter (lambda (l) (not (null? l))) '((a b) (5) ())) => '((a b) (5))
 ```
@@ -305,7 +305,7 @@ prevents the program from evaluating the subexpression several times. In some ca
 crucial impact on performance. Consider the following code defining a function computing the maximum
 value of a list.
 
-```scheme
+```racket
 (define (bad-maxlist lst)
   (if (null? lst)
       -inf.0
@@ -328,7 +328,7 @@ measuring the evaluation time, we obtain the following result[^range]:
     $n-1$. For example, `(range 5)` returns `'(0 1 2 3 4)`. For further details, see the
     [documentation](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Flist..rkt%29._range%29%29).
 
-```scheme
+```racket
 (time (bad-maxlist (range 30))) => 29
 cpu time: 6953 real time: 7077 gc time: 0
 ```
@@ -338,7 +338,7 @@ its result. Next, we can reuse that result in several places without recomputing
 again.
 
 A local definition can be done using the let expression. The syntax is the following:
-```scheme
+```racket
 (let ([var1 exp1]
       [var2 exp2])
   exp-using-var1-var2)
@@ -348,7 +348,7 @@ of an identifier and an expression. Finally, the let construction ends with an e
 depends on the bindings.
 
 Now, we can rewrite the function `bad-maxlist` so it is linear recursive.
-```scheme
+```racket
 (define (better-maxlist lst)
   (if (null? lst)
       -inf.0
@@ -356,14 +356,14 @@ Now, we can rewrite the function `bad-maxlist` so it is linear recursive.
         (if (> (car lst) m) (car lst) m))))
 ```
 The same performance test produces a much better result now.
-```scheme
+```racket
 (time (better-maxlist (range 30))) => 29
 cpu time: 0 real time: 0 gc time: 0
 ```
 Of course, it would be better to make the function `better-maxlist` even tail-recursive. The above
 example should mainly demonstrate how local definitions might impact the evaluation process. The
 tail-recursive version looks as follows:
-```scheme
+```racket
 (define (best-maxlist lst [acc -inf.0])
   (cond
     [(null? lst) acc]
@@ -378,7 +378,7 @@ the other hand, local definitions via `define` might reference each other no mat
 they are introduced. This is not possible with the `let` definitions. For example, the following
 code fails:
 
-```scheme
+```racket
 (let ([x 10]
       [y (* x x)])
   y)
@@ -389,7 +389,7 @@ x: undefined;
 We tried to define locally $y$ to be $x^2$. However, the expressions in the local definitions cannot
 use the defined identifiers. If we need that, one can use the following construction:
 
-```scheme
+```racket
 (let* ([var1 exp1]
        [var2 exp2-using-var1])
   exp-using-var1-var2)
@@ -398,7 +398,7 @@ use the defined identifiers. If we need that, one can use the following construc
 When we use the local definitions via `let*`, each defining expression can refer to the previously
 defined identifiers.
 For example,
-```scheme
+```racket
 (let* ([x 10]
        [y (* x x)])
   y) => 100
@@ -409,12 +409,12 @@ For example,
 As we can nest lists as we like, it is possible to encode arbitrary tree data structures into lists.
 A concrete encoding depends on your application and preferences. For example, we can encode nodes in
 binary trees as lists of the form:
-```scheme
+```racket
 '(data left right)
 ```
 where the node holds data and contains the left and right subtree. Whenever you encode a data
 structure into a list, defining accessor functions is a good practice.
-```scheme
+```racket
 (define get-data car)
 (define get-left cadr)
 (define get-right caddr)
@@ -434,7 +434,7 @@ Consider the following tree:
 
 The above binary tree can be encoded as follows if we represent the empty tree as `#f`:
 
-```scheme
+```racket
 (define btree
   '(1
     (2
@@ -452,7 +452,7 @@ Thus the nodes `(7 #f #f)`, `(5 #f #f)`, `(8 #f #f)`, and `(9 #f #f)` are the le
 
 It is possible to iterate through a tree recursively analogously as we did it with lists. Suppose we want to implement a function `find` whose input is a predicate and a binary tree that returns the list of the node's elements satisfying the given predicate. We can do it as follows:
 
-```scheme:line-numbers
+```racket:line-numbers
 (define (find pred tree)
   (if tree
       (let* ([data (get-data tree)]
@@ -477,7 +477,7 @@ Otherwise, we return only the result from the recursive calls (Line 9).
 
 Employing the function above, we can, for instance, extract from the tree all the elements greater
 than 5.
-```scheme
+```racket
 (find (lambda (x) (> x 5)) btree) => '(7 6 8 9)
 ```
 
@@ -487,12 +487,12 @@ multiplication operators, and a unary function `opp`. The semantics of addition,
 multiplication is the usual one. The function `opp` assigns to a number its opposite number, e.g.,
 $\mathrm{opp}(4) = -4$. We further assume that the algebraic expression is represented in the
 Lisp-like fashion. For instance, $\mathrm{opp}(-2) \cdot (1 + 2)$ is represented as
-```scheme
+```racket
 '(* (opp -2) (+ 1 2))
 ```
 In this representation, additions and multiplications can have an arbitrary number of arguments. For
 example, $13 + 2\cdot 3\cdot 4 + (4 - 2) + \mathrm{opp}(1 + 2)$ is represented as
-```scheme
+```racket
 '(+ 13 (* 2 3 4) (- 4 2) (opp (+ 1 2)))
 ```
 
@@ -505,7 +505,7 @@ recursive evaluation process:
    subexpressions `e1`,... and then combine the resulting values by the operation `op`.
 
 The resulting code in Racket might look as follows:
-```scheme:line-numbers
+```racket:line-numbers
 (define (eval-expr e)
   (if (number? e)
       e
@@ -521,7 +521,7 @@ The resulting code in Racket might look as follows:
 
 (Line 2) uses the function `number?` to test if the expression is a number,
 e.g.,
-```scheme
+```racket
 (number? -5) => #t
 (number? '(+ 1 2)) => #f
 ```
@@ -534,7 +534,7 @@ there is already such a function called
 [`map`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Fprivate%2Fmap..rkt%29._map%29%29).
 In its simplest form `(map f lst)`, it takes a function `f` and a list `lst`, and returns a new list
 whose members are images under `f`. For example,
-```scheme
+```racket
 (map (lambda (x) (* x x)) '(1 2 3)) => '(1 4 9)
 (map car '((a b) (c d))) => '(a c)
 ```
@@ -543,13 +543,13 @@ Next, we branch the computation based on the operation (Lines 6-10). Once we kno
 operation, it suffices to apply it to the values obtained by evaluating subexpressions. However, the
 values form a list `children`, so we cannot directly apply the operation. For instance, the
 following expression fails:
-```scheme
+```racket
 (+ '(1 2 3)) => fails
 ```
 because we need to "unwrap" the values from the list. Racket implements a function that does that for us. It is called
 [`apply`](https://docs.racket-lang.org/reference/procedures.html#%28def._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._apply%29%29). It takes a function and a list and applies the function to the arguments from the list.
 For example,
-```scheme
+```racket
 (apply + '(1 2 3)) => 6
 ```
 
@@ -557,7 +557,7 @@ Now Lines 7-10 should be clear. We use the function `eq?` to test the equality o
 10, we assume that `opp` has only a single argument `(car children)`.  The opposite number is
 computed via the unary version of the [function `-`](https://docs.racket-lang.org/reference/generic-numbers.html#%28def._%28%28quote._~23~25kernel%29._-%29%29),
 e.g.,
-```scheme
+```racket
 (- 5) => -5
 (- -3) => 3
 ```
@@ -578,7 +578,7 @@ and easier to test.
 Rackunit provides a collection of functions allowing us to test our functions/units. As our programs
 will be relatively small, we will need only a few testing functions. To load Rackunit, put the
 following line into your code:
-```scheme
+```racket
 (require rackunit)
 ```
 Rackunit defines three levels of tests:
@@ -589,11 +589,11 @@ Rackunit defines three levels of tests:
 
 The most common checks are equality tests via `check-equal?`. Given two expressions, it checks
 whether they are evaluated by equal values w.r.t. `equal?`. For instance,
-```scheme
+```racket
 (check-equal? (cons 'a (cons 'b '())) '(a b))
 ```
 We can also pass an optional message as the last parameter displayed when the check fails.
-```scheme
+```racket
 (check-equal? (cons 'a (cons 'c '())) '(a b) "optional message")
 --------------------
 . FAILURE
@@ -610,7 +610,7 @@ for details.
 
 A test case is a named sequence of checks. If any of the checks fail, the remaining ones are not
 executed. For example,
-```scheme
+```racket
 (test-case "eval-expr tests"
              (check-equal? (eval-expr '(+ 1 2)) 0)
              (check-equal? (eval-expr '(+ (opp 1) 1)) 0))
@@ -624,7 +624,7 @@ expected:   0
 --------------------
 ```
 If we need a named single check, it is possible to define it by `test-equal?`, e.g.,
-```scheme
+```racket
 (test-equal? "eval literal" (eval-expr 13) 13)
 ```
 
@@ -637,7 +637,7 @@ contains an unnecessary dependency on Rackunit. There are two solutions to this 
 
 The first method can be implemented as follows. Suppose we have a Racket file `square.rkt` defining
 the function `square`:
-```scheme:line-numbers
+```racket:line-numbers
 #lang racket
 (provide square)
 
@@ -645,7 +645,7 @@ the function `square`:
 ```
 Note Line 2, which is exporting the definition of `square` so that we can import it in the test
 module. Next, we design a test module in a separate file, e.g., `square-tests.rkt`.
-```scheme:line-numbers
+```racket:line-numbers
 #lang racket
 (require rackunit
          "square.rkt")
@@ -661,7 +661,7 @@ module `square-tests.rkt` whenever we need to run tests.
 
 The second approach defines a submodule `test` within the actual code. To introduce the tests and
 further test dependencies, use `module+` as follows:
-```scheme:line-numbers
+```racket:line-numbers
 #lang racket
 (provide square)
 

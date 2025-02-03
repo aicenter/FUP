@@ -15,13 +15,13 @@ computing perimeter of a given 2D shape. There are three types of shapes: rectan
 triangle. The size of the rectangle is specified by its width and height, the circle by its radius,
 and the triangle by the lengths of its sides. Thus the input is given as a list whose first member
 is a symbol among `'rect`, `'circ`, and `'tri` followed by respective numeric parameters. E.g.,
-```scheme
+```racket
 '(rect 3 4)
 '(circ 5)
 '(tri 3 4 5)
 ```
 The function computing the perimeter of such shapes can be implemented as follows:
-```scheme:line-numbers
+```racket:line-numbers
 (define (ugly-perim shape)
   (define type (car shape))
   (cond
@@ -43,7 +43,7 @@ Similar tasks might easily lead to nested conditionals intertwined with the valu
 Fortunately, most modern functional languages provide a pattern-matching mechanism that
 simultaneously allows branching and value extraction.  The syntax for the pattern matching is
 similar to `cond`:
-```scheme
+```racket
 (match exp
   [pattern1 exp1]
   [pattern2 exp2]
@@ -53,7 +53,7 @@ The value of `exp` is successively matched against the patterns. The correspondi
 right-hand side gets evaluated if a pattern matches. There are many types of patterns one can use.
 For a complete list, see the [documentation](https://docs.racket-lang.org/reference/match.html). I
 only mention a few possibilities. Consider the following code
-```scheme:line-numbers
+```racket:line-numbers
 (struct point (x y))
 
 (match exp
@@ -75,7 +75,7 @@ The last pattern (Line 10) matches against any
 value.
 
 The following code introduces pattern matching for lists.
-```scheme:line-numbers
+```racket:line-numbers
 (match lst
   [(list) 'empty]
   [(list x) (format "singleton (~a)" x)]
@@ -93,7 +93,7 @@ has at least three elements and starts with numbers `1` and `2`. The
 last element is bound to `z`, and the elements between `2` and `z` are bound to `ys`.
 
 With the above tools, we can simplify the function `ugly-perim` as follows:
-```scheme
+```racket
 (define (nice-perim shape)
   (match shape
     [(list 'rect width height) (* 2 (+ width height))]
@@ -117,7 +117,7 @@ computed, or the definition of `f` is expanded, and its body gets evaluated.
     call `((curry * 2) 3)` where the function is given by the expression `(curry * 2)`.
 
 There are a few exceptions to this evaluation strategy. In particular, conditional expressions get evaluated differently. For this reason, `if` and `cond` are said to be syntactic forms rather than functions. Other examples where the strict evaluation strategy does not apply are logical operations `and`, `or`. Their arguments get evaluated from left to right. Once any `and`'s argument is evaluated to `#f`, the evaluation of the remaining arguments is skipped. The result is `#f` anyway. Similarly, if any `or`'s argument is evaluated to  `#t`, no further argument gets evaluated anymore.
-```scheme
+```racket
 (and #f (/ 1 0)) => #f
 (or #t (+ 3 "a") (/ 1 0)) => #t
 ```
@@ -126,7 +126,7 @@ Even though some syntactic forms are not evaluated strictly, we can only define 
 Apart from strict evaluation, there is another evaluation strategy called [lazy](https://en.wikipedia.org/wiki/Lazy_evaluation) that evaluates the arguments when needed. The argument's value is needed when we evaluate a function call of a built-in primitive function. Can we force Racket to evaluate some argument expressions lazily?
 
 Suppose we want to define a function `my-if` that would behave like the regular `if`. Due to the strict evaluation, the following code works only partially:
-```scheme
+```racket
 (define (my-if c a b) (if c a b))
 
 (my-if (< 0 1) 'then 'else) => 'then
@@ -134,43 +134,43 @@ Suppose we want to define a function `my-if` that would behave like the regular 
 ```
 
 However, if we try the following:
-```scheme
+```racket
 (my-if (< 0 1) 'then (/ 1 0)) => /: division by zero
 ```
 unlike
-```scheme
+```racket
  (if (< 0 1) 'then (/ 1 0)) => 'then
 ```
 
 `my-if` does not work because it is a function whose all argument expressions get evaluated before its body. To overcome this issue, we need to postpone the arguments' evaluation. The trick, how we can do it, is to pass the argument expressions into the function as functions. Functions (more precisely, function closures) act as usual values, so there is no need to evaluate them anymore. Moreover, we can "hide" the argument expressions inside functions' bodies. Recall that the function body gets evaluated only when we call the function.
 
 So let us try to pass into `my-if` the then and else expressions wrapped inside a parameterless function as follows:
-```scheme
+```racket
 (my-if (< 0 1) (lambda () 'then) (lambda () (/ 1 0))) => #<procedure>
 ```
 The result is better; no more division by zero error. Nevertheless, the result is a function. We can call it to evaluate its body:
-```scheme
+```racket
 ((my-if (< 0 1) (lambda () 'then) (lambda () (/ 1 0)))) => 'then
 ```
 
 We can actually put the function call into the definition of `my-if`:
-```scheme
+```racket
 (define (my-if c a b) (if c (a) (b)))
 ```
 Now, we can apply it as follows:
-```scheme
+```racket
 (my-if (< 0 1) (lambda () 'then) (lambda () (/ 1 0))) => 'then
 ```
 It is awkward to wrap all the argument expressions into `(lambda () ...)`. A parameterless function like `(lambda () (+ 1 2))` is called a *thunk*. Racket even has a syntactic form creating a thunk from a given expression as follows:
-```scheme
+```racket
 (thunk (+ 1 2)) => #<procedure>
 ```
 It is equivalent to
-```scheme
+```racket
 (lambda () (+ 1 2))
 ```
 Thus we can simplify the above call of `my-if` a bit:
-```scheme
+```racket
  (my-if (< 0 1) (thunk 'then) (thunk (/ 1 0))) => 'then
 ```
 Still, wrapping all the argument expressions by `thunk` remains tedious. We will see how to fix it once we discuss
@@ -179,7 +179,7 @@ Still, wrapping all the argument expressions by `thunk` remains tedious. We will
 A natural question is why we need lazy evaluation. There are several applications besides functions behaving like conditionals.
 
 - A typical situation when we must pass an expression into a function without evaluating it arises in concurrent programming. Suppose we want to evaluate an expression in a new thread. A function `thread` creates a new thread, and its single argument must be a thunk. For example, the following code creates a new thread, sums all the integers between 0 and 999, and displays the result on the screen once it finishes:
-```scheme
+```racket
 (thread (thunk (displayln (foldl + 0 (range 0 1000)))))
 ```
 - Another situation when lazy evaluation is useful is when we deal with a potentially infinite data structure. Lazy evaluation can simplify our code and make it more modular. Sometimes the resulting code might be more efficient. I will discuss such cases in the following section on streams.
@@ -203,30 +203,30 @@ flag is switched, and the resulting value replaces the thunk.
 
 A promise can be created by the function
 [`delay`](https://docs.racket-lang.org/reference/Delayed_Evaluation.html#%28form._%28%28lib._racket%2Fpromise..rkt%29._delay%29%29). Calling e.g.
-```scheme
+```racket
 (define p (delay (foldl + 0 (range 1000))))
 p => #<promise:p>
 ```
 makes a promise called `p` whose thunk's body is `(foldl + 0 (range 1000))`. If we want to evaluate the promise and activate the caching mechanism, we call
-```scheme
+```racket
 (force p) => 499500  ; the body gets evaluated
 (force p) => 499500  ; the cached value is returned
 ```
 
 Using [`delay`](https://docs.racket-lang.org/reference/Delayed_Evaluation.html#%28form._%28%28lib._racket%2Fpromise..rkt%29._delay%29%29) and [`force`](https://docs.racket-lang.org/reference/Delayed_Evaluation.html#%28def._%28%28lib._racket%2Fpromise..rkt%29._force%29%29), we can define streams manually. For example, the infinite stream of all natural numbers `nats` can be made as follows:
-```scheme
+```racket
 (define (ints-from n)
   (cons n (delay (ints-from (+ n 1)))))
 
 (define naturals (ints-from 0))
 ```
 If we try to evaluate `naturals`, we get a pair whose first component is `0` and the second one is a promise:
-```scheme
+```racket
 naturals => '(0 . #<promise:...ectures/lecture5.rkt:43:10>)
 (car naturals) => 0
 ```
 When we need the next element from `naturals`, we force the promise:
-```scheme
+```racket
 (force (cdr naturals)) => '(1 . #<promise:...ectures/lecture5.rkt:43:10>)
 ```
 
@@ -246,12 +246,12 @@ We do not have to construct streams manually as above. Racket has functions work
 | in-range | range |
 
 Using the above functions, we can shortly define the stream of natural numbers starting at `n` as follows:
-```scheme
+```racket
 (define (nats n)
   (stream-cons n (nats (+ n 1))))
 ```
 Let us see how it works:
-```scheme
+```racket
 (nats 0) => #<stream>
 (stream-first (nats 0)) => 0
 (stream-rest (nats 0)) => #<stream>
@@ -260,7 +260,7 @@ Let us see how it works:
 
 A finite stream can be converted into a regular list by the function [`stream->list`](https://docs.racket-lang.org/reference/streams.html#%28def._%28%28lib._racket%2Fstream..rkt%29._stream-~3elist%29%29). To make a finite stream from an infinite one, we can apply the function [`stream-take`](https://docs.racket-lang.org/reference/streams.html#%28def._%28%28lib._racket%2Fstream..rkt%29._stream-take%29%29) that restricts the given stream to its initial segment of a given length.
 
-```scheme
+```racket
 (stream->list (stream-take (nats 0) 5)) => '(0 1 2 3 4)
 ; but
 (stream-take (nats 0) 5) => #<stream>
@@ -272,7 +272,7 @@ The stream of natural numbers `(nats 0)` is an example of an explicitly defined 
 definition is done recursively based on the function $n\mapsto n+1$ computing the next element. We
 can easily generalize this construction to any generating function `f` as follows:
 
-```scheme:line-numbers
+```racket:line-numbers
 (define (repeat f a0)
   (stream-cons a0 (repeat f (f a0))))
 ```
@@ -294,29 +294,29 @@ the infinite stream of $1$s, i.e., $\bar{1}=1,1,1,\ldots$. Obviously, the stream
 the equation $\bar{1}=1,\bar{1}$. In other words, if we prepend $1$ to $\bar{1}$, we get back
 $\bar{1}$. Expressing this equation in Racket code gives us a definition of $\bar{1}$.
 
-```scheme
+```racket
 (define ones (stream-cons 1 ones))
 ```
 
 Similarly, if we want to define an infinite stream $\overline{ab}=a,b,a,b,\ldots$, we can use the equation $\overline{ab}=a,b,\overline{ab}$.
-```scheme
+```racket
 (define ab (stream-cons 'a (stream-cons 'b ab)))
 
 (stream->list (stream-take ab 10)) => '(a b a b a b a b a b)
 ```
 The definition of `ab` can be simplified using the function `stream*` that allows prepending several initial stream elements to an existing stream.
-```scheme
+```racket
 (define ab (stream* 'a 'b ab))
 ```
 We can also understand `ab` as a cyclic list. Cyclic data structures can be defined in a purely functional setting only through lazy evaluation. Another example might be an infinite stream (cyclic list) consisting of all weekdays:
-```scheme
+```racket
 (define weekdays (stream* 'mon 'tue 'wed 'thu 'fri 'sat 'sun weekdays))
 
 (stream->list (stream-take weekdays 10)) => '(mon tue wed thu fri sat sun mon tue wed)
 ```
 
 If we extend algebraic operations on streams, we can invent more complex equations defining streams. For instance, we can add two infinite streams point-wise.
-```scheme
+```racket
 (define (add-streams s1 s2)
   (stream-cons (+ (stream-first s1)
                   (stream-first s2))
@@ -337,7 +337,7 @@ the sum of the constant stream $\bar{1}$ and $\overline{\mathbb{N}}$ itself.
 ```
 
 In Racket, the implicit definition of the stream of natural numbers based on the above equation looks as follows:
-```scheme
+```racket
 (define nats2 (stream-cons 0 (add-streams ones nats2)))
 ```
 
@@ -346,16 +346,16 @@ In Racket, the implicit definition of the stream of natural numbers based on the
 We have seen that streams provide an exciting way to deal with potentially infinite structures. Let us see some concrete situations where streams could be helpful.
 
 Likely the most straightforward application of streams rather than lists is when we need to iterate through its elements, but storing the whole stream/list in memory is unnecessary. Consider the following code:
-```scheme
+```racket
 (foldl + 0 (range 10000000))
 ```
 It sums the first $10^7$ natural numbers. A list `(range 10000000)` of size $10^7$ must be created to evaluate this expression. It is clear that we do not need to store the whole list in memory. It suffices to keep the intermediate sum and generate the list's members on the fly. Using a finite stream `(in-range 10000000)` is reasonable in such a situation. It works like an iterator in Python, generating the elements on the fly.
-```scheme
+```racket
 (stream-fold + 0 (in-range 10000000))
 ```
 
 Comparing the performance of both approaches gives the following results:
-```scheme
+```racket
 > (time (stream-fold + 0 (in-range 10000000)))
 cpu time: 171 real time: 169 gc time: 0
 49999995000000
@@ -389,7 +389,7 @@ $\varepsilon>0$. [^termination]
 
 Now, we compare the code that mixes the generating code with the terminating condition and the modular code utilizing streams.
 
-```scheme:line-numbers
+```racket:line-numbers
 (define eps 0.000000000001)
 (define (mean . xs) (/ (apply + xs) (length xs)))
 (define (next-guess n g) (mean g (/ n g)))
@@ -417,7 +417,7 @@ approximation. If not, `my-sqrt` is recursively called again with a better appro
 We cannot separate the recursive generating process and the terminating condition in the above code. On the other hand, we can separate these two parts in an implementation based on streams. First, we generate an infinite stream of all approximations. Next, we independently process the resulting stream to find a suitable approximation satisfying the terminating condition.
 
 To generate the approximations, recall the function [`repeat`](#cb21-1) that produces a stream by successive applications of a function to an initial value. Utilizing `repeat`, we can generate the approximations converging to $\sqrt{n}$ starting at $g_0$ as follows:
-```scheme
+```racket
 (repeat (curry next-guess n) g0)
 
 (stream->list (stream-take (repeat (curry next-guess 2) 1.0) 7)) =>
@@ -430,7 +430,7 @@ To generate the approximations, recall the function [`repeat`](#cb21-1) that pro
   1.414213562373095)
 ```
 Now, it remains to find the first approximation satisfying the terminating condition. To do that, we simply iterate through the stream, extract two successive elements and test the stopping condition. Once we find such an element, we stop the iteration and return the last approximation.
-```scheme
+```racket
 (define (within eps seq)
   (define fst (stream-first seq))
   (define rest (stream-rest seq))
@@ -440,7 +440,7 @@ Now, it remains to find the first approximation satisfying the terminating condi
       (within eps rest)))
 ```
 Joining these two pieces gives us the desired square-root function:
-```scheme
+```racket
 (define (lazy-sqrt n [g 1.0])
   (within eps (repeat (curry next-guess n) g)))
 ```
@@ -469,7 +469,7 @@ picture below.  Note that the edge between $1$ and $2$ is bidirectional.
 
 To represent the above digraph in Racket, we introduce a structure capturing arcs and define a digraph `g`:
 
-```scheme
+```racket
 (struct arc (source target) #:transparent)
 
 (define g (list (arc 1 2) (arc 2 1)
@@ -478,7 +478,7 @@ To represent the above digraph in Racket, we introduce a structure capturing arc
                 (arc 6 3) (arc 3 4)))
 ```
 Moreover, we define a function returning a list of neighbors of a given vertex:
-```scheme
+```racket
 (define (get-neighbors g v)
   (map arc-target (filter (lambda (arc) (equal? v (arc-source arc))) g)))
 ```
@@ -488,12 +488,12 @@ If we want to find the path, we build the tree by generating neighbors. From nod
 ![The tree produced by exploring the above graph starting in node $1$](/img/lazy-tree.png){ style="width: 80%; margin: auto;" id="tree" class="inverting-image"}
 
 In the modular lazy approach, it is possible to implement a function generating such a (possibly infinite) tree and process it later. We represent the tree nodes as a structure
-```scheme
+```racket
 (struct node (data children) #:transparent)
 ```
 consisting of some `data` and a *stream* `children` of its children. Thus the children's evaluation is delayed.
 If we have a function generating children (I call them successors), it is easy to implement a function generating the whole lazy tree.
-```scheme:line-numbers
+```racket:line-numbers
 (define (make-tree get-successors v)
   (define successors (get-successors v))
   (node v (stream-map (curry make-tree get-successors) successors)))
@@ -504,7 +504,7 @@ Even though `successors` form a regular list, we transform it into a stream by c
 the function `stream-map`. Moreover, `stream-map` applies recursively `make-tree` to each child.
 
 Using the function `get-neighbors`, we can generate the above-depicted  tree as follows:
-```scheme
+```racket
 (define t (make-tree (curry get-neighbors g) 1))
 ```
 Let us evaluate the tree `t` manually in the REPL:
@@ -525,7 +525,7 @@ Once we have the tree, we can further process it. For example, we can prune or t
 We replace its data with the path $1\to 2\to 4\to 5$. More precisely, we represent such a path as a list of vertices in the reversed order, i.e., `'(5 4 2 1)`.
 
 We do not have to modify the generating function `make-tree` to do this node enrichment. It suffices to provide a different function generating successors.
-```scheme:line-numbers
+```racket:line-numbers
 (define (get-ext-paths g path)
   (define end (car path))
   (define neighbors (get-neighbors g end))
@@ -542,11 +542,11 @@ list of possible `path` extensions
     in the reversed order, i.e., from right to left.
 
 Now we can generate the enriched tree as follows:
-```scheme
+```racket
 (define t-en (make-tree (curry get-ext-paths g) '(1)))
 ```
 Let us evaluate the enriched tree `t-en` manually in the REPL:
-```scheme
+```racket
 ; the root node 1
 t-en => (node '(1) #<stream>)
 
@@ -559,7 +559,7 @@ t-en => (node '(1) #<stream>)
 ```
 
 It would be possible to traverse our enriched tree and search for the goal node. However, we must be careful as the tree is infinite. For example, the depth-first search might traverse forever (on the other hand, the breadth-first search would find the solution). Thus we first prune the tree. When searching for a path, we can omit paths containing cycles. We will implement a universal function filtering the node's children based on a predicate.
-```scheme:line-numbers
+```racket:line-numbers
 (define (filter-children pred tree)
   (match tree
     [(node data children)
@@ -573,17 +573,17 @@ children and filters them based on the predicate `pred`. The children of remaini
 filtered recursively using `stream-map` (Line 4).
 
 We use the function [`check-duplicates`](https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28lib._racket%2Flist..rkt%29._check-duplicates%29%29) to test if a path is cyclic. It tests whether a given list contains an element more than once. Thus our predicate can be implemented as follows:
-```scheme
+```racket
 (compose not check-duplicates node-data)
 ```
 The predicate extracts the path from the node by `node-data`, checks the duplicates, and if there are none, it returns `#t`.
 Consequently, the filtered tree can be obtained by the following code:
-```scheme
+```racket
 (define t-en-f
     (filter-children (compose not check-duplicates node-data) t-en))
 ```
 Let us see if the cyclic paths disappeared in the filtered tree. For example,  the node whose path is `'(1 2 1)` should be removed.
-```scheme
+```racket
 (stream->list (node-children (stream-first (node-children t-en-f))))
 => (list (node '(4 2 1) #<stream>))
 ```
@@ -591,7 +591,7 @@ So it works well. We cut off the left branch of the [tree](#tree) as expected.
 
 Finally, we implement a function `dfs` traversing the filtered tree. More precisely, the function executes the depth-first search. It has two arguments. The first is a predicate recognizing a goal state. The second is the tree to traverse.
 
-```scheme:line-numbers
+```racket:line-numbers
 (define (dfs goal? tree)
   (match tree
     [(node path children)
@@ -611,7 +611,7 @@ get by recursion to a non-goal node having no children, `ormap` returns `#f`, an
 the previous recursive call.
 
 Now, let us test our solution on the graph example:
-```scheme
+```racket
 (dfs (compose (curry eqv? 3) car) t-en-f)
 => '(1 2 4 5 6 3)
 ```

@@ -152,11 +152,10 @@ keys are characters and values are integers. We apply the provided function
 to update the intermediate result. It takes four arguments. The first is a binary function updating
 existing key-value pairs, the second is the key to be inserted, the third is the updating value, and
 the last is the dictionary. For example, if we call
-```{.haskell}
+```haskell
 insertWith (+) ch 1 m
 ```
-there are two possible outcomes: either the pair `(ch,1)` is inserted into `m` if `ch` is not
-present in `m` or `(ch,v+1)` is inserted into `m` if `(ch,v)` is in `m`.
+there are two possible outcomes: either the pair `(ch,1)` is inserted into `m` if `ch` is not already present in `m`, or `(ch,v+1)` is inserted into `m` if `(ch,v)` is in `m`.
 
 I hope the above example gave you a flavor of functional programming. Next, I will discuss what
 consequences it has using the functional programming style.
@@ -476,7 +475,7 @@ Racket](https://marketplace.visualstudio.com/items?itemName=evzen-wybitul.magic-
 Racket's syntax more-or-less extends the syntax of Lisp. Each Racket source file must start with the
 following line:
 
-```scheme
+```racket
 #lang racket
 ```
 
@@ -494,41 +493,41 @@ new programming languages.
 Racket programs consist of four types of syntactical forms:
 
 1. *Primitive expressions* are either literals like numbers or strings, e.g.,
-```scheme
+```racket
 "Hello World!"
 ```
 or built-in functions, e.g.,
-```scheme
+```racket
 cos
 ```
 2. *Compound expressions* are built up from primitive expressions using the function composition, e.g.,
-```scheme
+```racket
 (cos (+ 1 2))
 ```
 The compound expressions are formed by so-called **S-expressions**. They look as follows:
-```scheme
+```racket
 (fn arg1 arg2 ... argN)
 ```
 where `fn` is a function and `arg1`,...,`argN` are its arguments.  This prefix notation is also used
 for the usual infix arithmetic operations like addition or multiplication. For example, the
 expression $\frac{xy^2+3}{x-1}$ would be written as
-```scheme
+```racket
 (/ (+ (* x y y) 3) (- x 1))
 ```
 The prefix notation has the advantage that we can avoid dealing with operators' precedence.
 Moreover, operations like + or * can take an arbitrary number of arguments.
 
 3. *Definitions* allow us to name an expression or define new functions, e.g.,
-```scheme
+```racket
 (define a 1)
 (define (square x) (* x x))
 ```
 More precisely, if we want to name an expression, we use the following construction:
-```scheme
+```racket
 (define id exp)
 ```
 where `id` is the name/identifier for the expression `exp`. If we want to define a function, we do it as follows:
-```scheme
+```racket
 (define (fn a1 ... aN)
   exp)
 ```
@@ -540,7 +539,7 @@ The body of the function consists of an expressions `exp` depending on the param
     later on.
 
 4. Finally, we have *line comments* and *block comments*, e.g.,
-```scheme
+```racket
 ; This is a one-line comment
 #|
   This is
@@ -570,7 +569,7 @@ $3.14$, or `cos` denotes the cosine function.
 
 To see the evaluation of a compound expression, consider the following simple Racket program. It
 defines a function square that, to every $x$, assigns $x^2$ and consists of a single expression.
-```scheme
+```racket
 (define (square x) (* x x))
 
 (square (+ 3 4))
@@ -580,12 +579,12 @@ The evaluation of the expression might start by evaluating the subexpression `(+
 only of primitive expressions with a given meaning. Thus its resulting value is $3+4=7$. Next, we
 can expand the function square definition, i.e., replace `(square 7)` with `(* 7 7)`. The final
 value is $7*7=49$.
-```scheme
+```racket
 (square (+ 3 4)) => (square 7) => (* 7 7) => 49
 ```
 
 Note that this is not the only possible way to evaluate the program. Alternatively, we could proceed as follows:
-```scheme
+```racket
 (square (+ 3 4)) => (* (+ 3 4) (+ 3 4)) => (* 7 7) => 49
 ```
 In other words, we can first expand the definition and  then evaluate the subexpressions `(+ 3 4)`. This leads to the conclusion that the evaluation process is not uniquely determined. Consequently, each functional programming language comes with its  *evaluation strategy*. There are two prominent families of strategies.
@@ -601,7 +600,7 @@ Non-strict strategies avoid evaluating unnecessary arguments but might duplicate
 
 Although Racket's evaluation strategy is strict, there are a few exceptions, particularly conditional expressions. Two basic approaches to branching a program based on a Boolean test exist. The first is the if-then-else expression.
 
-```scheme
+```racket
 (if test-exp then-exp else-exp)
 ```
 As the if-then-else expression must have a value, both `then-exp` and `else-exp` are required. This contrasts with imperative programming, where the else branch is often optional.
@@ -614,13 +613,13 @@ the following expression gets evaluated without throwing an error even if `n` is
 
 [^true-values]: Any value different from `#f` is considered true for Boolean tests.
 
-```scheme
+```racket
 (if (zero? n) 0 (/ 1 n))
 ```
 Thus if `n` is zero, the resulting value is $0$ and $1/n$ otherwise.
 
 If we need to branch the evaluation to more than two branches, we can use the cond-expression.[^brackets]
-```scheme
+```racket
 (cond [test-exp1 exp1]
       [test-exp2 exp2]
       ...
@@ -632,7 +631,7 @@ If we need to branch the evaluation to more than two branches, we can use the co
     readable.
 
 The test expressions `test-exp1`, `test-exp2`, ... get evaluated in the given order. Once any of them is evaluated as true (i.e., its value does not equal `#f`),  the corresponding expression on the right-hand side gets evaluated, and its value is the value of the cond-expression. If all the test expressions are evaluated as false, the `else-exp` gets evaluated, and its value is returned. For example, the following expression:
-```scheme
+```racket
 (cond [(odd? 12) 1]
       [(even? 12) 2]
       [else 3])
@@ -662,12 +661,12 @@ A function $f$ is said to be *recursive*, if it calls itself. In other words, $f
 
 The most straightforward recursive function is the parameterless function that calls just itself. It is an infinite functional loop as the function recurs indefinitely.
 
-```scheme
+```racket
 (define (loop) (loop))
 ```
 
 A more practical simple example is the function computing the factorial of a natural number.
-```scheme
+```racket
 (define (f n)
   (if (= n 0)
       1
@@ -695,15 +694,15 @@ by adding 1), it is not tail recursive.
 :::
 
 If we check the example above with the function `f` computing the factorial, we see that `f` is not tail recursive because the result returned by the recursive call
-```scheme
+```racket
 (f (- n 1))
 ```
 is further multiplied by `n` to get the final result:
-```scheme
+```racket
 (* n (f (- n 1)))
 ```
 Consequently, the function `f` is less efficient. To see that, consider an example of its evaluation:
-```scheme
+```racket
 (f 4) => (* 4 (f 3))
       => (* 4 (* 3 (f 2)))
       => (* 4 (* 3 (* 2 (f 1))))
@@ -721,7 +720,7 @@ def fac(n):
   return acc
 ```
 We cannot do that in a purely functional language as we cannot update the intermediate result `acc`. Instead, we can pass `acc` to the recursive call.[^square-brackets2]
-```scheme
+```racket
 (define (fac n [acc 1])
   (if (<= n 1)
       acc
@@ -732,7 +731,7 @@ We cannot do that in a purely functional language as we cannot update the interm
     single one like `(fac 10)`. In that case, the `acc` value is $1$.
 
 Note that `fac` is tail recursive because the value of the recursive call
-```scheme
+```racket
 (fac (- n 1) (* n acc))
 ```
 is, in fact, the final value returned by the function `fac`. Compare also the evaluation process of
@@ -745,7 +744,7 @@ memory.[^tail]
     the previous calls will no longer be needed. This trick is called *tail call elimination* or
     *tail call optimization* and allows tail-recursive functions to recur indefinitely.
 
-```scheme
+```racket
 (fac 4) =  (fac 4 1)
         => (fac 3 4)
         => (fac 2 12)
@@ -788,7 +787,7 @@ example, we can draw a line of a given length in the turtle's direction or turn 
 angle. Further, we can extract the turtle's state from a given image and restore the state later on.
 The code of the program is below.
 
-```scheme:line-numbers
+```racket:line-numbers
 #lang racket
 (require graphics/value-turtles)
 
