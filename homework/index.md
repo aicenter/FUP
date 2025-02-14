@@ -15,9 +15,9 @@ We will publish four homework assignments on [BRUTE](https://cw.felk.cvut.cz/bru
 
 ## Requirements
 
-You have to reach at least **25 points** in total, and You need **at least one point** from every homework. For each day that a homework assignment is submitted past the deadline, a penalty of one point will be deducted, until only one point is left on your score.
+To pass, you must earn a minimum of **25 points** in total and score **at least one point** from each homework assignment. There is a penalty of one point for each day a homework assignment is submitted after the deadline, with deductions continuing until only one point remains available for late submissions.
 
-Keep in mind our academic principles — [no plagiarism](https://cw.fel.cvut.cz/wiki/help/common/plagiarism_cheating), avoid sharing code snippets directly, and try to come up with a solution by yourself first.
+Keep in mind our academic principles: [avoid plagiarism](https://cw.fel.cvut.cz/wiki/help/common/plagiarism_cheating), do not share code snippets directly, and try to come up with a solution by yourself first.
 
 ## Note on the private test data
 
