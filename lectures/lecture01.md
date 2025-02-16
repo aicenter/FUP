@@ -113,16 +113,6 @@ $$
 \end{cases}
 $$
 
-Note that we compose the function $\mathrm{up}$ as many times as there are characters in the input
-string. However, it is necessary to know the input if we want to write down the composition above.
-Thus we need a construction allowing us to iterate through a list and create a sequence of function
-compositions, provided we have a function updating the intermediate result. Functional programming
-languages offer such a construction. It is a function usually called $\mathrm{foldl}$ or
-$\mathrm{foldr}$, depending on which order we want to iterate through the list, either from left to
-right or right to left. Using $\mathrm{foldl}$, we could define  $\mathrm{mkHist}$ as follows:
-
-$$\mathrm{mkHist}(str) = \mathrm{foldl}(\mathrm{up}, \{\}, str)$$
-
 where $f$ is the function taking an intermediate result $st$ and an element $x_i$ from the list
 $lst$ and returning the updated intermediate result. The definition is recursive because the
 function $\mathrm{foldl}$ calls itself. If $lst$ is empty, we just return the initial value. If not,
