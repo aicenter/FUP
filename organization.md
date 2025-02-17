@@ -47,7 +47,7 @@ Consulting hours are not explicitly scheduled; please contact us via email to ma
 
 ## Where to get Help
 
-If you struggle with an exercise or an assignment, feel free to contact your tutor via email. For questions which could help others, we recommend posting in the course [discussion forum](https://cw.felk.cvut.cz/forum/forum-1867.html), where we will prioritize responses. There are also online communities where you can get in touch with your peers:
+If you struggle with an exercise or an assignment, feel free to contact your tutor via email. For questions which could help others, we recommend posting in the course [discussion forum](https://cw.felk.cvut.cz/forum/forum-1912.html), where we will prioritize responses. There are also online communities where you can get in touch with your peers:
 * The [Faculty Discord](https://discord.gg/cvutfel) is primarily in Czech. You can select which course's channels you want to see in `#volba-předmětů` (check `#fup`) after authenticating with a faculty account.
 * The [Functional Programming Discord](https://discord.gg/7C3RPWZcYg) is primarily in English, and includes channels not only for Racket (`#racket`) and Haskell (`#haskell-beginners`, `#haskell-beginners-more`, `#haskell`, `#haskell-tooling`), but also for all kinds of FP and math topics.
 
