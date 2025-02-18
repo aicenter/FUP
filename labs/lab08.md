@@ -1,3 +1,5 @@
+<SolutionHider/>
+
 # Lab 8: Haskell basics
 
 The aim of the lab is to practice function definitions using pattern matching and guarded equations together with the list comprehension.
@@ -103,7 +105,7 @@ a string consisting of `n` copies of `str`. E.g.
 copy 3 "abc" => "abcabcabc"
 ```
 
-::: details Solution
+::: details Solution { hideme }
 ```haskell
 copy :: Int -> String -> String
 copy n str | n <= 0 = ""
@@ -146,7 +148,7 @@ Since the numbers are processed from right to left, reverse first the list by th
 to be luhnDoubled and the rest.
 :::
 
-::: details Solution
+::: details Solution { hideme }
 ```haskell
 luhnDouble :: Int -> Int
 luhnDouble n | n > 4 = 2*n - 9

@@ -1,5 +1,6 @@
-# Lab 7: Lambda calculus
+<SolutionHider/>
 
+# Lab 7: Lambda calculus
 
 This lab focuses on lambda calculus. First, we focus on the syntax of $\lambda$-expressions. Second,
 we focus on its semantics, i.e., the computation specified by $\lambda$-expressions whose one step

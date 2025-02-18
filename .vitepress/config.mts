@@ -6,6 +6,13 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 export default withMermaid(
   // https://vitepress.dev/reference/site-config
   defineConfig({
+    vue: {
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('mjx-')
+        }
+      }
+    },
     title: "Functional Programming",
     description: "Course materials for the functional programming course at the Czech Technical University.",
     base: "/FUP/",

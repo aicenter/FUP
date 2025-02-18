@@ -1,3 +1,5 @@
+<SolutionHider/>
+
 # Lab 13: State Monad
 
 This lab is focused on the state monad `State`. In the lecture, I show you how it is implemented. In
@@ -321,7 +323,7 @@ with $n-m-1$ many nodes. Finally, you return `Node x ltree rtree` where `x` is a
 The base case for $n=0$ just returns `Nil`, i.e., no subtree.
 :::
 
-::: details Solution: `randTree`
+::: details Solution: `randTree` { hideme }
 ```haskell
 randTree :: Int -> Int -> R (Tree Int)
 randTree 0 _ = return Nil

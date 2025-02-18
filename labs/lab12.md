@@ -1,3 +1,5 @@
+<SolutionHider/>
+
 # Lab 12: Monads in action
 
 This lab will illustrate a complete Haskell program searching for the shortest path in a maze. We will see `Maybe` and `IO` monads in action.
@@ -169,7 +171,7 @@ nextPos :: Pos -> Maze -> [Pos]
 nextPos p m = case getBlock p m of
                 -- if input position is admissible
                 -- take all possibilities and filter admissible positions
-                Just F -> [ p' | p' <- neighbs p, getBlock p' m == Just F]  
+                Just F -> [ p' | p' <- neighbs p, getBlock p' m == Just F]
                 _ -> []
 
 > nextPos (1,1) maze
@@ -203,9 +205,9 @@ bfs _ [] _ _ = Nothing
 bfs visited (path@(p:_):paths) q m
 	-- is path a solution? If yes, return the reversed solution
     | p == q = Just $ reverse path
-	-- does path end in an already visited position? If yes, disregard it 
+	-- does path end in an already visited position? If yes, disregard it
     | p `elem` visited = bfs visited paths q m
-	-- add p to visited positions and extend path by all possible positions 
+	-- add p to visited positions and extend path by all possible positions
     | otherwise = bfs (p:visited) (paths ++ extend path m) q m
 
 > solve ((1,2),(3,3),maze)
@@ -363,7 +365,7 @@ char :: Char -> Parser Char
 char c = sat (== c)
 ```
 
-::: code-group 
+::: code-group
 ```haskell [do-notation]
 string :: String -> Parser String
 string [] = return []

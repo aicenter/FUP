@@ -1,3 +1,5 @@
+<SolutionHider/>
+
 # Lab 3: Higher-order functions
 
 ## Exercise 1
@@ -144,7 +146,7 @@ multiplied by respective coefficients. Then it suffices to sum them component by
 :::
 
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 (define (scalar-mult coef vec)
   (map (curry * coef) vec))
@@ -186,7 +188,7 @@ To define the matrix power, use the `foldl` function applied to a list composed 
 ```
 
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 (define (matrix-mult m1 m2)
   (map (linear-combination m2) m1))

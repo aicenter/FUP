@@ -1,10 +1,11 @@
-# Lab 9: Haskell types
+<SolutionHider/>
 
+# Lab 9: Haskell types
 
 ## Exercise 1
 Define a type representing binary trees storing data in leaves of a general type `a`. Each
 non-leaf node has always two children. Make your type an instance of the class `Show` so it can be
-displayed in an XML-like format. A leaf node containing a datum `x` 
+displayed in an XML-like format. A leaf node containing a datum `x`
 should be displayed as `<Leaf
 x/>` and an inner
 node `<Node>...children nodes...</Node>`. E.g., the following tree
@@ -40,7 +41,7 @@ data Tree a = Leaf a | Node (Tree a) (Tree a)
 
 To make `Tree a` an instance of the `Show` class.  We have to constrain type `a` to be an instance
 of `Show`; otherwise, it would not be clear how to display the data stored in the tree. The
-definition of the function `show` is then straightforward. 
+definition of the function `show` is then straightforward.
 ::: details Solution
 ```haskell
 instance (Show a) => Show (Tree a) where
@@ -85,11 +86,11 @@ For the tree from the previous exercise, we have
 ```
 
 ## Exercise 3
-Consider again the `Tree a` data type from Exercise 1. Write a function 
+Consider again the `Tree a` data type from Exercise 1. Write a function
 ```haskell
 labelTree :: Tree a -> Tree (a, Int)
 ```
-labeling the leaves of a tree by consecutive natural numbers in the infix order. So it should replace a leaf datum `x` 
+labeling the leaves of a tree by consecutive natural numbers in the infix order. So it should replace a leaf datum `x`
 with the pair `(x,n)` for some natural number. So we would like to obtain something like that:
 ```
      *                  *
@@ -102,13 +103,13 @@ with the pair `(x,n)` for some natural number. So we would like to obtain someth
 ```
 
 ::: tip
-The idea behind this function will be helpful to your homework assignment. So try to understand it well. 
+The idea behind this function will be helpful to your homework assignment. So try to understand it well.
 :::
 
 To traverse through the nodes (particularly leaves) can be easily done recursively. The problem is with the counter for labels.
 In an imperative programming language, we could introduce a variable `counter` and initialize it by 0. Once we encounter a leaf, we label
 it with `counter` and modify
-`counter = counter + 1`. Unfortunately, we cannot do that in a purely functional language like Haskell. 
+`counter = counter + 1`. Unfortunately, we cannot do that in a purely functional language like Haskell.
 
 We need an accumulator in the signature of the labeling function holding the counter value. So we could think of a helper function
 ```haskell
@@ -144,7 +145,7 @@ labelTree t = fst (labelHlp t 0)
 ## Task 1
 Define a recursive data type `Polynomial a` representing univariate polynomials with an
 indeterminate $x$ whose coefficients are of a general type `a`. The definition will have two data
-constructors. First, `Null` 
+constructors. First, `Null`
 represents the zero polynomial. Second, `Pol` whose parameters are a
 monomial and recursively the rest of the polynomial. Monomials should be represented as pairs of
 type `(a, Int)` where the first component is the coefficient and the second is the exponent. E.g.
@@ -180,14 +181,14 @@ has no `x^0`.  Then define the instance of `Show` for `Polynomial a`.  You need 
 `show` function in the same way as `format`.
 :::
 
-::: details Solution
+::: details Solution { hideme }
 ```haskell
 type Monomial a = (a, Int)
 data Polynomial a = Null | Pol (Monomial a) (Polynomial a)
 
 format :: (Show a, Num a, Ord a) => Monomial a -> String
 format (c, e) | e == 0 = display c
-              | otherwise = display c ++ "x*^" ++ show e 
+              | otherwise = display c ++ "x*^" ++ show e
     where display k | k >= 0 = show k
                     | otherwise = "(" ++ show k ++ ")"
 
@@ -199,18 +200,18 @@ instance (Show a, Num a, Ord a) => Show (Polynomial a) where
 :::
 
 ## Task 2
-Write a function 
+Write a function
 ```haskell
-getDegree :: Polynomial a -> Int 
+getDegree :: Polynomial a -> Int
 ```
 returning the degree of a given polynomial. The zero polynomial has a degree $-1$ by definition. Otherwise, you have to find the highest exponent occurring in the polynomial.
 
-::: details Solution
+::: details Solution { hideme }
 ```haskell
 getDegree :: Polynomial a -> Int
 getDegree p = iter p (-1) where
     iter Null n = n
     iter (Pol (_, e) ms) n | e > n = iter ms e
-                           | otherwise = iter ms n 
+                           | otherwise = iter ms n
 ```
 :::

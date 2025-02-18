@@ -1,6 +1,7 @@
 ---
 outline: deep
 ---
+<SolutionHider/>
 
 # Lab 4: Higher-order functions and tree recursion
 
@@ -172,7 +173,7 @@ taking a list `lst` and returning a list of all its sublists/subsequences. E.g.
 Code it as a recursive function using the following facts. 1) There is only a single subsequence of the empty list, namely the empty list. 2) Subsequences of $(x_1,x_2,\ldots,x_n)$ are just subsequences of $(x_2,\ldots,x_n)$ together with subsequences starting with $x_1$ and following by a subsequence of $(x_2,\ldots,x_n)$.
 :::
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 (define (sub-seq lst)
   (if (null? lst)
@@ -225,7 +226,7 @@ path labelled by the winner and collects the beaten teams along the path to an a
 use nested patterns in pattern matching to find out the losers.
 :::
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 (define (beaten-teams tree [acc '()])
   (match tree

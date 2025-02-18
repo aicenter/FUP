@@ -1,5 +1,6 @@
-# Lab 02: Lists & Trees
+<SolutionHider/>
 
+# Lab 02: Lists & Trees
 
 The main purpose of this lab is to practice elementary recursive manipulation with lists. Lists can be
 decomposed by functions `car` and `cdr`. On the other hand, lists can be built by functions
@@ -140,7 +141,7 @@ your implementation function can return precise rational numbers like `(average-
 1/2`. If you want to have the usual floating-point representation, use the function
 `exact->inexact`, transforming the result into the imprecise floating-point representation.
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 (define (average-list lst)
   (define (iter l acc)
@@ -174,7 +175,7 @@ numbers and returns a list of averages of these `n`-tuples. E.g. `(n-block-avera
 built segment of consecutive elements. The second tracks how many elements we must read from the
 list to complete the `n`-tuple of consecutive elements.
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 (define (split-list n lst)
   (define (iter l k segment)

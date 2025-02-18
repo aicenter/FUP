@@ -1,6 +1,7 @@
 ---
 outline: deep
 ---
+<SolutionHider/>
 
 # Lab 5: Streams and graphs
 
@@ -166,7 +167,7 @@ elements:
 (apply + (stream->list (stream-take (exp-stream 1) 100)))
 ```
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 (define (stream-mul s1 s2)
   (stream-cons (* (stream-first s1) (stream-first s2))
@@ -246,7 +247,7 @@ first.
                 (lambda (x y) (< (length x) (length y)))))))
 ```
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 ; minimum vertex cover
 ; -> smallest subset of nodes such that each edge has one of its nodes in it

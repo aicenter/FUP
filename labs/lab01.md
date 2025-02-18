@@ -1,6 +1,7 @@
 ---
 outline: deep
 ---
+<SolutionHider/>
 
 # Lab 1: Introduction to Racket
 
@@ -110,7 +111,7 @@ Write a function `num-of-digits` that takes an integer `n` and computes the numb
 The number of digits can be computed by successively dividing the input number by 10. For integer division, you can use the function `quotient`.
 :::
 
-::: details Solution
+::: details Solution { hideme }
 ```racket
 (define (num-of-digits n [acc 1])
   (define q (quotient n 10))
@@ -130,7 +131,7 @@ You can obtain the representation by consecutively dividing `n` by the `radix` a
 :::
 
 
-::: details Solution
+::: details Solution { hideme }
 ::: code-group
 ```racket [direct]
 (define (num->str n [radix 10])

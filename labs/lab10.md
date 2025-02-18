@@ -1,7 +1,9 @@
+<SolutionHider/>
+
 # Lab 10: Polymorphic functions
 
 ## Exercise 1
-Haskell functions can be polymorphic if we use type variables in their definitions. Write a function 
+Haskell functions can be polymorphic if we use type variables in their definitions. Write a function
 ```haskell
 permutations :: [a] -> [[a]]
 ```
@@ -47,7 +49,7 @@ permutations (x:xs) = concat [interleave x p | p <- permutations xs]
 
 ## Exercise 2
 Use the function `permutations` from the previous exercise to write a function `findHamiltonian`,
-which finds all Hamiltonian paths in a given graph. 
+which finds all Hamiltonian paths in a given graph.
 
 We first have to represent graphs in a data structure. To be general, we define a graph data
 structure over any data type `a`.  First, we define a type for edges as pairs of values of type `a`.
@@ -55,7 +57,7 @@ Second, we define a parametric algebraic data type `Graph a` as a record consist
 vertices and a list of edges. We also make this type an instance of the type class `Show` by
 automatic derivation.
 ```haskell
-type Edge a = (a,a) 
+type Edge a = (a,a)
 data Graph a = Graph {vertices :: [a], edges :: [Edge a]} deriving Show
 ```
 Now it is possible to define graphs, for instance as follows:
@@ -75,7 +77,7 @@ and `edges :: Graph a -> [Edge a]`:
 > edges gr
 [(1,2),(1,5),(2,3),(2,5),(3,4),(4,5),(4,6)]
 ```
- 
+
 Recall that a Hamiltonian path in a graph is a path going through all the vertices exactly once. To
 solve the task, we will use brute force, generating all possible permutations of vertices and
 checking whether they form a path. First, we define a helper function `isEdge` taking a pair of
@@ -121,7 +123,7 @@ algorithms computing efficiently and precisely derivatives of functions used to 
 layers became essential. There are three approaches. The first one is the syntactic derivation
 manipulating symbolic expressions. The second one is the approximation via the limit defining the
 derivative of a function at a point. Third, computing derivatives via dual numbers. We will discuss
-the last approach. 
+the last approach.
 
 [Dual numbers](https://en.wikipedia.org/wiki/Dual_number) are numbers of the form $a+b\epsilon$ for
 $a,b\in\mathbb{R}$ and $\epsilon$ is something like the complex unit $i$ but instead of $i^2=-1$ we
@@ -141,7 +143,7 @@ $$
     to explain it in algebraic language.
 
 Dual numbers can be used to compute the derivative of a function at a point. Consider first a
-polynomial $p(x)=b_0+b_1x+b_2x^2$. Let us compute its value at $a+\epsilon$. 
+polynomial $p(x)=b_0+b_1x+b_2x^2$. Let us compute its value at $a+\epsilon$.
 
 $$
 \begin{align}
@@ -194,7 +196,7 @@ I should likely comment on the above definition a bit. Addition, subtraction, an
 embeds integers into the set of dual numbers. So it maps $a$ to $a+0\epsilon$. The last two definitions are not mathematically correct. We pretend that `signum`
 function has the derivative $0$ everywhere, which is not true at $0$. Similarly `abs` has no derivative at $0$.
 
-Dual numbers can be also divided if the first component of the divisor is non-zero as follows: 
+Dual numbers can be also divided if the first component of the divisor is non-zero as follows:
 $$
 \frac{x+x'\epsilon}{y+y'\epsilon}
   = \frac{(x+x'\epsilon)(y-y'\epsilon)}{(y+y'\epsilon)(y-y'\epsilon)}
@@ -202,7 +204,7 @@ $$
   = \frac{x}{y}+\frac{x'y-xy'}{y^2}\epsilon
 $$
 So we can make `DualNum a`
-an instance of `Fractional`.  
+an instance of `Fractional`.
 ```haskell
 instance Fractional a => Fractional (DualNum a) where
     (DN x x') / (DN y y') = DN (x/y) ((x'*y - x*y') / (y*y))
@@ -253,11 +255,11 @@ an instance of `Floating`. If you recall the chain rule, i.e., for a compose fun
 ```haskell
 instance (Floating a) => Floating (DualNum a) where
     pi               = DN pi 0
-    exp (DN x x')    = DN r (r*x') where r = exp x 
+    exp (DN x x')    = DN r (r*x') where r = exp x
     log (DN x x')    = DN (log x) (x' / x)
     sqrt (DN x x')   = DN r (x' / (2 * r)) where r = sqrt x
-    sin (DN x x')    = DN (sin x) (x' * cos x) 
-    cos (DN x x')    = DN (cos x) (-x' * sin x) 
+    sin (DN x x')    = DN (sin x) (x' * cos x)
+    cos (DN x x')    = DN (cos x) (-x' * sin x)
     acos (DN x x')   = DN (acos x) (-x' / sqrt(1 - x*x))
     asin (DN x x')   = DN (asin x) ( x' / sqrt(1 - x*x))
     atan (DN x x')   = DN (atan x) ( x' / (1 + x*x))
@@ -296,7 +298,7 @@ is supposed to be an orderable type and two lists of elements of type `a`
 we have `f a1 <= f a2 <= f a3 <= ...`. As a result, it returns a merged sorted list.
 
 Once you have the function `merge`
-, implement a function `subseqs :: [a] -> [[a]]` which takes a list and returns all its sublists (i.e., subsequences of its elements) sorted by their length. 
+, implement a function `subseqs :: [a] -> [[a]]` which takes a list and returns all its sublists (i.e., subsequences of its elements) sorted by their length.
 
 ::: tip Hint
 The subsequences can be generated recursively because subsequences of `x:xs` are just subsequences
@@ -304,7 +306,7 @@ of `xs` together with subsequences of `xs` extended by `x`. To produce the sorte
 `merge` function.
 :::
 
-::: details Solution
+::: details Solution { hideme }
 ```haskell
 merge :: (a -> Int) -> [a] -> [a] -> [a]
 merge _ [] ys = ys

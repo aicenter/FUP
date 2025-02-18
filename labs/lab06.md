@@ -1,3 +1,5 @@
+<SolutionHider/>
+
 # Lab 6: Interpreter of Brainf*ck
 
 This lab is closely related to the corresponding lecture. In that lecture, I showed how to implement

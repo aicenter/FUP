@@ -5,7 +5,7 @@ outline: deep
 
 This course introduces students to the techniques of _**functional programming**_, exploring their advantages, and practical applications. Functional programming takes a **declarative** approach, where the programmer describes the problem  symbolically rather than through explicit step-by-step instructions. This paradigm focuses on the essence of problems, and enables compact implementations of complex algorithms. Functional programming has notable advantages for **parallelization** and **automated verification** of algorithms. Useful functional programming concepts are increasingly often introduced to standard programming languages. Due to its symbolic nature, functional programming has been heavily used in artificial intelligence, particularly in agent systems and symbolic machine learning.
 
-The course consists of weekly [lectures](lectures/) and [labs](labs/), which will be published progressively throughout the semester.
+The course consists of weekly [lectures](lectures/) and [labs](labs/).
 
 ## Course Outline
 

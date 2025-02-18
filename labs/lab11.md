@@ -1,3 +1,5 @@
+<PageHandler/>
+
 # Lab 11: Functors and IO
 
 ## Exercise 1
@@ -216,7 +218,7 @@ Write a function `eval :: Expr Bool -> Bool` evaluating a given Boolean expressi
 :::
 
 
-::: details Solution: `eval`
+::: details Solution: `eval` { hideme }
 ```haskell
 eval :: Expr Bool -> Bool
 eval (Atom c) = c
@@ -226,7 +228,7 @@ eval (Or e1 e2) = eval e1 || eval e2
 ```
 :::
 
-::: details Solution: `getAtoms`
+::: details Solution: `getAtoms` { hideme }
 ```haskell
 getAtoms :: Expr a -> [a]
 getAtoms (Atom c) = [c]
@@ -253,7 +255,7 @@ subst :: Functor f => [String] -> f String -> f Bool
 ```
 taking a list of strings (variables) and a data structure over strings returning the same data structure where the strings (variables) in the input list are replaced by `True` and the rest by `False`. Use the lifting by `fmap`.
 
-::: details Solution: `subst`
+::: details Solution: `subst` { hideme }
 ```haskell
 subst :: Functor f => [String] -> f String -> f Bool
 subst xs = fmap (`elem` xs)
@@ -278,7 +280,7 @@ such that the Boolean expression resulting from the replacing atoms by the respe
  To check that there exists an evaluation satisfying a formula or if all evaluations satisfy the formula, use the functions `or`, `and` respectively. These functions are applicable to any list of Boolean values.
 :::
 
-::: details Solution: `isTaut, isSat`
+::: details Solution: `isTaut, isSat` { hideme }
 ```haskell
 check :: ([Bool] -> Bool) -> Expr String -> Bool
 check g e = g [ eval $ subst vs e | vs <- vss]
