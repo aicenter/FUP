@@ -18,7 +18,6 @@ This course explores:
 ## Grading
 You will receive points for solving [Homework Assignments](/homework/) and the final [Practical and Oral Exams](/exams/).
 
-
 | Part                 | Points |
 |----------------------|-------:|
 | Homework Assignments |     50 |
@@ -27,10 +26,9 @@ You will receive points for solving [Homework Assignments](/homework/) and the f
 
 Our grading scale is as follows:
 
-|  A   |  B  |  C  |  D  |  E  |  F  |
-|:----:|:---:|:---:|:---:|:---:|:---:|
-|90-100|80-89|70-79|60-69|50-59| 0-49|
-
+|  F   |  E   |  D   |  C   |  B   |  A   |
+|:----:|:----:|:----:|:----:|:----:|:----:|
+| 0-49 | 50-59| 60-69| 70-79| 80-89|90-100|
 
 ## Teachers
 
