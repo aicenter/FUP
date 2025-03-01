@@ -777,7 +777,8 @@ example, we can draw a line of a given length in the turtle's direction or turn 
 angle. Further, we can extract the turtle's state from a given image and restore the state later on.
 The code of the program is below.
 
-```racket:line-numbers
+::: code-group
+```racket:line-numbers [DrRacket]
 #lang racket
 (require graphics/value-turtles)
 
@@ -797,6 +798,43 @@ The code of the program is below.
 
 (tree 25)
 ```
+```racket:line-numbers [Console]
+#lang racket
+
+;;; When running from the command line without image support,
+;;; we will need to save the bitmap to a file.
+
+(require graphics/value-turtles pict)
+
+;;; The initial empty picture 600x600 and turtle's state
+(define init (turtles 600 600 450 500 (* 1.5 pi)))
+
+(define (tree n [img init])
+  ; draw subtree at an angle
+  (define (draw-angled n ang img)
+    (tree n (turn ang img)))
+  ; main drawing procedure
+  (define (draw-main n)
+    (let* ((stick1 (draw n img))
+           (origin (turtle-state stick1))
+           (rel-left (draw-angled (/ n 2) 60 stick1))
+           (left (restore-turtle-state rel-left origin))
+           (rel-right (draw-angled (/ n 2) -60 left))
+           (right (restore-turtle-state rel-right origin))
+           (stick2 (draw n right))
+           (final (draw-angled (- n 1) 5 stick2)))
+      final))
+  ; stop if too small
+  (if (> n 1)
+      (draw-main n)
+      img))
+
+(let* ((pic (turtles-pict (tree 29)))
+       (bmp (pict->bitmap pic)))
+  (send bmp save-file "leaf.png" 'png))
+```
+:::
+
 Line 2 is just loading the drawing library. Line 4 creates the initial empty image `init`
 of size 600x600 with the turtle heading up and its position $(450,500)$. Line 5 defines a
 multiplicative parameter so that we can modify the size of the drawn sticks.
