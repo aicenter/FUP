@@ -37,6 +37,30 @@ Note that using accumulators is a general concept.
 :::
 
 ## Exercise 2
+Write the function `group-same` that scans an input list and returns a list consisting of lists of the same
+consecutive characters, for example `(group-same '(b b a a a c))` should return `'((b b) (a a a) (c))`.
+
+The recursive function `group-same` should keep a partially
+built group of the same character as an intermediate result. If the new character `(car l)` coming
+from the list is the same as the current character in the group, the partial group is extended by
+this character. Once the new character `(car l)` differs from the current character in the group,
+the partial group is closed, joined to the output, and a new group is created.
+
+::: details Solution
+```racket
+(define (group-same lst)
+  (define (iter l gr)
+    (cond
+      [(null? l) (list gr)]
+      [(eqv? (car gr) (car l)) (iter (cdr l) (cons (car gr) gr))]
+      [else (cons gr (iter (cdr l) (list (car l))))]))
+  (if (null? lst)
+      '()
+      (iter (cdr lst) (list (car lst)))))
+```
+:::
+
+## Exercise 3
 
 Write a function `(letter-frequencies str)` which takes a string `str` and returns a histogram of
 letters occurring in `str` so that the most frequent characters come first. The histogram is just a
@@ -58,32 +82,14 @@ string-downcase -> string->list -> filter-alphabetic -> sort
   `char-alphabetic?`.
 - To compute the number of occurrences of characters, we apply the `sort` function, which groups
   together the same characters, e.g., `(sort '(#\c #\z #\c) char<?) => (#\c #\c #\z)`. The function
-  `sort` takes a boolean function as its second argument, taking two arguments and comparing them.
-- The function `group-same` scans the input list and returns a list consisting of lists of the same
-  consecutive characters, e.g., `(group-same '(#\c #\c #\z)) => ((#\c #\c) (#\z))`.
-- The function `join-lengths` creates for each group of the same character a pair of the for `(char .
+  `sort` takes a binary function as its second argument, taking two arguments and comparing them.
+- The function `join-lengths` creates for each group of the same character a pair of the form `(char .
   num)` where the number of occurrences num is computed by function `length`.
 - Finally, the output is sorted by the number of occurrences.
-
-The function `group-same` is the only recursive function in our program. It has to keep a partially
-built group of the same character as an intermediate result. If the new character `(car l)` coming
-from the list is the same as the current character in the group, the partial group is extended by
-this character. Once the new character `(car l)` differs from the current character in the group,
-the partial group is closed, joined to the output, and a new group is created.
 
 ::: details Solution
 ::: code-group
 ```racket [nested]
-(define (group-same lst)
-  (define (iter l gr)
-    (cond
-      [(null? l) (list gr)]
-      [(eqv? (car gr) (car l)) (iter (cdr l) (cons (car gr) gr))]
-      [else (cons gr (iter (cdr l) (list (car l))))]))
-  (if (null? lst)
-      '()
-      (iter (cdr lst) (list (car lst)))))
-
 (define (join-lengths grs)
   (map (lambda (g) (cons (car g) (length g))) grs))
 
@@ -98,37 +104,24 @@ the partial group is closed, joined to the output, and a new group is created.
    #:key cdr))
 ```
 ```racket [let*]
-(define (group-same lst)
-  (define (iter l gr)
-    (cond
-      [(null? l) (list gr)]
-      [(eqv? (car gr) (car l)) (iter (cdr l) (cons (car gr) gr))]
-      [else (cons gr (iter (cdr l) (list (car l))))]))
-  (if (null? lst)
-      '()
-      (iter (cdr lst) (list (car lst)))))
+(define (group->count group)
+  (cons (car group) (length group)))
 
-(define (join-lengths grs)
-  (map (lambda (g) (cons (car g) (length g))) grs))
-
-(define (letter-frequencies-2 str)
-  (let* [(lowercase (string-downcase str))
-         (listified (string->list lowercase))
-         (alphabetic (filter char-alphabetic? listified))
-         (sorted-chars (sort alphabetic char<?))
-         (grouped (group-same sorted-chars))
-         (joined (join-lengths grouped))
-         (sorted-occurs (sort joined > #:key cdr))]
-    sorted-occurs))
+(define (letter-frequencies str)
+  (let* ((downed (string-downcase str))
+         (listed (string->list downed))
+         (filtered (filter char-alphabetic? listed))
+         (sorted (sort filtered char<?))
+         (grouped (group-consecutive sorted))
+         (counted (map group->count grouped))
+         (result (sort counted > #:key cdr)) )
+    result))
 ```
 :::
 
-
-If you wish, you can use function `file->string` to check letter frequencies in any file, for
-instance, in Shakespeare's
-[Sonnets](https://drive.google.com/file/d/1fFrMtcTdlt3GHHFkDnuxM7igCVs_JmtZ/view?usp=sharing) by
-calling `(letter-frequencies (file->string "sonnets.txt"))` and comparing the result with the letter
-frequencies in English alphabet [Wikipedia](https://en.wikipedia.org/wiki/Letter_frequency).
+Try reading text from a file with `file->string` or from the standard input with `port->string`.
+Compare the letter frequencies in [Shakespeare's Sonnets](/extra/shakespeare.txt) to their
+[relative frequencies](https://en.wikipedia.org/wiki/Letter_frequency) in the English language.
 
 ## Task 1
 Write a function `(average-list lst)` taking a list of numbers `lst` and returning their
