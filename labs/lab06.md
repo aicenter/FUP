@@ -3,11 +3,11 @@
 # Lab 6: Interpreter of Brainf*ck
 
 This lab is closely related to the corresponding lecture. In that lecture, I showed how to implement
-an interpreter of a simple programming language Brainf*ck (for details, see
-[wikipedia](https://en.wikipedia.org/wiki/Brainfuck)). The syntax of Brainf*ck is very simple. It is
+an interpreter of a simple programming language Brainf\*ck (for details, see
+[wikipedia](https://en.wikipedia.org/wiki/Brainfuck)). The syntax of Brainf\*ck is very simple. It is
 just a sequence of eight possible characters: `< > + - , . [ ]`. The semantics of
 this language is captured by a tape of a fixed size consisting of positive numbers and having a
-pointer pointing to an active number. Brainf*ck programs specify computations over this tape.
+pointer pointing to an active number. Brainf\*ck programs specify computations over this tape.
 
 
 | Symbol | Substitute | Meaning |
