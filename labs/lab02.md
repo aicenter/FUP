@@ -125,7 +125,7 @@ Compare the letter frequencies in [Shakespeare's Sonnets](/extra/shakespeare.txt
 
 ## Task 1
 Write a function `(average-list lst)` taking a list of numbers `lst` and returning their
-arithmetical average. E.g. `(average-lst '(1 2 3)) => 2`. The function should be tail-recursive.
+arithmetical average. E.g. `(average-list '(1 2 3)) => 2`. The function should be tail-recursive.
 
 **Hint:** As the function should be tail-recursive, it has to use an accumulator storing a partial
 sum of elements from the list. Finally, the resulting sum is divided by the number of all elements
