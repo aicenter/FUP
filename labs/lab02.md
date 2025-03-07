@@ -124,19 +124,19 @@ Compare the letter frequencies in [Shakespeare's Sonnets](/extra/shakespeare.txt
 [relative frequencies](https://en.wikipedia.org/wiki/Letter_frequency) in the English language.
 
 ## Task 1
-Write a function `(average-list lst)` taking a list of numbers `lst` and returning their
-arithmetical average. E.g. `(average-list '(1 2 3)) => 2`. The function should be tail-recursive.
+Write a function `(list-average lst)` taking a list of numbers `lst` and returning their
+arithmetical average. E.g. `(list-average '(1 2 3)) => 2`. The function should be tail-recursive.
 
 **Hint:** As the function should be tail-recursive, it has to use an accumulator storing a partial
 sum of elements from the list. Finally, the resulting sum is divided by the number of all elements
 in the list. For the number of elements in `lst`, you can use the function `length`.  Depending on
-your implementation function can return precise rational numbers like `(average-list '(0 1)) =>
+your implementation function can return precise rational numbers like `(list-average '(0 1)) =>
 1/2`. If you want to have the usual floating-point representation, use the function
 `exact->inexact`, transforming the result into the imprecise floating-point representation.
 
 ::: details Solution { hideme }
 ```racket
-(define (average-list lst)
+(define (list-average lst)
   (define (iter l acc)
     (if (null? l)
         acc
@@ -147,30 +147,30 @@ your implementation function can return precise rational numbers like `(average-
 
 
 ## Task 2
-Taking an inspiration from the `group-same` function, write a function `(split-list n lst)` which
+Taking an inspiration from the `group-same` function, write a function `(list-split n lst)` which
 takes a natural number `n` and a list `lst` and returns a list of lists consisting of `n`-tuples of
 consecutive elements from `lst`, e.g.:
 ```racket
-(split-list 2 '(a b 1 2 3 4)) => ((a b) (1 2) (3 4))
+(list-split 2 '(a b 1 2 3 4)) => ((a b) (1 2) (3 4))
 ```
 In case the number of elements is not divisible by `n`, make the last list in the output shorter,
 e.g.:
 ```racket
-(split-list 3 '(a b 1 2)) => ((a b 1) (2))
+(list-split 3 '(a b 1 2)) => ((a b 1) (2))
 ```
 
-Using functions `split-list` and `average-list` from the previous task, write a function
+Using functions `list-split` and `list-average` from the previous task, write a function
 `(n-block-average n lst)` which splits a given list of numbers `lst` into `n`-tuples of consecutive
 numbers and returns a list of averages of these `n`-tuples. E.g. `(n-block-average 2 '(1 3 1 5)) =>
 (2 3)`.
 
-**Hint:** The function `split-list` needs two accumulators. The first accumulator keeps a partially
+**Hint:** The function `list-split` needs two accumulators. The first accumulator keeps a partially
 built segment of consecutive elements. The second tracks how many elements we must read from the
 list to complete the `n`-tuple of consecutive elements.
 
 ::: details Solution { hideme }
 ```racket
-(define (split-list n lst)
+(define (list-split n lst)
   (define (iter l k segment)
     (cond
       [(null? l) (list segment)]
@@ -179,6 +179,6 @@ list to complete the `n`-tuple of consecutive elements.
   (iter lst n '()))
 
 (define (n-block-average n lst)
-  (map average-list (split-list n lst)))
+  (map list-average (list-split n lst)))
 ```
 :::

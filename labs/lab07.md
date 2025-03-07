@@ -206,7 +206,7 @@ follows:
                     (+ (len (cdr p)) 1))))
 ```
 
-Modify the $\lambda$-expression $R$ by replacing $Z$ with $NULL?$ from the previous exercise. Adding
+Modify the $\lambda$-expression $R$ by replacing $Z$ with`NULL?` from the previous exercise. Adding
 $1$ can be done by applying the successor function $S$, and the predecessor function $P$ must be
 replaced by the expression returning the second component.
 

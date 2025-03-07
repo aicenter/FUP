@@ -130,8 +130,9 @@ export default withMermaid(
     },
 
     markdown: {
+      math: true,
       config: (md) => {
-        md.use(markdownItMathjax3);
+      //  md.use(markdownItMathjax3);
         md.use(markdownItFootnote)
       }
     },

@@ -42,16 +42,16 @@ $F(0)=0$, $F(1)=1$, and $F(n)=F(n-1) + F(n-2)$ for $n>1$ can be reformulated as 
 ```
 
 This directly leads to the following code:
-::: details Solution: `fib-stream`
-```racket
+::: details Solutions of `fib-stream`
+::: code-group
+```racket [stream-cons]
 (define fib-stream
   (stream-cons 0
                (stream-cons 1
                             (stream-add fib-stream
                                         (stream-rest fib-stream)))))
 ```
-Alternatively one can use `stream*` as follows:
-```racket
+```racket [stream*]
 (define fib-stream
   (stream* 0 1 (stream-add fib-stream
                            (stream-rest fib-stream))))
@@ -158,7 +158,7 @@ stream of natural numbers starting from n.
 :::
 
 Once you have the stream of factorials `factorial-stream`, the function `stream-mul` and the stream
-of natural numbers `(in-natural 0)` (or even simply `(in-naturals)`), you can define a function
+of natural numbers `(in-naturals 0)` starting with 0, you can define a function
 `(exp-stream x)` taking a number `x` and returning the power series representing $e^x$, i.e., $e^x =
 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$. Then you can approximate the value $e^x$ by
 summing an initial segment of this stream. E.g., to approximate $e$, we can sum the first 100
@@ -191,8 +191,7 @@ larger index might overflow if we apply `exp-stream` to a float number, e.g.,
 become infinite if evaluated on a float number. Compare the following calls:
 ```racket
 (expt 3.0 1000) => +inf.0
-(expt 3 1000) =>
-1322070819480806636890455259752144365965422032752148167664920368226828597346704899540778313850608061963909777696872582355950954582100618911865342725257953674027620225198320803878014774228964841274390400117588618041128947815623094438061566173054086674490506178125480344405547054397038895817465368254916136220830268563778582290228416398307887896918556404084898937609373242171846359938695516765018940588109060426089671438864102814350385648747165832010614366132173102768902855220001
+(expt 3 1000) => 1322070819480806636890455259752144365965422032752148167664920368226828597346704899540778313850608061963909777696872582355950954582100618911865342725257953674027620225198320803878014774228964841274390400117588618041128947815623094438061566173054086674490506178125480344405547054397038895817465368254916136220830268563778582290228416398307887896918556404084898937609373242171846359938695516765018940588109060426089671438864102814350385648747165832010614366132173102768902855220001
 ```
 So the above solution avoids this problem by working with precise arithmetic and finally translating
 the result into the decimal representation. To use it, one must call `exp-stream` with an exact
@@ -249,8 +248,8 @@ first.
 
 ::: details Solution { hideme }
 ```racket
-; minimum vertex cover
-; -> smallest subset of nodes such that each edge has one of its nodes in it
+;; minimum vertex cover
+;; -> smallest subset of nodes such that each edge has one of its nodes in it
 (define (check-cover g)
   (lambda (lst)
     (if (andmap
