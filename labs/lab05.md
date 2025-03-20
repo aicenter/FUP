@@ -127,7 +127,8 @@ Now we can apply the above function to all permutations. The function `(check-pa
 permutations of nodes and filter those which form a path. If there is a permutation being a path
 simultaneously, we have a Hamiltonian path. Otherwise, we return `#f`.
 ::: details Solution: `find-hamiltonian-path`
-```racket
+::: code-group
+```racket [filter]
 (define (find-hamiltonian-path g)
   (define perms (permutations (graph-nodes g)))
   (let ([paths (filter identity (map (check-path g) perms))])
@@ -135,6 +136,12 @@ simultaneously, we have a Hamiltonian path. Otherwise, we return `#f`.
         #f
         (car paths))))
 ```
+```racket [ormap]
+(define (find-hamiltonian-path g)
+  (define perms (permutations (graph-nodes g)))
+  (ormap (check-path g) perms))
+```
+:::
 
 If you are curious, try to use the function `in-permutations` to compute the `perms` lazily and
 compare the perfromance of the two implementations on a larger graph.
