@@ -16,9 +16,9 @@ analyzing computability and functional programming languages.[^church]
     Church](https://plato.stanford.edu/entries/church/) in the Stanford Encyclopedia of Philosophy.
 
 Lambda calculus is probably the *simplest universal programming language*. Many of the key concepts
-that make functional programming so powerful today were invented for, or are inspired by lambda
-calculus. This includes for example *currying*, *recursion*, and *closures*. You will also see were
-all this parenthesis in Racket come from!
+that make functional programming so powerful today were invented for or are inspired by lambda
+calculus. This includes, for example *currying*, *recursion*, and *closures*. You will also see where
+all these parentheses in Racket come from!
 
 Lambda calculus can be viewed as a minimal programming language in which computations can be
 described and as a mathematical object about which rigorous statements can be proved. It serves as a
