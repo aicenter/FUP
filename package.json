@@ -5,13 +5,13 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
-    "markdown-it": "^14.0.0",
+    "markdown-it": "^14.1.0",
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-mathjax3": "^4.3.2",
-    "vitepress": "^1.0.0-rc.44"
+    "vitepress": "^1.6.3"
   },
   "devDependencies": {
-    "mermaid": "^10.9.0",
-    "vitepress-plugin-mermaid": "^2.0.16"
+    "mermaid": "^11.6.0",
+    "vitepress-plugin-mermaid": "^2.0.17"
   }
 }
