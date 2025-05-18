@@ -27,4 +27,4 @@ You will have 3 hours for the whole exam, so you should be able to solve each ta
 
 You will upload your exam solutions to BRUTE, like you are used to from the homework, and get immediate feedback on how many points you achieved. You can upload your solution as many times as you want.
 
-Exam dates will be published on [KOS](www.kos.cvut.cz) before the start of the [examination period](https://intranet.fel.cvut.cz/en/education/calendar.html).
+Exam dates will be published on [KOS](https://www.kos.cvut.cz/) before the start of the [examination period](https://intranet.fel.cvut.cz/en/education/calendar.html).
