@@ -31,7 +31,7 @@ The following lecture notes cover most of the course material.
 | 10. | [Haskell's IO & Monads](lecture10) | Introduces Haskell's `IO` and the typeclass `Monad`. | [Slides](/slides/lecture10.pdf).  [Log](/code/lecture10.hs).|
 | 11. | [Monadic Parsing](lecture11) | Uses `Functor` and `Monad` instances from the previous lecture to demonstrate the elegance of monadic parsing. | [Slides](/slides/lecture11.pdf).  [Log](/code/lecture11.hs).  [`Parser.hs`](/code/Parser.hs). |
 | 12. | [State Monad](lecture12) | Make repetitive, stateful boilerplate disappear via the `State` monad. | [Slides](/slides/lecture12.pdf).  [Log](/code/lecture12.hs).  [`State.hs`](/code/State.hs).  [`StateIO.hs`](/code/StateIO.hs). |
-| 13. | [Lecture 13](lecture13) | Dissecting `foldr` into `Monoid`s and `Foldable`s. | [Slides](/slides/lecture13.pdf).  [Log](/code/lecture13.hs).  [Dataset](/code/FUP-hw.csv). |
+| 13. | [Monoids and Foldables](lecture13) | Dissecting `foldr` into `Monoid`s and `Foldable`s. | [Slides](/slides/lecture13.pdf).  [Log](/code/lecture13.hs).  [Dataset](/code/FUP-hw.csv). |
 
 ## Bonus
 

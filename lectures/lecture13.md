@@ -50,17 +50,33 @@ parts that make a fold. Conceptually, there are two parts to folding:
 2. The _**traversal**_ - which walks over the foldable datastructure `t a`. This is what the [`Foldable`](#traversal-foldables) typeclass is doing.
 :::
 
-## Aggregation: Semigroups & Monoids
+## Semigroups
 
 Before we get to monoids which represent the aggregation part of a fold, we will define a semigroup.
-A _**semigroup**_ is an algebra with a *domain* and a *binary, associative operation*. For example,
-addition on the natural numbers forms a semigroup: The domain $\mathbb N$ with the operation $+$
-satisfies associativity: $a+(b+c) = (a+b)+c$.
 
-Formally, we define a *semigroup* $\langle S, \diamond\rangle$ as a set $S$ endowed with a
-binary operation $\diamond$ that satisfies
+A _**semigroup**_ is a $\langle S, \diamond\rangle$ is a set $S$ equipped with a
+binary operation $\diamond : S \times S \rightarrow S$ that satisfies the associative property
 
 $$ a \diamond (b \diamond c) = (a \diamond b) \diamond c. $$
+
+For example, addition on the natural numbers forms a semigroup: The domain $\mathbb N$ with the operation $+$
+satisfies associativity: $a+(b+c) = (a+b)+c$.
+
+In Haskell, the typclass `Semigroup` defines an operation `<> :: a -> a -> a`.
+```haskell
+class Semigroup a where
+  (<>) :: a -> a -> a
+```
+For lists we can implement semigroup simply with `++`:
+```haskell
+instance Semigroup [a] where
+  (<>) = (++)
+
+> [1,2,3] <> [4,5,6]
+[1,2,3,4,5,6]
+```
+
+## Monoids
 
 A _**monoid**_ $\langle M, \diamond, u \rangle$ is a semigroup with a *unit* $u \in M$ that satisfies
 
@@ -73,37 +89,16 @@ Some examples of monoids are:
 - $\langle \mathbb N, +, 0 \rangle$ - Addition of natural numbers
 - $\langle \mathbb N, \times, 1 \rangle$ - Multiplication of natural numbers
 - $\langle$ `[a]`, `++` , `[]` $\rangle$ - Lists and concatenation
-- $\langle A^A, \circ, \text{id} \rangle$ - Selfmaps $f:A\rightarrow A$ form a monoid under
-    composition $\circ$.
+- $\langle A^A, \circ, \text{id} \rangle$ - Selfmaps $f:A\rightarrow A$ form a monoid under composition $\circ$.
 
-In Haskell, the typclass `Semigroup` defines an operation `<> :: a -> a -> a` (i.e. binary operation
-that takes two elements of type `a` and produces another such element).
-For lists we can implement semigroup simply with `++`:
-```haskell
-class Semigroup a where
-  (<>) :: a -> a -> a -- assumed to be associative
-
--- list is a semigroup
-instance Semigroup [] where
-  (<>) = (++)
-
-> [1,2,3] <> [4,5,6]
-[1,2,3,4,5,6]
-```
-
-The `Monoid` typeclass adds the identity element `mempty`, which for the list monoid is of course
-`[]`.
+The `Monoid` typeclass adds the identity element `mempty`
 ```haskell
 class Semigroup a => Monoid a where
   mempty :: a
-  
-  mconcat :: [a] -> a
-  mconcat = foldr (<>) mempty
-  
-  mappend :: a -> a -> a
-  mappend = (<>)
-
-instance Semigroup [] where
+```
+which for the list monoid is the empty list.
+```haskell
+instance Monoid [a] where
   mempty = []
 ```
 
@@ -113,8 +108,7 @@ therefore need a new type
 newtype Sum a = Sum {getSum :: a}
 
 instance Num a => Semigroup (Sum a) where
-  (<>) = (+)
-  stimes n (Sum a) = Sum (fromIntegral n * a)
+  (Sum a) <> (Sum b) = Sum (a + b)
 
 instance Num a => Monoid (Sum a) where
   mempty = Sum 0
@@ -200,6 +194,15 @@ MMap (
 )
 ```
 
+The `Monoid` typeclass also defines the `mconcat` helper function
+```haskell
+mconcat = foldr (<>) mempty
+```
+allowing us to combine any number of monoids simply by wrapping them in a list.
+```haskell
+𝝺> mconcat [Sum 1, Sum 2, Sum 3, Sum 4]
+Sum {getSum = 10}
+```
 
 ## Traversal: Foldables
 
@@ -213,12 +216,12 @@ aggregation $\diamond$.
 
 ![](lecture13/foldlist.png){class="inverting-image"}
 
-To make something `Foldable`, we only have to implement `foldMap`:
+To make something `Foldable`, we only have to implement `foldMap` [^foldr]:
 ```haskell
 instance Foldable [] where
-  foldMap f = mconcat . fmap f
+  foldMap f = mconcat . map f
 ```
-And we will get a lot of functions for free (including `length`, `elem`, `maximum`,
+and we will get a lot of functions for free (including `length`, `elem`, `maximum`,
 etc.)
 
 ```haskell
@@ -251,11 +254,10 @@ instance Foldable Solo -- Defined in ‘Data.Foldable’
 instance Foldable ((,) a) -- Defined in ‘Data.Foldable’
 ```
 
-::: details `foldr` in terms of `foldMap`
-For in depth information about `Foldable` implementations you can refer to the [Haskell
-Wiki](https://en.wikibooks.org/wiki/Haskell/Foldable). Most importantly, it shows how to implement
-`foldr` in terms of `foldMap` by exploiting the monoid of self-maps.
-:::
+[^foldr]:
+    For in depth information about `Foldable` implementations you can refer to the [Haskell
+    Wiki](https://en.wikibooks.org/wiki/Haskell/Foldable). Most importantly, it shows how to implement
+    `foldr` in terms of `foldMap` by exploiting the monoid of self-maps.
 
 
 For new types like `Tree a` we have to implement `foldMap` to inform Haskell about how to traverse

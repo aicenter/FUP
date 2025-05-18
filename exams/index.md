@@ -11,8 +11,7 @@ To be eligible for the exam, your homework solutions must meet at least the [min
 ### Programming exam details
 
 ::: danger Important
-Please make sure you know your lab computer password. You can [change it
-here](https://www.felk.cvut.cz/labpass/).
+Please make sure you know your lab computer password. You can [change it here](https://www.felk.cvut.cz/labpass/).
 :::
 
 ::: tip Course material
@@ -28,4 +27,4 @@ You will have 3 hours for the whole exam, so you should be able to solve each ta
 
 You will upload your exam solutions to BRUTE, like you are used to from the homework, and get immediate feedback on how many points you achieved. You can upload your solution as many times as you want.
 
-The exam dates for 2025 have not yet been decided.
+Exam dates will be published on [KOS](www.kos.cvut.cz) before the start of the [examination period](https://intranet.fel.cvut.cz/en/education/calendar.html).
