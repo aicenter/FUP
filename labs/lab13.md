@@ -344,6 +344,6 @@ Node 1 (Node 0 (Node 2 Nil Nil) (Node 1 (Node 2 Nil Nil) (Node 1 Nil Nil))) (Nod
 You can also check that the method does not provide a uniform distribution.
 ```haskell
 > trees = runRandom (replicateM 10000 (randTree 3 2)) 1
-> execState (freqS trees) []
+> map snd $ execState (freqS trees) []
 [387,234,210,448,221,187,207,223,200,214,403,428,218,409,222,379,199,199,235,206,215,209,184,223,206,187,222,416,187,213,190,193,438,231,222,221,205,204,209,196]
 ```
