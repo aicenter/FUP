@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "docs:dev": "EXAM=false vitepress dev",
-    "docs:build": "EXAM=false vitepress build",
-    "docs:preview": "EXAM=false vitepress preview"
+    "docs:dev": "EXAM=true vitepress dev",
+    "docs:build": "EXAM=true vitepress build",
+    "docs:preview": "EXAM=true vitepress preview"
   },
   "dependencies": {
     "markdown-it": "^14.1.0",
