@@ -7,10 +7,95 @@ outline: deep
 
 # Pretty Printing of Binary Numbers
 
-The goal of this assignment is to implement a Haskell program that reads a positive integer from
+
+The goal of this assignment is to implement a program that reads a positive integer from
 standard input, converts it into its binary representation, and displays this representation as a
-text image. Each digit (i.e., $0$ and $1$) is represented as a $4 \times 4$ grid of characters. More
-precisely, the text images of digits $0$ and $1$ are rendered in Haskell like below:
+text image. Each digit (i.e., $0$ and $1$) is represented as a $4 \times 4$ grid of characters.
+
+Implement a program that works as follows:
+
+1. Display a message `Enter integer:`.
+2. Let the user enter an integer $n$ (you may assume only valid inputs).
+3. Convert $n$ into its binary representation.
+4. Display the binary representation using the above text-images. The particular digits must be
+   separated by a column consisting of the character `'.'`.
+
+Below you can see an example run were the user enters the number 12.
+```sh
+Enter integer:
+12
+...#....#..##...##.
+..##...##.#..#.#..#
+...#....#.#..#.#..#
+...#....#..##...##.
+```
+
+## Racket
+
+Your program should be called `binary.rkt`. The text images of digits $0$ and $1$ are rendered in Racket like below:
+
+```racket
+(define img-zero
+  '(".##."
+    "#..#"
+    "#..#"
+    ".##."))
+
+(define img-one
+  '("...#"
+    "..##"
+    "...#"
+    "...#"))
+```
+
+You can display lines by `displayln`.
+
+::: details Exam Solution
+```racket
+#lang racket
+
+(define img-zero
+  '(".##."
+    "#..#"
+    "#..#"
+    ".##."))
+
+(define img-one
+  '("...#"
+    "..##"
+    "...#"
+    "...#"))
+
+(define (concat-imgs imgs)
+  (define (inner img1 img2)
+    (map (lambda (s t) (string-append s "." t)) img1 img2))
+  (foldl inner (first imgs) (rest imgs)))
+
+(define (number->digits n radix)
+  (define (iter num acc)
+    (if (< num radix)
+        (reverse (cons num acc))
+        (iter (quotient num radix) (cons (remainder num radix) acc))))
+  (iter n '()))
+
+(define/match (digit->picture digit)
+  ((0) img-zero)
+  ((1) img-one))
+
+(define (main)
+  (displayln "Enter integer:")
+  (define input (read))
+  (define digits (number->digits input 2))
+  (define imgs (map digit->picture digits))
+  (displayln (string-join (concat-imgs imgs) "\n")))
+
+(main)
+```
+:::
+
+## Haskell
+
+Your program should be called `Binary.hs`. The text images of digits $0$ and $1$ are rendered in Haskell like below:
 
 ```haskell
     type Img = [String]
@@ -28,31 +113,7 @@ precisely, the text images of digits $0$ and $1$ are rendered in Haskell like be
             "...#"]
 ```
 
-## Haskell
-
-Implement a function `main :: IO ()` that works as follows:
-
-1. Display a message `Enter integer:`.
-2. Let the user enter an integer $n$ (you may assume only valid inputs).
-3. Convert $n$ into its binary representation.
-4. Display the binary representation using the above text-images. The particular digits must be
-   separated by a column consisting of the character `'.'`.
-
-Below you can see an example if you execute the main function and the user enters
-the number 12.
-```Haskell
-> main
-Enter integer:
-12
-...#....#..##...##.
-..##...##.#..#.#..#
-...#....#.#..#.#..#
-...#....#..##...##.
-```
-
-
-All the displayed lines must end with the new-line character `'\n'` so you can display them e.g. by
-`putStrLn`. No trailing whitespaces are allowed at the ends of lines.
+You can display lines by `putStrLn`.
 
 ::: details Exam Solution
 ```haskell

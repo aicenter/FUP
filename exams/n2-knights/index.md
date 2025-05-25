@@ -33,73 +33,68 @@ second figure.
 In Racket, implement the function
 
 ```racket
-(is_valid? board)
+(valid? board)
 ```
 
 where `board` is a list of lists representing an arbitrarily sized board containing binary values,
 where 1 denotes a knight and 0 an empty cell; The function returns `#t` if and only if no knight
-threatens another one. Your file should be called `knights.rkt` and `provide` the `is_valid?`
+threatens another one. Your file should be called `knights.rkt` and `provide` the `valid?`
 function.
 
 ### Examples
 ```racket
-(is_valid? ‘((1 0 0 0)
-             (0 0 0 1)
-             (1 0 0 0)
-             (0 1 0 0)))
+(valid? ‘((1 0 0 0)
+          (0 0 0 1)
+          (1 0 0 0)
+          (0 1 0 0)))
 #t
 
-(is_valid? '((0 1 0 0)
-             (0 0 0 1)
-             (1 0 0 0)
-             (0 0 1 0)))
+(valid? '((0 1 0 0)
+          (0 0 0 1)
+          (1 0 0 0)
+          (0 0 1 0)))
 #f
 ```
 
 
 ::: details Exam Solution
 ```racket
+#lang racket
+
+(provide valid?)
+
 (define (generate-coords-row row offset row-id)
   (if (null? row)
       '()
       (if (eq? (car row) 1)
           (cons (cons row-id offset) (generate-coords-row (cdr row) (+ offset 1) row-id))
-          (generate-coords-row (cdr row) (+ offset 1) row-id)
-          )
-  )
-)
+          (generate-coords-row (cdr row) (+ offset 1) row-id))))
+
 (define (generate-coords-board board offset)
   (if (null? board)
       '()
-      (append (generate-coords-row (car board) 0 offset) (generate-coords-board (cdr board) (+ offset 1)) )
-  )
-  )
+      (append (generate-coords-row (car board) 0 offset) (generate-coords-board (cdr board) (+ offset 1)) )))
 
-(define (is-valid-pair? coord1 coord2)
+(define (valid-pair? coord1 coord2)
   (let ((absx (abs (- (car coord1) (car coord2))))
         (absy (abs (- (cdr coord1) (cdr coord2)))))
        (cond ((and (eq? absx 1) (eq? absy 2)) #f)
              ((and (eq? absx 2) (eq? absy 1)) #f)
-             (#t #t)
-  )))
+             (#t #t))))
 
-(define (is-valid-coord? coord coords)
+(define (valid-coord? coord coords)
   (cond ((null? coords) #t)
-        ((is-valid-pair? coord (car coords)) (is-valid-coord? coord (cdr coords)))
-        (#t #f)
-  ))
+        ((valid-pair? coord (car coords)) (valid-coord? coord (cdr coords)))
+        (#t #f)))
 
-(define (is-valid-coords? coords)
+(define (valid-coords? coords)
   (cond ((null? coords) #t)
-        ((is-valid-coord? (car coords) (cdr coords)) (is-valid-coords? (cdr coords)))
-        (#t #f)
-  ))
+        ((valid-coord? (car coords) (cdr coords)) (valid-coords? (cdr coords)))
+        (#t #f)))
 
-
-(define (is_valid? board)
+(define (valid? board)
   (let ((coords (generate-coords-board board 0)))
-    (is-valid-coords? coords)
-    ))
+    (valid-coords? coords)))
 ```
 :::
 
@@ -110,7 +105,7 @@ function.
 In Haskell, implement the function
 
 ```haskell
-is_valid :: [[Piece]] -> Bool
+isValid :: [[Piece]] -> Bool
 ```
 
 where
@@ -121,68 +116,55 @@ where
 
 and the function returns `True` if and only if no knight threatens another one.
 
-Your file should be called `Knights.hs`, contain a module of the same name, and export the `is_valid` function.
+Your file should be called `Knights.hs`, contain a module of the same name, and export the `isValid` function.
 
 ### Examples
 
 ```haskell
-> is_valid [[Knight, Nil, Nil ,Nil],
-            [Nil, Nil, Nil, Knight],
-            [Knight, Nil, Nil, Nil],
-            [Nil, Knight, Nil, Nil]]
+> isValid [[Knight, Nil, Nil ,Nil],
+           [Nil, Nil, Nil, Knight],
+           [Knight, Nil, Nil, Nil],
+           [Nil, Knight, Nil, Nil]]
 True
 
-> is_valid [[Nil, Knight, Nil, Nil],
-            [Nil, Nil, Nil, Knight],
-            [Knight, Nil, Nil, Nil],
-            [Nil, Nil, Knight, Nil]]
+> isValid [[Nil, Knight, Nil, Nil],
+           [Nil, Nil, Nil, Knight],
+           [Knight, Nil, Nil, Nil],
+           [Nil, Nil, Knight, Nil]]
 False
 ```
 
 ::: details Exam Solution
 ```haskell
-module Knights (is_valid) where
-data Piece = Nil | Knight deriving Show
+module Knights (Piece (..), isValid) where
+
+data Piece = Nil | Knight deriving (Show)
 
 enumerate :: [a] -> [(Int, a)]
-enumerate xs = zip [0..] xs
+enumerate xs = zip [0 ..] xs
 
+isKnight :: Piece -> Bool
+isKnight Nil = False
+isKnight Knight = True
 
-isknight :: Piece -> Bool
-isknight Nil = False
-isknight Knight = True
+knightCoords :: [[Piece]] -> [(Int, Int)]
+knightCoords board = map (\(i, j, _) -> (i, j)) ij_ks
+  where
+    ij_ks = filter (\(_, _, k) -> isKnight k) (concat ij_xs)
+    ij_xs = map (\(i, jxs) -> insert' i jxs) (enumerate (map enumerate board))
 
+    insert' :: a -> [(b, c)] -> [(a, b, c)]
+    insert' x = map (\(y, z) -> (x, y, z))
 
-knight_coords :: [[Piece]] -> [(Int, Int)]
-knight_coords board = map (\(i,j,_) -> (i,j)) ij_ks where
+isValidPair :: (Int, Int) -> (Int, Int) -> Bool
+isValidPair (x, y) (u, v)
+  | ((abs (x - u)) == 2 && (abs (y - v)) == 1) = False
+  | ((abs (x - u)) == 1 && (abs (y - v)) == 2) = False
+  | otherwise = True
 
-  ij_ks = filter (\(_,_,k) -> isknight k) (concat ij_xs)
-  ij_xs = map (\(i, jxs) -> _insert i jxs) (enumerate (map enumerate board))
-
-  _insert :: a -> [(b,c)] -> [(a,b,c)]
-  _insert x = map (\(y,z) -> (x,y,z))
-
-
-
-is_valid_pair :: (Int,Int) -> (Int,Int) -> Bool
-is_valid_pair (x,y) (u,v) | ( (abs (x-u)) == 2 && (abs (y-v)) == 1 ) = False
-                          | ( (abs (x-u)) == 1 && (abs (y-v)) == 2 ) = False
-                          | otherwise = True
-
-
-is_valid :: [[Piece]] -> Bool
-is_valid board = all (uncurry is_valid_pair) [(x,y) | x <- cs, y <- cs] where
-  cs = knight_coords board
-
-
-board =  [[Knight, Nil, Nil ,Knight],
-          [Nil, Nil, Nil, Knight],
-          [Knight, Nil, Nil, Nil],
-          [Nil, Knight, Nil, Nil]]
-
-board2 = [[Nil, Knight, Nil, Nil],
-          [Nil, Nil, Nil, Knight],
-          [Knight, Nil, Nil, Nil],
-          [Nil, Nil, Knight, Nil]]
+isValid :: [[Piece]] -> Bool
+isValid board = and [isValidPair x y | x <- cs, y <- cs]
+  where
+    cs = knightCoords board
 ```
 :::

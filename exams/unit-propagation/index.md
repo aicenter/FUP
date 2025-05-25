@@ -65,12 +65,6 @@ both structures `pos` and `neg`.  Hence, the head of your file should start with
 ; your code here
 ```
 
-### Hint
-To remove an element `v` from a list `lst`,
-you may want to use the function `(remove v lst)`.
-To remove duplicated elements from a list `lst`,
-call the function `(remove-duplicates lst)`.
-
 ### Examples
 The following shows the behaviour of the `propagate-units` function.
 
@@ -94,6 +88,42 @@ For $\varphi=\{\{a,b,\neg c,\neg f\}, \{b,c\}, \{\neg b, e\}, \{\neg b\}\}$, we 
                          (list (neg "b"))))
 (list (list (pos "a") (neg "f")))
 ```
+
+
+### Hint
+To remove an element `v` from a list `lst`,
+you may want to use the function `(remove v lst)`.
+To remove duplicated elements from a list `lst`,
+call the function `(remove-duplicates lst)`.
+
+::: details Exam Solution
+```racket
+#lang racket
+(provide propagate-units (struct-out pos) (struct-out neg))
+
+(struct pos (variable) #:transparent)
+(struct neg (variable) #:transparent)
+
+(define (get-unit cls)
+  (ormap (lambda (cl) (if (= 1 (length cl)) (first cl) #f)) cls))
+
+(define/match (inverse unit)
+  (((pos v)) (neg v))
+  (((neg v)) (pos v)))
+
+(define (simplify-clause unit cl)
+  (define inv (inverse unit))
+  (remove inv cl))
+
+(define (propagate-units clauses)
+  (define unit (get-unit clauses))
+  (if unit
+      (let* ((filtered (filter-not (curry member unit) clauses))
+             (simple (map (curry simplify-clause unit) filtered)))
+        (propagate-units simple))
+      (remove-duplicates (filter-not null? clauses))))
+```
+:::
 
 ## Haskell
 
@@ -163,7 +193,7 @@ For $\varphi=\{\{a,b,\neg c,\neg f\}, \{b,c\}, \{\neg b, e\}, \{\neg b\}\}$, we 
 
 ::: details Exam Solution
 ```haskell
-module Task4 ( propagateUnits, Literal (..) ) where
+module UnitPropagation ( propagateUnits, Literal (..) ) where
 import Data.List
 
 type Variable = String

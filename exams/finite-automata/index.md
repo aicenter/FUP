@@ -65,6 +65,7 @@ The particular automaton from  the figure is defined as follows.
    (list 2 3)))
 ```
 
+### accepts
 Implement the function
 ```racket
 (accepts automaton word)
@@ -79,7 +80,8 @@ The function is used as follows:
 > (accepts nfa "abab")
 #f
 ```
-\noindent
+
+### lwords
 
 Next, given the automaton, its alphabet, and a length, generate the list of all words of the given
 length that are accepted by the automaton. Implement the function
@@ -102,12 +104,11 @@ The function operates as follows:
 '("aaa" "aba" "abb")
 ```
 
-For testing purposes your file should be named `task3.rkt` and start with the following lines:
+Your file should be named `automata.rkt` and should export the functions `accepts` and `lwords`, and the structs `transition` and `automaton`:
 ```racket
 #lang racket
 
-(provide accepts
-         lwords)
+(provide accepts lwords (struct-out transition) (struct-out automaton))
 ```
 
 ::: details Exam Solution
@@ -202,7 +203,7 @@ nfa = NFA [Tr 1 'a' 2,
            [2,3]
 ```
 
-### `accepts`-function
+### accepts
 The first part of the task is to decide whether a particular word is accepted by a given automaton.
 To that end, implement the function
 ```haskell
@@ -244,7 +245,7 @@ One more example for `"ba"`:
 So the output is `False`.
 
 
-### `lwords`-function
+### lwords
 
 Next, given the automaton, its alphabet, and a length, generate the list of all words of the given
 length that are accepted by the automaton.  Implement the function
@@ -267,6 +268,16 @@ function operates as follows.
 
 _**Hint:**_ first, generate all possible words of the given length.  Then, filter the words using
 the function `accepts`.
+
+
+Your file should be named `Automata.hs` and should export the functions `accepts` and `lwords`, and the types `Transition` and `Automaton`:
+```haskell
+module Automata (accepts, lwords, Transition (..), Automaton (..)) where
+
+data Transition a b = Tr a b a deriving Show
+data Automaton a b = NFA [(Transition a b)] a [a] deriving Show
+```
+
 
 ::: details Exam Solution
 ```haskell

@@ -7,7 +7,7 @@ outline: deep
 # Minesweeper
 
 Implement a program to mark the number of mines directy adjacent (horizontally, vertically and
-diagonally) to squares on a Minesweeper field.
+diagonally) to squares on a rectangular Minesweeper field.
 
 
 Fields with `.` denote an empty field and `*` denote mines:
@@ -48,10 +48,6 @@ Your file should be called `minesweeper.rkt`. You may assume the input is rectan
 The functions `string->list` and `string-split` might be useful to parse the output of the function
 `port-lines` which reads from stdin. You can use the following skeleton.
 ```racket
-; for testing
-(define test-board
-  (map string->list (string-split ".*..\n..*.\n**..\n...*\n*...")))
-
 ; for converting ints to chars.
 (define (int->digit i) (integer->char (+ 48 i)))
 
@@ -64,11 +60,15 @@ The functions `string->list` and `string-split` might be useful to parse the out
     (newline)))
 ```
 
+### Example
+
+```racket
+(define board (map string->list (string-split "·*·*·\n··*··\n··*··\n·····")))
+```
+
 ::: details Exam Solution
 ```racket
 #lang racket
-
-(define board (map string->list (string-split "·*·*·\n··*··\n··*··\n·····")))
 
 (define (int->digit i)
   (integer->char (+ 48 i)))
@@ -109,34 +109,27 @@ The functions `string->list` and `string-split` might be useful to parse the out
 
 ## Haskell
 
-To read multiple lines of input in plain Haskell, we have to tell it how many lines to read.
-Assume that this will be done by first reading a number and then calling `getLine` the desired
-number of times. Implement a function `readInput :: IO [String]` with the following behaviour
-```haskell
-ghci> readInput
-3
-...
-...
-...
-["...","...","..."]  <-- this is the function output
-```
-
-Your file should have the extension `Minesweeper.hs`.
+Write a Haskell program called `Minesweeper.hs`, which reads the board from standard input. To get all data from standard input as a string, you can call `getContents`. The resulting string can then be split with the `lines` function.
 
 ```haskell
 -- for converting ints to chars
 import Data.Char (intToDigit)
 
+sweep :: [String] -> [String]
+sweep board = board -- implement me !
+
+main = do
+  input <- getContents
+  mapM_ putStrLn (sweep (lines input))
+```
+
+### Example
+
+```haskell
 -- for testing
 test_board = ["..."
              ,".**"
              ,"..."]
-
-main = do
-  lines <- readInput
-  putStrLn "\nSweep Result:"
-  let sw = sweep lines
-  mapM_ putStrLn sw
 ```
 
 ::: details Exam Solution
@@ -165,20 +158,8 @@ sweep board = mapi2d pretty board where
   mines x y = count (neighbours x y board)
   count xs = length $ filter (=='*') xs
 
-readInput :: IO [String]
-readInput = do
-  count <- readLn  -- type is infered because of the signature of replicateM
-  lines <- replicateM (count) getLine
-  return lines
-
-test_board = ["..."
-             ,".**"
-             ,"..."]
-
 main = do
-  lines <- readInput
-  putStrLn "\nSweep Result:"
-  let sw = sweep lines
-  mapM_ putStrLn sw
+  input <- getContents
+  mapM_ putStrLn (sweep (lines input))
 ```
 :::

@@ -48,7 +48,7 @@ four symbols: `'N`, `'S`, `'E`, and `'W`. The result should be a pair of the for
 '(W . 7)
 ```
 
-Your file should be called `photo-skyscraper.rkt` and should `provide` the `best-view` function.
+Your file should be called `skyscrapers.rkt` and should `provide` the `best-view` function.
 ```racket
 #lang racket
 
@@ -113,9 +113,9 @@ city = [[3, 3, 3],
 bestView city -- ('W', 7)
 ```
 
-Your file should be called `PhotoSkyscraper.hs` and should export the `bestView` function.
+Your file should be called `Skyscrapers.hs` and should export the `bestView` function.
 ```haskell
-module PhotoSkyscraper (bestView) where
+module Skyscrapers (bestView) where
 
 bestView :: [[Int]] -> (Char, Int)
 bestView city = ... -- Implement me!
@@ -123,7 +123,7 @@ bestView city = ... -- Implement me!
 
 ::: details Exam Solution
 ```haskell
- module Task4 (bestView) where
+ module Skyscrapers (bestView) where
 
 import Data.List
 

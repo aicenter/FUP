@@ -39,7 +39,7 @@ return tree_edges
 
 ## Racket
 
-In Scheme, implement a function `(minimum-spanning-tree gr)`
+In Scheme, implement a function `(spanning-tree gr)`
 that accepts a connected weighted graph `gr` and
 returns a list of edges forming the minimum spanning tree. The graph and weighted
 edges are represented by the following structures:
@@ -50,10 +50,10 @@ edges are represented by the following structures:
 ```
 
 Your file has to be called `spanning-tree.rkt`, provide the function
-`minimum-spanning-tree` and the above structures so it should start like this:
+`spanning-tree` and the above structures so it should start like this:
 ```racket
 #lang racket
-(provide minimum-spanning-tree (struct-out edge) graph)
+(provide spanning-tree (struct-out edge) graph)
 (struct edge (u v weight) #:transparent)
 (struct graph (nodes edges) #:transparent)
 
@@ -75,7 +75,7 @@ The graph from the figure is represented as follows:
                            (edge 'E 'C 4)
                            (edge 'A 'E 3))))
 
-> (minimum-spanning-tree gr)
+> (spanning-tree gr)
 (list (edge 'C 'F 5) (edge 'E 'D 4) (edge 'E 'C 4)
       (edge 'B 'E 2) (edge 'A 'B 1))
 ```
@@ -102,24 +102,9 @@ allowing sorting w.r.t. a given comparing function, e.g.,
 ::: details Exam Solution
 ```racket
 #lang racket
-(provide minimum-spanning-tree graph edge)
-
+(provide spanning-tree (struct-out edge) graph)
 (struct edge (u v weight) #:transparent)
 (struct graph (nodes edges) #:transparent)
-
-(define gr (graph '(1 2 3 4) (list (edge 1 2 10) (edge 1 3 20) (edge 1 4 30) (edge 2 4 20) (edge 3 4 20))))
-
-(define gr2 (graph '(A B C D E F)
-                   (list (edge 'A 'B 1)
-                         (edge 'D 'E 4)
-                         (edge 'E 'F 7)
-                         (edge 'A 'D 5)
-                         (edge 'B 'E 2)
-                         (edge 'C 'F 5)
-                         (edge 'D 'B 6)
-                         (edge 'E 'C 4)
-                         (edge 'A 'E 3))))
-
 
 (define (reverse-edge e)
   (match e
@@ -143,7 +128,7 @@ allowing sorting w.r.t. a given comparing function, e.g.,
              [v (edge-v e)])
         (iter gr (cons v covered) (remove v uncovered) (cons e tree-edges)))))
 
-(define (minimum-spanning-tree gr)
+(define (spanning-tree gr)
   (let* ([enriched-gr (reverse-edges gr)]
          [nodes (graph-nodes gr)]
          [covered (list (car nodes))]
@@ -166,7 +151,7 @@ data Graph a b = Graph { nodes :: [a],
 ```
 
 Implement a function
-`minSpanningTree :: (Eq a, Ord b) => Graph a b -> [Edge a b]`
+`spanningTree :: (Eq a, Ord b) => Graph a b -> [Edge a b]`
 that accepts a connected weighed graph and returns a list of edges from the
 minimum spanning tree.
 
@@ -185,7 +170,7 @@ gr = Graph{ nodes = ['A'..'F'],
                      Edge 'E' 'C' 4,
                      Edge 'A' 'E' 3] }
 
-> minSpanningTree gr
+> spanningTree gr
 [Edge {u = 'C', v = 'F', weight = 5},Edge {u = 'E', v = 'D', weight = 4},
  Edge {u = 'E', v = 'C', weight = 4},Edge {u = 'B', v = 'E', weight = 2},
  Edge {u = 'A', v = 'B', weight = 1}]
@@ -196,10 +181,10 @@ well.  For instance, it does not matter if your output contains `Edge {u='C', v=
 `Edge {u='F', v='C', weight=5}`. However, do not include both variants in your output.
 
 Your file has to be called `SpanningTree.hs` and must export the function
-`minSpanningTree` and the data types `Graph a b`,
+`spanningTree` and the data types `Graph a b`,
 `Edge a b` so it should start like this:
 ```haskell
-module Task4 (minSpanningTree, Graph (..), Edge (..)) where
+module SpanningTree (spanningTree, Graph (..), Edge (..)) where
 import Data.List -- for sortOn
 
 data Edge a b = Edge { u :: a,
@@ -227,7 +212,7 @@ import Data.List
 
 ::: details Exam Solution
 ```haskell
-module Task4 (minSpanningTree, Graph (..), Edge (..)) where
+module SpanningTree (spanningTree, Graph (..), Edge (..)) where
 
 import Data.List
 
@@ -236,18 +221,6 @@ data Edge a b = Edge { u :: a,
                        weight :: b } deriving (Eq,Show)
 data Graph a b = Graph { nodes :: [a],
                          edges :: [Edge a b] } deriving Show
-
-gr2 :: Graph Char Int
-gr2 = Graph{ nodes = ['A'..'F'],
-             edges = [Edge 'A' 'B' 1,
-                      Edge 'D' 'E' 4,
-                      Edge 'E' 'F' 7,
-                      Edge 'A' 'D' 5,
-                      Edge 'B' 'E' 2,
-                      Edge 'C' 'F' 5,
-                      Edge 'D' 'B' 6,
-                      Edge 'E' 'C' 4,
-                      Edge 'A' 'E' 3] }
 
 reverseEdge :: Edge a b -> Edge a b
 reverseEdge e = e{ u=v e, v=u e}
@@ -266,8 +239,8 @@ jarnik g covered uncovered es = jarnik g (x:covered) (delete x uncovered) (ne:es
   where ne = findEdge (edges g) covered uncovered
         x = v ne
 
-minSpanningTree :: (Eq a, Ord b) => Graph a b -> [Edge a b]
-minSpanningTree g = jarnik g' [x] xs []
+spanningTree :: (Eq a, Ord b) => Graph a b -> [Edge a b]
+spanningTree g = jarnik g' [x] xs []
   where g' = reverseEdges g
         (x:xs) = nodes g
 ```

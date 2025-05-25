@@ -21,7 +21,7 @@ This probabilistic primality test is known as the *Fermat Primality Test*.  Note
 *Carmichael numbers*, which are composite yet pass the test for all $a$ relatively prime to the
 respective number, are avoided when testing your implementation of this task.
 
-## Pseudo-random Number Generation
+### Pseudo-random Number Generation
 
 To generate pseudorandom numbers in a given interval, use
 the *Linear Congruential Generator (LCG)*
@@ -35,11 +35,11 @@ $$
   b' = (b \ \texttt{mod}\, (b^\text{upper} - b^\text{lower})) + b^\text{lower}.
 $$
 
+## Haskell
 
-Your task is to implement the Fermat Primality Test in Haskell.
-There are two parts to this task: first, implement the LCG, and then the test itself.
+Your task is to implement the Fermat Primality Test in Haskell. Your file should be called `Fermat.hs`, and you should export the function `primality :: Int -> Int -> State LCG Bool`. There are two parts to this task: first, implement the LCG, and then the test itself.
 
-## Implementation
+### Implementation
 
 The LCG generator is represented as
 ```haskell
@@ -84,7 +84,7 @@ False
 True
 ```
 
-## Hint
+### Hint
 
 To prevent overflow of `Int`, compute $a^{p-1}\mod p$ sequentially using
 the identity $a^{k+1}\mod p = a\cdot (a^k\mod p)\mod p$, i.e.,
@@ -92,37 +92,32 @@ sequentially multiplying by $a$ and applying modulo to each partial result.
 
 ::: details Exam Solution
 ```haskell
+module Fermat (LCG (..), primality) where
+
+import Control.Monad
 import Control.Monad.State
 
----- linear congruential generator
-data LCG = LCG  Int Int Int Int deriving Show -- A*x + C mod M
+-- Linear congruential generator
+-- A*x + C mod M
+data LCG = LCG Int Int Int Int deriving (Show)
 
-generate :: State LCG Int
-generate = do (LCG a x c m) <- get
-              let x' = (a * x + c) `mod` m
-              put (LCG a x' c m)
-              return x'
+lcg (LCG a x c m) =
+  let y = (a * x + c) `mod` m
+   in (y, LCG a y c m)
 
-generate_range :: Int -> Int -> State LCG Int -- a <= x < b
-generate_range a b = do x <- generate
-                        let x' = (x `mod` (b-a)) + a
-                        return x'
+generate = state lcg
 
-modulo_power :: Int -> Int -> Int -> Int
-modulo_power a n m = iter a n where
-    iter b 1 = b
-    iter b nn = iter (b*a `mod` m) (nn-1)
+project low high num = (num `mod` (high - low)) + low
 
-fermat_comp :: Int -> Int -> Int
-fermat_comp p b = (modulo_power b (p-1) p)
+generateRange low high = project low high <$> generate
 
-fermat_check :: Int -> Int -> Int -> State LCG Bool
-fermat_check p n 1 = primality p (n-1)
-fermat_check _ _ _ = return False
+moduloPower a n m = iterate (\x -> x * a `mod` m) 1 !! n
+
+fermatCheck p r = 1 == moduloPower r (p - 1) p
 
 primality :: Int -> Int -> State LCG Bool
-primality p 0 = return True
-primality p n = do b <- generate_range 1 p
-                   fermat_check p n (fermat_comp p b)
+primality x n = do
+  rs <- replicateM n (generateRange 1 x)
+  pure (all (fermatCheck x) rs)
 ```
 :::

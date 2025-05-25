@@ -111,6 +111,8 @@ Your file has to be called `convexhull.rkt` and must provide the function
 ; your code goes here
 ```
 
+### Hints
+
 _**Hint \#2 (Polar Angle)**_
 In Scheme, you can compute the polar angle of a vector $\vec v=(x,y)$ with
 ```racket
@@ -238,6 +240,7 @@ import Data.List -- for sortBy
 -- your code goes here
 ```
 
+### Hints
 
 _**Hint \#4 (Polar Angle):**_
 In Haskell, you can compute the polar angle of a vector `v = (x,y)` with
