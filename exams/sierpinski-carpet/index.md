@@ -49,7 +49,7 @@ The first iterations $f(0)$, $f(1)$, $f(2)$, and $f(3)$ look as follows:
 
 The size of the picture grows exponentially with $3^n$.
 
-## IO Program
+## Haskell
 
 In Haskell, implement a function of type `Int -> [String]` that for a given
 natural number $n$ returns the Sierpiński carpet $f(n)$ represented as a list of strings.
@@ -61,7 +61,7 @@ carpet $f(n)$ starting on the row `row1` and the column `col1`, and ending on
 the row `row2-1` and the column `col2-1`. The rows and columns are indexed from $0$.
 You may assume only valid inputs.
 
-## Examples
+### Examples
 
 ```haskell
 Enter n:
@@ -87,7 +87,7 @@ the automatic evaluation will fail.
 
 Your file has to be called `Sierpinsky.hs`.
 
-## Hints
+### Hints
 
 To join the boxes represented as lists of strings in the top figure you may find the function
 ```haskell
@@ -108,7 +108,7 @@ cut :: Int -> Int -> [a] -> [a]
 cut st end = take (end-st) . drop st
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 empty :: Int -> [String]
 empty n = replicate n $ replicate n ' '

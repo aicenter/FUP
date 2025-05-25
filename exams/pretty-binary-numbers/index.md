@@ -28,7 +28,7 @@ precisely, the text images of digits $0$ and $1$ are rendered in Haskell like be
             "...#"]
 ```
 
-# Haskell
+## Haskell
 
 Implement a function `main :: IO ()` that works as follows:
 
@@ -38,7 +38,7 @@ Implement a function `main :: IO ()` that works as follows:
 4. Display the binary representation using the above text-images. The particular digits must be
    separated by a column consisting of the character `'.'`.
 
-Below you can see an example if you execute the main function and the user enters 
+Below you can see an example if you execute the main function and the user enters
 the number 12.
 ```Haskell
 > main
@@ -54,7 +54,7 @@ Enter integer:
 All the displayed lines must end with the new-line character `'\n'` so you can display them e.g. by
 `putStrLn`. No trailing whitespaces are allowed at the ends of lines.
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 type Img = [String]
 
@@ -95,7 +95,7 @@ binToImgs = map (\c -> case c of
 genSol :: Int -> String
 genSol n = unlines strs
         where strs = concatImgs $ binToImgs $ numToStr n 2
-        
+
 main :: IO ()
 main = do putStrLn "Enter integer:"
           n <- read <$> getLine

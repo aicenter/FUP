@@ -95,7 +95,7 @@ of points and returns the generating points of the convex hull as described
 above.
 **The list returned by `convex-hull` must start at the initial point $p_0$ and contain the generating points in counter-clockwise order.**
 
-```Scheme
+```racket
 (define points '((-2 3) (2 2) (-1 1) (-2 -1.5) (4 -1) (1 -3)))
 
 > (convex-hull points)
@@ -104,7 +104,7 @@ above.
 
 Your file has to be called `convexhull.rkt` and must provide the function
 `convex-hull` so it should start like this:
-```Scheme
+```racket
 #lang racket
 (provide convex-hull)
 
@@ -113,7 +113,7 @@ Your file has to be called `convexhull.rkt` and must provide the function
 
 _**Hint \#2 (Polar Angle)**_
 In Scheme, you can compute the polar angle of a vector $\vec v=(x,y)$ with
-```Scheme
+```racket
 (atan y x)  ; note the argument order!
 ```
 Computing the polar angle like above will result in $\varphi\in(-\pi,\pi)$.
@@ -126,7 +126,7 @@ a list and a comparison function. The comparison function has to accept two
 elements from the list and return `\#t` if the first argument is less
 than the second and otherwise `\#f`.
 Below is an example that sorts a list of points by the x-coordinate.
-```Scheme
+```racket
 (define (xcomp a b)
   (if (< (car a) (car b)) #t #f))
 
@@ -134,8 +134,8 @@ Below is an example that sorts a list of points by the x-coordinate.
 '((1 1) (2 5) (3 0))
 ```
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 (provide convex-hull)
 
@@ -242,7 +242,7 @@ import Data.List -- for sortBy
 _**Hint \#4 (Polar Angle):**_
 In Haskell, you can compute the polar angle of a vector `v = (x,y)` with
 ```Haskell
-atan2 y x -- note the argument order! 
+atan2 y x -- note the argument order!
 ```
 Computing the polar angle like above will result in $\varphi\in(-\pi,\pi)$.
 You may want to shift the output by adding $2\pi$ to negative angles in order
@@ -254,7 +254,7 @@ the x-coordinate
 ```Haskell
 import Data.List
 
-xcomp (x1,y1) (x2,y2) 
+xcomp (x1,y1) (x2,y2)
   | x1 == x2  = EQ
   | x1 < x2   = LT
   | otherwise = GT
@@ -263,7 +263,7 @@ xcomp (x1,y1) (x2,y2)
 [(1,1),(2,5),(3,0)]
 ```
 
-::: details Solutions
+::: details Exam Solution
 ```haskell
 module ConvexHull (convexHull) where
 

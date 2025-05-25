@@ -1,7 +1,7 @@
 ---
-outline: deep
 title: "Exam Task: Minesweeper"
 subtitle: "From: Exam 2 - 2022"
+outline: deep
 ---
 
 # Minesweeper
@@ -46,8 +46,8 @@ $$
 
 Your file should be called `minesweeper.rkt`. You may assume the input is rectangular and non-empty.
 The functions `string->list` and `string-split` might be useful to parse the output of the function
-`port-lines` which reads from stdin. You can use the following skeleton. 
-```scheme
+`port-lines` which reads from stdin. You can use the following skeleton.
+```racket
 ; for testing
 (define test-board
   (map string->list (string-split ".*..\n..*.\n**..\n...*\n*...")))
@@ -56,7 +56,7 @@ The functions `string->list` and `string-split` might be useful to parse the out
 (define (int->digit i) (integer->char (+ 48 i)))
 
 (let* ((input-string (port->lines))
-        ; implement parsing of board/sweep for mines 
+        ; implement parsing of board/sweep for mines
         ; assuming counted-board contins a list of list of chars
        (sn (map list->string counted-board)))
   (for ((l sn))
@@ -64,8 +64,8 @@ The functions `string->list` and `string-split` might be useful to parse the out
     (newline)))
 ```
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (define board (map string->list (string-split "·*·*·\n··*··\n··*··\n·····")))
@@ -139,7 +139,7 @@ main = do
   mapM_ putStrLn sw
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 import Control.Monad (replicateM)
 import Data.Char (intToDigit)

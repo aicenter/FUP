@@ -12,7 +12,7 @@ return-text: '← Return home'
 
 Suppose we have a list of named coordinates:
 
-```scheme
+```racket
 (define points
  '((#\A 1 1)
    (#\B 1 6)
@@ -60,13 +60,13 @@ d = |x_1 - x_2| + |y_1 - y_2|
 $$
 
 
-## Racket implementation
+## Racket
 
 In Racket, write a function (grid points) that accepts a list of named points and computes the
 nearest neighbour grid. The output should be a list of strings where each string represents one row
 in the grid. Your file should be called `manhattan.rkt`
 
-```scheme
+```racket
 #lang racket
 (provide grid)
 
@@ -100,19 +100,19 @@ in the grid. Your file should be called `manhattan.rkt`
 The following functions might be helpful.
 
 To get lower case characters/strings: `char-downcase` and `string-downcase`.
-```scheme
+```racket
 > (char-downcase #\A)
 #\a
 ```
 
 To construct a string from a list of characters `list->string`.
-```scheme
+```racket
 > (list->string '(#\A #\B))
 "AB"
 ```
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 (provide grid)
 
@@ -141,7 +141,7 @@ To construct a string from a list of characters `list->string`.
 
 
 
-## Haskell Implementation
+## Haskell
 In Haskell, write a function `grid :: [(Char,Int,Int)] -> [[Char]]` that computes the nearest
 neighbour grid. The output should be a list of strings where each string represents one row in the
 grid. You file should be called `Manhattan.hs`, contain a module of the same name, and export the
@@ -191,7 +191,7 @@ ghci> toLower 'A'
 From the library `Data.List` you can use your favourite sorting function like `sortBy` or `sortOn`.
 
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 module Manhattan (grid) where
 import Data.List

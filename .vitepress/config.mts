@@ -3,6 +3,8 @@ import markdownItMathjax3 from 'markdown-it-mathjax3'
 import markdownItFootnote from 'markdown-it-footnote'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
+const showSolutions = process.env.EXAM === 'false';
+
 export default withMermaid(
   // https://vitepress.dev/reference/site-config
   defineConfig({
@@ -18,9 +20,9 @@ export default withMermaid(
     base: "/FUP/",
     head: [
       ['link', { rel: 'icon', type: 'image/svg+xml', href: '/FUP/lambda_auto.svg' }],
-      ['link', {rel:"preconnect", href:"https://fonts.googleapis.com"}],
-      ['link', {rel:"preconnect", href:"https://fonts.gstatic.com", crossorigin:''}],
-      ['link', {href:"https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap", rel:"stylesheet"}]
+      ['link', { rel: "preconnect", href: "https://fonts.googleapis.com" }],
+      ['link', { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: '' }],
+      ['link', { href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap", rel: "stylesheet" }]
     ],
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
@@ -40,19 +42,19 @@ export default withMermaid(
           text: 'Lectures',
           link: '/lectures/',
           items: [
-            { text: '01: Introduction', link: '/lectures/lecture01'},
-            { text: '02: Lists & Trees', link: '/lectures/lecture02'},
-            { text: '03: Higher Order Functions', link: '/lectures/lecture03'},
-            { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04'},
-            { text: '05: Macros & Interpreters', link: '/lectures/lecture05'},
-            { text: '06: Lambda Calculus', link: '/lectures/lecture06'},
-            { text: '07: Haskell Basics', link: '/lectures/lecture07'},
-            { text: '08: Haskell Types', link: '/lectures/lecture08'},
-            { text: '09: Type Classes', link: '/lectures/lecture09'},
-            { text: '10: IO & Monads', link: '/lectures/lecture10'},
-            { text: '11: Monadic Parsing', link: '/lectures/lecture11'},
-            { text: '12: State Monad', link: '/lectures/lecture12'},
-            { text: '13: Monoids & Foldables', link: '/lectures/lecture13'},
+            { text: '01: Introduction', link: '/lectures/lecture01' },
+            { text: '02: Lists & Trees', link: '/lectures/lecture02' },
+            { text: '03: Higher Order Functions', link: '/lectures/lecture03' },
+            { text: '04: Pattern Matching & Lazy Evaluation', link: '/lectures/lecture04' },
+            { text: '05: Macros & Interpreters', link: '/lectures/lecture05' },
+            { text: '06: Lambda Calculus', link: '/lectures/lecture06' },
+            { text: '07: Haskell Basics', link: '/lectures/lecture07' },
+            { text: '08: Haskell Types', link: '/lectures/lecture08' },
+            { text: '09: Type Classes', link: '/lectures/lecture09' },
+            { text: '10: IO & Monads', link: '/lectures/lecture10' },
+            { text: '11: Monadic Parsing', link: '/lectures/lecture11' },
+            { text: '12: State Monad', link: '/lectures/lecture12' },
+            { text: '13: Monoids & Foldables', link: '/lectures/lecture13' },
           ]
         },
 
@@ -132,12 +134,23 @@ export default withMermaid(
     markdown: {
       math: true,
       config: (md) => {
-      //  md.use(markdownItMathjax3);
+        //  md.use(markdownItMathjax3);
         md.use(markdownItFootnote)
+        if (!showSolutions) {
+          md.use(removeSolutionPlugin);
+        }
       }
     },
   }),
 );
+
+function removeSolutionPlugin(md) {
+  // This rule removes ::: details Solution ... ::: blocks
+  md.core.ruler.before('normalize', 'remove-solution', (state) => {
+    const pattern = /^::: details Exam Solution[\s\S]*?^:::\s*$/gim;
+    state.src = state.src.replace(pattern, '');
+  });
+};
 
 // make sure that .rkt/.hs files are linked correctly (without additional .html at the end)
 process.env.VITE_EXTRA_EXTENSIONS = 'rkt,hs'  // comma separated list: 'foo,bar,baz'

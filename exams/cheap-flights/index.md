@@ -22,7 +22,7 @@ corresponding edge.
 
 In Racket, the exmeplary graph is represented as shown in the code snippet below.
 
-```scheme
+```racket
 ; list of nodes
 (define ns '(1 2 3 4 5 6)) ; listofnodes
 ; list of edges where each edge contains (start end cost)
@@ -37,7 +37,7 @@ In Racket, the exmeplary graph is represented as shown in the code snippet below
 ```
 
 A `Path` represents your travel plan. For example, there are three paths from node `2` to node `3`:
-```scheme
+```racket
 (2,3)     ; path #1 cost: 2
 (2,1,3)   ; path #2 cost: 1.5
 (2,5,4,3) ; path #3 cost: 6
@@ -49,7 +49,7 @@ total cost. If there is no path from `a` to `b` return `#f`
 
 Your solution must be in a file called in `cheapflights.rkt` and has to `provide` the `cheapflight` function.
 Your file should therefore start like this:
-```scheme
+```racket
 #lang racket
 
 (provide cheap-flight)
@@ -59,7 +59,7 @@ Your file should therefore start like this:
 
 ### Example
 
-```scheme
+```racket
 ; with the graph defined above:
 > (cheap-flight 2 3 gr)
 '((2 1 3) 1.5)
@@ -77,14 +77,14 @@ partial solutions to extend the cheapest path.
 
 In Scheme you can `sort` a list with the help of a predicate function taking two arguments. In case
 of a list of lists (containing cost and path) you could do the following:
-```scheme
+```racket
 > (define (cheaper? x y) (< (car x) (car y)))
 > (sort '(((2 3) 2.0) ((2 1 3) 1.5)) cheaper?)
 '(((2 1 3) 1.5) ((2 3) 2.0))
 ```
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (provide cheap-flight)
@@ -269,7 +269,7 @@ sortBy lowcost [([1,3],2.0) ([1,2,3],0.3)]
 -- [([1,2,3],0.3) ([1,3],2.0)]
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 module CheapFlights (cheapflight,Node,Cost,Edge,Graph,Path) where
 import Data.List
@@ -290,18 +290,18 @@ extend (path@(p:_),c) m = map (\(n,c') -> (n:path,c+c')) $ nextPos p m
 lowcost :: Ord b => (a,b) -> (a,b) -> Ordering
 lowcost (_,x) (_,y) | x < y = LT
                     | otherwise = GT
-                    
+
 bfs :: [Node] -> [(Path,Cost)] -> Node -> Graph -> Maybe (Path, Cost)
 bfs _ [] _ _ = Nothing
 bfs visited upaths q m
     -- is path a solution? If yes, return the reversed solution
     | p == q = Just (reverse path, c)
-    -- does path end in an already visited position? If yes, disregard it 
+    -- does path end in an already visited position? If yes, disregard it
     | p `elem` visited = bfs visited paths q m
-    | otherwise = bfs (p:visited) (paths ++ extend (path,c) m) q m 
+    | otherwise = bfs (p:visited) (paths ++ extend (path,c) m) q m
     -- consider the first path in the queue and its head p
     where ((path@(p:_),c):paths) = sortBy lowcost upaths
-          
+
 cheapflight :: Node -> Node -> Graph -> Maybe (Path,Cost)
 cheapflight s t g = bfs [] [([s],0)] t g
 

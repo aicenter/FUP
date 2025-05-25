@@ -29,14 +29,14 @@ The normalized string is 54 characters long, so it is written into a rectangle w
 ```
 Note that the last row is padded with spaces at the end to make it 8 characters long.
 
-The coded message is obtained by reading down the columns going left to right. 
+The coded message is obtained by reading down the columns going left to right.
 For example, the message above is coded as:
 ```
-imtgdvs fearwer mayoogo anouuio ntnnlvt wttddes aohghn  sseoau  
+imtgdvs fearwer mayoogo anouuio ntnnlvt wttddes aohghn  sseoau
 ```
 
-Given the length $n\in\mathbb{N}$ of the normalized text, the number of columns $c\in\mathbb{N}$ in the rectangle 
-is computed by $c = \lceil\sqrt{n}\rceil$, i.e., 
+Given the length $n\in\mathbb{N}$ of the normalized text, the number of columns $c\in\mathbb{N}$ in the rectangle
+is computed by $c = \lceil\sqrt{n}\rceil$, i.e.,
 $c$ is the smallest natural number greater than or equal to $\sqrt{n}$.
 
 ## Racket
@@ -45,7 +45,7 @@ In Racket, implement a function `(encode str)` that accepts a string
 and returns the encoded string as described above.
 Your file is to be called `square-code.rkt` and must provide the function `encode`.
 Hence, the head of your file should start with
-```scheme
+```racket
 #lang racket
 (provide encode)
 
@@ -60,18 +60,18 @@ To get the least integer above a real number $x$, use the function `(exact-ceili
 ### Examples
 The following shows the behaviour of the `encode` function.
 
-```scheme
+```racket
 > (encode "If man was meant to stay on the ground, god would have given us roots.")
 "imtgdvs fearwer mayoogo anouuio ntnnlvt wttddes aohghn  sseoau "
 ```
 
-```scheme
+```racket
 > (encode "Have a nice day!")
 "hae and via ecy"
 ```
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (provide encode)
@@ -102,7 +102,7 @@ The following shows the behaviour of the `encode` function.
 
 ## Haskell
 
-In Haskell, implement a function `encode :: String -> String` that accepts a string 
+In Haskell, implement a function `encode :: String -> String` that accepts a string
 and returns the encoded string as described above.
 Your task is to be called `SquareCode.hs` and must export the `encode` function.
 Hence, the head of your file should read
@@ -130,10 +130,10 @@ The following shows the behaviour of the `encode` function.
 
 ```haskell
 > encode "haveaniceday"
-"hae and via ecy"  
+"hae and via ecy"
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 module Task4 ( encode ) where
 import Data.Char

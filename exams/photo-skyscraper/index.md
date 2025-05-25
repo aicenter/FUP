@@ -13,11 +13,11 @@ of a given city (North/South/East/West) you should be taking the picture. Luckil
 architect gave you maps of the cities you want to photograph. The maps are very simplified and can
 be represented as lists of lists of integers, so for example in Scheme:
 
-```scheme
+```racket
 ;    north
 (define city
   '((3 0 3 7 3)
-    (2 5 5 1 2) 
+    (2 5 5 1 2)
     (6 5 3 3 2)
     (3 3 5 4 9)
     (3 5 3 9 0)))
@@ -37,7 +37,7 @@ visible, along with the number of roofs visible from that direction. The directi
 four symbols: `'N`, `'S`, `'E`, and `'W`. The result should be a pair of the format
 `'(direction . number)`.
 
-```scheme
+```racket
 (define city
   '((3 3 3)
     (1 2 3)
@@ -49,7 +49,7 @@ four symbols: `'N`, `'S`, `'E`, and `'W`. The result should be a pair of the for
 ```
 
 Your file should be called `photo-skyscraper.rkt` and should `provide` the `best-view` function.
-```scheme
+```racket
 #lang racket
 
 (provide best-view)
@@ -59,8 +59,8 @@ Your file should be called `photo-skyscraper.rkt` and should `provide` the `best
   )
 ```
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 (provide best-view)
 
@@ -108,7 +108,7 @@ number)`.
 city = [[3, 3, 3],
         [1, 2, 3],
         [1, 2, 3]]
-        
+
 -- 'N' has 3 roofs, 'S' has 5, 'E' has 3, and 'W' is the best with 7
 bestView city -- ('W', 7)
 ```
@@ -121,13 +121,13 @@ bestView :: [[Int]] -> (Char, Int)
 bestView city = ... -- Implement me!
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
  module Task4 (bestView) where
 
 import Data.List
 
-roofs xss = sum $ inner <$> xss 
+roofs xss = sum $ inner <$> xss
   where
     inner xs = length (group $ scanl1 max xs)
 
@@ -137,7 +137,7 @@ morph 'E' = fmap reverse
 morph _ = id
 
 bestView :: [[Int]] -> (Char, Int)
-bestView city = 
+bestView city =
   let dirs = "NSEW"
       views = roofs . (`morph` city) <$> dirs
       opts = zip dirs views

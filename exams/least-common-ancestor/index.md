@@ -15,16 +15,16 @@ ancestor* of $x$ and $y$ is defined as the node $z$ satisfying the following two
 To find the least common ancestor of two nodes $x$ and $y$ in a tree $t$, we follow the steps below:
 
 1. find the path $p_x$ from the root $r$ of $t$ to $x$ (i.e., a list of nodes starting in $r$ and
-   ending in $x$), 
+   ending in $x$),
 2. find the path $p_y$ from $r$ to $y$,
 3. consider the common prefix of $p_x$ and $p_y$, the last node in the common prefix is the least
-   common ancestor. 
+   common ancestor.
 
-Consider, for example, the binary tree depicted below. The least common ancestor 
+Consider, for example, the binary tree depicted below. The least common ancestor
 of $3$ and $5$ is $2$. Indeed, the path from the root $1$ to $3$ is $1,2,3$. The path from $1$
 to $5$ is $1,2,4,5$. Their common prefix is $1,2$ whose last element is $2$.
 
-Similarly, the least common ancestor of $5$ and $8$ is $1$. The least common ancestor of 
+Similarly, the least common ancestor of $5$ and $8$ is $1$. The least common ancestor of
 $7$ and $7$ is $7$.
 
 <img src="/img/least-common-ancestor-tree.svg" style="width: 30%; margin: auto;" class="inverting-image">
@@ -32,33 +32,33 @@ $7$ and $7$ is $7$.
 
 ## Racket
 
-In Racket, implement a function `(common-ancestor x y tree)` that takes 
+In Racket, implement a function `(common-ancestor x y tree)` that takes
 two nodes `x`, `y` and a binary tree `tree`, and returns the least common-ancestor
 of `x` and `y` in `tree`. If `x` or `y` does not belong to `tree`,
 the function returns `#f`.
 
 To represent binary trees in Racket, use the following structures:
-```scheme
+```racket
 (struct node (val left right) #:transparent)
 (struct leaf (val) #:transparent)
 ```
 Thus the leaves (nodes without children) are represented as, for instance, `(leaf 6)`.
 The nodes with children are represented as, for instance, `(node 1 (leaf 2) (leaf 3))`.
 
-To implement the function `common-ancestor`, implement first a function 
-`(find-path x tree)` that finds a path from the root of `tree` to `x`. 
+To implement the function `common-ancestor`, implement first a function
+`(find-path x tree)` that finds a path from the root of `tree` to `x`.
 For example,
-```scheme
+```racket
 (define tree (node 1 (node 2 (leaf 5) (leaf 6))
                      (node 3 (leaf 4) (leaf 7))))
 
 > (find-path 7 tree)
-'(1 3 7) 
+'(1 3 7)
 ```
 
-Your file should be called `ancestor.rkt` and should export the `find-path` and 
+Your file should be called `ancestor.rkt` and should export the `find-path` and
 `common-ancestor` functions and the structures `node` and `leaf`.
-```scheme
+```racket
 #lang racket
 
 (provide find-path
@@ -80,7 +80,7 @@ Your file should be called `ancestor.rkt` and should export the `find-path` and
 
 ### Example
 
-```scheme
+```racket
 (define tree2 (node 1 (node 2 (leaf 3)
                               (node 4 (leaf 5)
                                       (leaf 6)))
@@ -98,8 +98,8 @@ Your file should be called `ancestor.rkt` and should export the `find-path` and
 
 To find the common prefix of two lists, use the function `(take-common-prefix lst1 lst2)`.
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (provide find-path
@@ -145,13 +145,13 @@ the function returns `Nothing`.
 To represent binary trees in Haskell, use the following data type:
 ```haskell
 data Tree a = Leaf a
-            | Node a (Tree a) (Tree a) deriving (Eq,Show)  
+            | Node a (Tree a) (Tree a) deriving (Eq,Show)
 ```
 Thus the leaves (nodes without children) are represented as, for instance, `Leaf 6`.
 The nodes with children are represented as, for instance,
 `Node 1 (Leaf 2) (Leaf 3)`.
 
-To implement the function `commonAncestor`, implement first a function\\ 
+To implement the function `commonAncestor`, implement first a function\\
 `findPath :: Eq a => a -> Tree a -> [a]` that finds for a given node and a binary tree
 the path from the root to that node. For example,
 ```haskell
@@ -161,7 +161,7 @@ tree = Node 1 (Node 2 (Leaf 5) (Leaf 6)) (Node 3 (Leaf 4) (Leaf 7))
 [1,3,7]
 ```
 
-Your file should be called `Ancestor.hs` and should export the `commonAncestor`, 
+Your file should be called `Ancestor.hs` and should export the `commonAncestor`,
 `findPath` functions and the type `Tree`.
 
 ```haskell
@@ -193,7 +193,7 @@ Just 2
 Nothing
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 module Task4 (findPath, commonAncestor, Tree(..)) where
 
@@ -217,8 +217,8 @@ findPath x (Node y l r) | x == y = [x]
                                          else y:(pl++pr)
 
 commonAncestor :: Eq a => a -> a -> Tree a -> Maybe a
-commonAncestor x y t | null common = Nothing 
-                     | otherwise = Just $ last common 
+commonAncestor x y t | null common = Nothing
+                     | otherwise = Just $ last common
     where px = findPath x t
           py = findPath y t
           common = [x | (x,y) <- zip px py, x==y ]

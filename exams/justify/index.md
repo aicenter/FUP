@@ -89,8 +89,8 @@ Constraints:
 
 Your file should be called `justify.rkt`, and `provide` the `justify` function.
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (require racket/match)
@@ -171,8 +171,8 @@ Your file should be called `justify.rkt`, and `provide` the `justify` function.
 ```
 :::
 
-::: details Advanced Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (require racket/match)
@@ -237,7 +237,7 @@ Your file should be called `justify.rkt`, and `provide` the `justify` function.
 
 Your file should be called `Justify.hs`, contain a module of the same name, and export the `justify` function.
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 module Justify (justify) where
 import Data.List (intercalate)
@@ -266,7 +266,7 @@ breakWords :: [String] -> Int -> ([String], [String])
 breakWords words maxWidth = _breakWords words maxWidth 0 [] where
   _breakWords [] _ _ acc = (reverse acc, [])
   _breakWords words@(w:ws) maxWidth currWidth acc =
-    if (currWidth + wlen) > maxWidth 
+    if (currWidth + wlen) > maxWidth
        then (reverse acc, words)
        else _breakWords ws maxWidth (currWidth + wlen + 1) (w:acc) where
          wlen = length w
@@ -274,7 +274,7 @@ breakWords words maxWidth = _breakWords words maxWidth 0 [] where
 
 breakAll :: [String] -> Int -> [[String]]
 breakAll words maxWidth = (line:lines) where
-  lines = if length rest == 0 
+  lines = if length rest == 0
      then []
      else breakAll rest maxWidth
   (line, rest) = breakWords words maxWidth

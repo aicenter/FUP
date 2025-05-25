@@ -23,7 +23,7 @@ $$
 
 The actions of players are decided in advance; e.g. for two rounds of three-player RPS, the players
 and actions are represented as:
-```scheme
+```racket
 (define players '("alice" "bob" "charlie"))
 (define strategies '((r p) (r r) (s p)))
 ```
@@ -38,7 +38,7 @@ that performs the filtering.
 
 ## Racket
 Throws will be represented as the symbols `'r`, `'p` and `'s`.
-```scheme
+```racket
 #lang racket
 (provide rps)
 
@@ -62,7 +62,7 @@ Your file is to be called `rps.rkt` and must provide the function `rps`.
 ### Examples
 
 Alice wins in the second round. Charlie loses immediately.
-```scheme
+```racket
 (define players '("alice" "bob" "charlie"))
 (define strategies '((r p) (r r) (s p)))
 
@@ -70,7 +70,7 @@ Alice wins in the second round. Charlie loses immediately.
 ```
 
 Charlie loses because rock beats scissors (single round).
-```scheme
+```racket
 (define players '("alice" "bob" "charlie"))
 (define strategies '((r) (r) (s)))
 
@@ -78,15 +78,15 @@ Charlie loses because rock beats scissors (single round).
 ```
 
 First two rounds are stalemates (stalemate, stalemate, win).
-```scheme
+```racket
 (define players '("alice" "bob" "charlie"))
 (define strategies '((r p r) (p s r) (s r p)))
 
 (rps players strategies) ; '("charlie")
 ```
 
-::: details
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (provide rps)
@@ -173,7 +173,7 @@ strategies = [['r', 'p', 'r'], ['p', 's', 'r'], ['s', 'r', 'p']]
 rps players strategies -- ["charlie"]
 ```
 
-::: details
+::: details Exam Solution
 ```haskell
 module Task4 (rps) where
 import Data.List

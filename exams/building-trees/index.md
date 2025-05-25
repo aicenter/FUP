@@ -20,46 +20,46 @@ the following sequence of trees:
 <img src="/img/building-trees-sequence.svg" style="width: 95%; margin: auto;" class="inverting-image">
 
 Note that the third edge $(5,7)$ was ignored because there is no node $5$ in the currently
-constructed tree. So the currently constructed tree remains unchanged.  
+constructed tree. So the currently constructed tree remains unchanged.
 
 ## Racket
 
-Implement a function `(build-tree init edges)` that takes an initial 
-tree `init` and a list of edges `edges`, and returns the tree created by expanding 
+Implement a function `(build-tree init edges)` that takes an initial
+tree `init` and a list of edges `edges`, and returns the tree created by expanding
 the initial tree by the edges.
 
 To represent trees in Racket, use the following structures:
-```scheme
+```racket
 (struct node (val kids) #:transparent)
-(struct leaf (val) #:transparent)    
+(struct leaf (val) #:transparent)
 ```
 Thus the leaves (nodes without children) are represented as, for instance, `(leaf 6)`.
 The nodes with children are represented as, for instance, `(node 1 (list (leaf 2) (leaf 3)))`.
 
 To implement the function `build-tree`, implement first a function `(add-edge edge tree)`
 expanding a given tree `tree` by a single edge `edge`. For example,
-```scheme
+```racket
 > (add-edge '(2 4) (node 1 (list (leaf 2) (leaf 3))))
-(node 1 (list (node 2 (list (leaf 4))) (leaf 3)))  
+(node 1 (list (node 2 (list (leaf 4))) (leaf 3)))
 ```
 
 When you add a new leaf to a list of children, prepend it at the front. For example,
-```scheme
+```racket
 > (add-edge '(1 3) (node 1 (list (leaf 2))))
 (node 1 (list (leaf 3) (leaf 2)))
 ```
 
-To make the output of the function `build-tree` unique, sort the children of every node 
+To make the output of the function `build-tree` unique, sort the children of every node
 in the resulting tree based on their values. You may assume, that the node values are numbers.
-For example, 
-```scheme
+For example,
+```racket
 (node 1 (list (node 2 (list (leaf 4))) (leaf 3))) ; correct
 (node 1 (list (leaf 3) (node 2 (list (leaf 4))))) ; not correct
 ```
 
-Your file should be called `building-trees.rkt` and should export the `add-edge` and 
+Your file should be called `building-trees.rkt` and should export the `add-edge` and
 `build-tree` functions and the structures `node` and `leaf`.
-```scheme
+```racket
 #lang racket
 
 (provide add-edge
@@ -81,9 +81,9 @@ Your file should be called `building-trees.rkt` and should export the `add-edge`
 
 ### Example
 
-```scheme
+```racket
 > (build-tree (leaf 1) '((1 2) (1 3) (5 7) (2 4) (4 5) (3 6)))
-(node 1 (list (node 2 (list (node 4 (list (leaf 5))))) 
+(node 1 (list (node 2 (list (node 4 (list (leaf 5)))))
               (node 3 (list (leaf 6)))))
 ```
 
@@ -91,13 +91,13 @@ Your file should be called `building-trees.rkt` and should export the `add-edge`
 
 To sort the children, use the function `(sort lst less-than?)` sorting a list `lst`
 comparing its elements by a function `less-than?`. For example,
-```scheme
+```racket
 > (sort '((1 3) (2 2) (3 1)) (lambda (p q) (< (cadr p) (cadr q))))
 '((3 1) (2 2) (1 3))
 ```
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (provide add-edge build-tree)
@@ -112,7 +112,7 @@ comparing its elements by a function `less-than?`. For example,
 
 (define (sortnodes ns)
   (sort ns (lambda (p q) (< (value p) (value q)))))
-  
+
 
 (define (add-edge edge tree)
   (define s (car edge))
@@ -144,16 +144,16 @@ comparing its elements by a function `less-than?`. For example,
 
 ## Haskell
 
-In Haskell, implement a function 
-`buildTree :: Ord a => Tree a -> [Edge a] -> Tree a` that takes an initial 
-tree and a list of edges, and returns the tree created by expanding 
+In Haskell, implement a function
+`buildTree :: Ord a => Tree a -> [Edge a] -> Tree a` that takes an initial
+tree and a list of edges, and returns the tree created by expanding
 the initial tree by the edges.
 
 To represent trees and edges, use the following data types:
 ```haskell
-data Tree a = Leaf { val :: a } 
+data Tree a = Leaf { val :: a }
             | Node { val :: a,
-                     kids :: [Tree a] } deriving (Eq,Show) 
+                     kids :: [Tree a] } deriving (Eq,Show)
 
 type Edge a = (a,a)
 ```
@@ -180,27 +180,27 @@ When you add a new leaf to a list of children, prepend it at the front. For exam
 Node {val = 1, kids = [Leaf {val = 3}, Leaf {val = 2}]}
 ```
 
-To make the output of the function `buildTree` unique, sort the children of every node 
-in the resulting tree based on their values. You may assume, that the node values belongs to 
-the typeclass `Ord`. For example, 
+To make the output of the function `buildTree` unique, sort the children of every node
+in the resulting tree based on their values. You may assume, that the node values belongs to
+the typeclass `Ord`. For example,
 
 ```haskell
   Node {val = 1, kids = [Node {val = 2, kids = [Leaf {val = 4}]},
                          Leaf {val = 3}]} -- correct
-  Node {val = 1, kids = [Leaf {val = 3}, 
+  Node {val = 1, kids = [Leaf {val = 3},
                          Node {val = 2, kids = [Leaf {val = 4}]}]} -- not correct
 ```
 
-Your file should be called `BuildingTrees.hs` and should export the `buildTree`, 
+Your file should be called `BuildingTrees.hs` and should export the `buildTree`,
 `addEdge` functions and the type `Tree`.
 
 ```haskell
 module BuildingTrees (addEdge, buildTree, Tree(..)) where
 import Data.List
 
-data Tree a = Leaf { val :: a } 
+data Tree a = Leaf { val :: a }
             | Node { val :: a,
-                     kids :: [Tree a] } deriving (Eq,Show) 
+                     kids :: [Tree a] } deriving (Eq,Show)
 
 type Edge a = (a,a)
 
@@ -215,22 +215,22 @@ buildTree :: Ord a => Tree a -> [Edge a] -> Tree a
 
 ```haskell
 > buildTree (Leaf {val=1}) [(1,2),(1,3),(5,7),(2,4),(4,5),(3,6)]
-Node {val = 1, kids = [Node {val = 2, kids = [Node {val = 4, 
+Node {val = 1, kids = [Node {val = 2, kids = [Node {val = 4,
                                                     kids = [Leaf {val = 5}]}]},
                        Node {val = 3, kids = [Leaf {val = 6}]}]}
 ```
 
 ### Hints
 
-To sort the children, use the function `sortOn :: Ord b => (a -> b) -> [a] -> [a]` 
-from the library `Data.List` sorting a list by converting them into a values of 
-a type inside `Ord`. For example, 
+To sort the children, use the function `sortOn :: Ord b => (a -> b) -> [a] -> [a]`
+from the library `Data.List` sorting a list by converting them into a values of
+a type inside `Ord`. For example,
 ```haskell
 > sortOn snd [(1,3),(2,2),(3,1)]
 [(3,1),(2,2),(1,3)]
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 import Data.List
 

@@ -32,7 +32,7 @@ You can think of it as a tree with a variable size of nodes
 In Racket, we define a filetree as nested dictionaries,
 where each directory is a key for a filetree.
 An empty filetree is just `#hash()` the filetree above would look like
-```scheme
+```racket
 '#hash(
   ("scripts" . #hash(
     ("emptydir" . #hash())
@@ -56,7 +56,7 @@ paths)`.
 ### Implementation
 
 You are given a list of files (directories separated by `/`) like this:
-```scheme
+```racket
 (list "src/tree.hs"
       "src/complex.hs"
       "scripts/ex1/test.ss"
@@ -67,7 +67,7 @@ You are given a list of files (directories separated by `/`) like this:
 ```
 Parse the list of files into a tree and check if a new file or directory is
 already in the tree with the function
-```scheme
+```racket
 (exists file tree)
 ```
 
@@ -80,7 +80,7 @@ For splitting a string into a list of strings you can make use of the function `
 
 ### Example
 
-```scheme
+```racket
 (exists "src/tree.hs" (parse files))
 > #t
 
@@ -88,8 +88,8 @@ For splitting a string into a list of strings you can make use of the function `
 > #f
 ```
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (define (insert xs tree)
@@ -152,7 +152,7 @@ The type `Map k v` is a predefined type which represents a simple associative ma
 You can use all functions that are defined on the `Map`. The `FTree` has a
 constructor `FNode m` that takes a mapping `m` between strings and filetrees, and a
 constructor `FNil`. The mapping `m` contains entries that associate directories and
-their subtrees. 
+their subtrees.
 
 ### Implementation
 
@@ -200,7 +200,7 @@ takeWhile :: (a -> Bool) -> [a] -> [a]
 dropWhile :: (a -> Bool) -> [a] -> [a]
 ```
 
-::: details Solution
+::: details Exam Solution
 **Explaination of the solution below**
 ```haskell
 insert :: [String] -> FTree String -> FTree String
@@ -265,7 +265,7 @@ files = ["dir1/tree.hs"
         ,"dir3/ex2/test.ss"
         ,"dir3/test_tree.hs"]
 
-main = do 
+main = do
   let tree = parse files
   putStrLn (showTree tree)
 

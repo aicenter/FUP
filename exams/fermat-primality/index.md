@@ -19,18 +19,18 @@ $$
 If $(2)$ holds for all numbers $a$, it is highly probable that $p$ is prime.
 This probabilistic primality test is known as the *Fermat Primality Test*.  Note, the
 *Carmichael numbers*, which are composite yet pass the test for all $a$ relatively prime to the
-respective number, are avoided when testing your implementation of this task. 
+respective number, are avoided when testing your implementation of this task.
 
 ## Pseudo-random Number Generation
 
-To generate pseudorandom numbers in a given interval, use 
-the *Linear Congruential Generator (LCG)* 
+To generate pseudorandom numbers in a given interval, use
+the *Linear Congruential Generator (LCG)*
 $$
   x_{n+1} = (A x_n + C) \ \texttt{mod}\, M,
 $$
 where $A$, $C$ and $M$ are constants. This equation generates the next pseudorandom number $x_{n+1}$ from the previous $x_n$. The number $x_0$ is the seed.
 
-The number $b$ drawn from $(1)$ can be transformed to the interval $b^\text{lower} \leq b' < b^\text{upper}$ as 
+The number $b$ drawn from $(1)$ can be transformed to the interval $b^\text{lower} \leq b' < b^\text{upper}$ as
 $$
   b' = (b \ \texttt{mod}\, (b^\text{upper} - b^\text{lower})) + b^\text{lower}.
 $$
@@ -57,11 +57,11 @@ The state of the LCG is kept using the `State` monad. So start your code with
 import Control.Monad.State
 ```
 Note that it is desirable to follow $(2)$ and $(3)$ as closely as
-possible, since the tasks are tested with constant seed and thus are considered deterministic. 
+possible, since the tasks are tested with constant seed and thus are considered deterministic.
 The function is used as follows.
 ```haskell
-> runState (generate_range 1 100) (LCG 513 1 1 1024)  
-(20, LCG 513 514 1 1024) 
+> runState (generate_range 1 100) (LCG 513 1 1 1024)
+(20, LCG 513 514 1 1024)
 ```
 
 
@@ -69,28 +69,28 @@ Implement the primality test in the function
 ```haskell
 primality :: Int -> Int -> State LCG Bool
 ```
-where the first input is the potential prime and the second is the number of repetitions of the test 
+where the first input is the potential prime and the second is the number of repetitions of the test
 (i.e., the number of generated pseudorandom numbers).
 The function is used as follows:
 
 ```haskell
-> evalState (primality 17 1000) (LCG 513 1 1 1024) 
+> evalState (primality 17 1000) (LCG 513 1 1 1024)
 True
 
-> evalState (primality 42 1000) (LCG 513 1 1 1024) 
+> evalState (primality 42 1000) (LCG 513 1 1 1024)
 False
 
-> evalState (primality 9 0) (LCG 513 1 1 1024) 
+> evalState (primality 9 0) (LCG 513 1 1 1024)
 True
 ```
 
 ## Hint
 
-To prevent overflow of `Int`, compute $a^{p-1}\mod p$ sequentially using 
+To prevent overflow of `Int`, compute $a^{p-1}\mod p$ sequentially using
 the identity $a^{k+1}\mod p = a\cdot (a^k\mod p)\mod p$, i.e.,
 sequentially multiplying by $a$ and applying modulo to each partial result.
 
-::: details
+::: details Exam Solution
 ```haskell
 import Control.Monad.State
 
@@ -106,19 +106,19 @@ generate = do (LCG a x c m) <- get
 generate_range :: Int -> Int -> State LCG Int -- a <= x < b
 generate_range a b = do x <- generate
                         let x' = (x `mod` (b-a)) + a
-                        return x'   
+                        return x'
 
-modulo_power :: Int -> Int -> Int -> Int 
+modulo_power :: Int -> Int -> Int -> Int
 modulo_power a n m = iter a n where
     iter b 1 = b
     iter b nn = iter (b*a `mod` m) (nn-1)
 
 fermat_comp :: Int -> Int -> Int
-fermat_comp p b = (modulo_power b (p-1) p) 
+fermat_comp p b = (modulo_power b (p-1) p)
 
 fermat_check :: Int -> Int -> Int -> State LCG Bool
-fermat_check p n 1 = primality p (n-1)  
-fermat_check _ _ _ = return False 
+fermat_check p n 1 = primality p (n-1)
+fermat_check _ _ _ = return False
 
 primality :: Int -> Int -> State LCG Bool
 primality p 0 = return True

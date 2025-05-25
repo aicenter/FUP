@@ -61,7 +61,7 @@ To implement these functions in Scheme and Haskell (especially the swapping), it
 
 In Scheme, implement a function `(build-heap lst)` that accepts a list of values and returns a heap in the form of a balanced binary tree.
 In the tree, non-empty nodes are represented as
-```scheme
+```racket
 (struct node (v left right) #:transparent)
 ```
 while the empty nodes are denotes as `'leaf`.
@@ -69,7 +69,7 @@ Note that the exact shape of the values in the heap is not enforced.
 Instead, the results returned by your function need to be a binary balanced tree that satisfies the heap property.
 
 For your convenience, you are provided with the functions
-```scheme
+```racket
 (define (is-leaf? nd)
   (eq? 'leaf nd))
 
@@ -91,7 +91,7 @@ where `is-leaf?` determines whether a node is empty, and `show-tree` prints tree
 
 Your task is to be called `balanced-tree.rkt` and must provide the `build-heap` and `is-leaf?` functions and
 the `node` structure.  Hence, the head of your file should read
-```scheme
+```racket
 #lang racket
 (provide node node-v node-left node-right is-leaf? build-heap)
 (struct node (v left right) #:transparent)
@@ -99,16 +99,16 @@ the `node` structure.  Hence, the head of your file should read
   (eq? 'leaf nd))
 ```
 
-## Examples
+### Examples
 The following shows the behaviour of the `build-heap` function if implemented exactly as proposed.
 Note that other correct heaps may exist.
 
-```scheme
+```racket
 (build-heap '())
 'leaf
 ```
 
-```scheme
+```racket
 (show-tree (build-heap '(8 9 4 29)))
 ------4
 ---8
@@ -117,7 +117,7 @@ Note that other correct heaps may exist.
 (node 29 (node 8 (node 4 'leaf 'leaf) 'leaf) (node 9 'leaf 'leaf))
 ```
 
-```scheme
+```racket
 (show-tree (build-heap
   '(1 1 2 3 5 8 13 21 34 55)))
   ---------2
@@ -137,8 +137,8 @@ Note that other correct heaps may exist.
    (node 21 (node 5 'leaf 'leaf) (node 3 'leaf 'leaf)))
 ```
 
-::: details
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 (require racket/trace)
 (provide node node-v node-left node-right is-leaf? build-heap)
@@ -218,7 +218,7 @@ Note that other correct heaps may exist.
 ```
 :::
 
-# Haskell
+## Haskell
 
 In Haskell, implement a function
 ```haskell
@@ -247,7 +247,7 @@ module BalancedTree ( Tree (..), buildHeap) where
 data Tree a = Leaf | Node a (Tree a) (Tree a)
 ```
 
-## Examples
+### Examples
 The following shows the behaviour of the `buildHeap` function if implemented exactly as proposed.
 Note that other correct heaps may exist.
 
@@ -278,7 +278,7 @@ buildHeap [1,1,2,3,5,8,13,21,34,55]
 ------3
 ```
 
-::: details
+::: details Exam Solution
 ```haskell
 module BalancedTree ( Tree (..), build_heap) where
 

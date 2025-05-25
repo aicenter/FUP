@@ -18,18 +18,18 @@ graph and its minimum spanning tree.
 Your task is to implement an algorithm computing the minimum spanning tree, i.e.,
 a function returning for a given connected weighted graph $(V,E)$ the subset $E'$
 of edges in the minimum spanning tree. There are various greedy algorithms computing
-the minimum spanning tree. You can use, for instance, use Jarnik's algorithm, whose pseudocode 
+the minimum spanning tree. You can use, for instance, use Jarnik's algorithm, whose pseudocode
 is below.
 
 ```
 vertices = [list of graph vertices]
-edges = [list of graph edges] 
+edges = [list of graph edges]
 
 covered = [v0] # select an arbitrary vertex as the initial one
-tree_edges = [] 
+tree_edges = []
 
 until covered == vertices:
-  find the minimum-weight edge e=(u,v) connecting a vertex u in covered 
+  find the minimum-weight edge e=(u,v) connecting a vertex u in covered
     with a vertex v not in covered
   add v to covered
   add e to tree_edges
@@ -37,21 +37,21 @@ until covered == vertices:
 return tree_edges
 ```
 
-# Racket
+## Racket
 
-In Scheme, implement a function `(minimum-spanning-tree gr)` 
+In Scheme, implement a function `(minimum-spanning-tree gr)`
 that accepts a connected weighted graph `gr` and
 returns a list of edges forming the minimum spanning tree. The graph and weighted
 edges are represented by the following structures:
 
-```scheme
+```racket
 (struct edge (u v weight) #:transparent)
 (struct graph (nodes edges) #:transparent)
 ```
 
 Your file has to be called `spanning-tree.rkt`, provide the function
 `minimum-spanning-tree` and the above structures so it should start like this:
-```scheme
+```racket
 #lang racket
 (provide minimum-spanning-tree (struct-out edge) graph)
 (struct edge (u v weight) #:transparent)
@@ -60,10 +60,10 @@ Your file has to be called `spanning-tree.rkt`, provide the function
 ; your code goes here
 ```
 
-## Example
+### Example
 
 The graph from the figure is represented as follows:
-```scheme
+```racket
   (define gr (graph '(A B C D E F)
                      (list (edge 'A 'B 1)
                            (edge 'D 'E 4)
@@ -76,31 +76,31 @@ The graph from the figure is represented as follows:
                            (edge 'A 'E 3))))
 
 > (minimum-spanning-tree gr)
-(list (edge 'C 'F 5) (edge 'E 'D 4) (edge 'E 'C 4) 
+(list (edge 'C 'F 5) (edge 'E 'D 4) (edge 'E 'C 4)
       (edge 'B 'E 2) (edge 'A 'B 1))
 ```
 
-Note that the structure `(edge x y w)` represents a bidirectional 
-edge so it can be used in Jarn\'ik's algorithm as `(x,y)` and also as 
+Note that the structure `(edge x y w)` represents a bidirectional
+edge so it can be used in Jarn\'ik's algorithm as `(x,y)` and also as
 `(y,x)`.
 
-The returned list of edges might be ordered arbitrarily. Each edge might be ordered 
-arbitrarily as well. For instance, it does not matter if your output contains 
+The returned list of edges might be ordered arbitrarily. Each edge might be ordered
+arbitrarily as well. For instance, it does not matter if your output contains
 `(edge 'C 'F 5)` or `(edge 'F 'C 5)`. However,
 do not include both variants in your output.
 
-## Hint
+### Hint
 
 To find the minimum-weight edge, you may want to sort a list of edges by their
-weight. This can be done by the function `sort` 
-allowing sorting w.r.t. a given comparing function, e.g., 
-```scheme
-> (sort (list (edge 'a 'b 3) (edge 'b 'c 1) (edge 'c 'a 2)) 
+weight. This can be done by the function `sort`
+allowing sorting w.r.t. a given comparing function, e.g.,
+```racket
+> (sort (list (edge 'a 'b 3) (edge 'b 'c 1) (edge 'c 'a 2))
         (lambda (e1 e2) (< (edge-weight e1) (edge-weight e2))))
 (list (edge 'b 'c 1) (edge 'c 'a 2) (edge 'a 'b 3))
 ```
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 (provide minimum-spanning-tree graph edge)
 
@@ -153,7 +153,7 @@ allowing sorting w.r.t. a given comparing function, e.g.,
 :::
 
 
-# Haskell
+## Haskell
 
 In Haskell, we represent the weighted graph and edges by the following types:
 ```haskell
@@ -162,15 +162,15 @@ data Edge a b = Edge { u :: a,
                        weight :: b } deriving (Eq,Show)
 
 data Graph a b = Graph { nodes :: [a],
-                         edges :: [Edge a b] } deriving Show  
+                         edges :: [Edge a b] } deriving Show
 ```
 
-Implement a function 
+Implement a function
 `minSpanningTree :: (Eq a, Ord b) => Graph a b -> [Edge a b]`
-that accepts a connected weighed graph and returns a list of edges from the 
+that accepts a connected weighed graph and returns a list of edges from the
 minimum spanning tree.
 
-## Example
+### Example
 
 ```haskell
 gr :: Graph Char Int
@@ -207,15 +207,15 @@ data Edge a b = Edge { u :: a,
                        weight :: b } deriving (Eq,Show)
 
 data Graph a b = Graph { nodes :: [a],
-                         edges :: [Edge a b] } deriving Show  
+                         edges :: [Edge a b] } deriving Show
 
 -- your code goes here
 ```
 
-## Hint
+### Hint
 To find the minimum-weight edge, you may want to sort a list of edges by their
 weight. This can be done by the function
-`sortOn :: :: Ord b => (a -> b) -> [a] -> [a]` 
+`sortOn :: :: Ord b => (a -> b) -> [a] -> [a]`
 provided by `Data.List`. Below is an example.
 ```haskell
 import Data.List
@@ -225,7 +225,7 @@ import Data.List
  Edge {u = 'A', v = 'B', weight = 4}]
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 module Task4 (minSpanningTree, Graph (..), Edge (..)) where
 
@@ -268,7 +268,7 @@ jarnik g covered uncovered es = jarnik g (x:covered) (delete x uncovered) (ne:es
 
 minSpanningTree :: (Eq a, Ord b) => Graph a b -> [Edge a b]
 minSpanningTree g = jarnik g' [x] xs []
-  where g' = reverseEdges g 
-        (x:xs) = nodes g 
+  where g' = reverseEdges g
+        (x:xs) = nodes g
 ```
 :::

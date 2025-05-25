@@ -6,8 +6,6 @@ subtitle: ""
 
 # $N^2$-Knights
 
-## Problem Definition
-
 In chess, a knight can move to any square that is two squares away horizontally and one square away
 vertically, or two squares vertically and one square horizontally. Therefore, its complete move
 looks like the letter "L".
@@ -34,7 +32,7 @@ second figure.
 
 In Racket, implement the function
 
-```scheme
+```racket
 (is_valid? board)
 ```
 
@@ -44,7 +42,7 @@ threatens another one. Your file should be called `knights.rkt` and `provide` th
 function.
 
 ### Examples
-```scheme
+```racket
 (is_valid? ‘((1 0 0 0)
              (0 0 0 1)
              (1 0 0 0)
@@ -59,8 +57,8 @@ function.
 ```
 
 
-::: details Solution
-```scheme
+::: details Exam Solution
+```racket
 (define (generate-coords-row row offset row-id)
   (if (null? row)
       '()
@@ -141,7 +139,7 @@ True
 False
 ```
 
-::: details Solution
+::: details Exam Solution
 ```haskell
 module Knights (is_valid) where
 data Piece = Nil | Knight deriving Show

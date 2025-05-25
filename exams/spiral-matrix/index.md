@@ -7,7 +7,7 @@ outline: deep
 
 # Spiral Matrix
 
-A *Spiral Matrix* is a square $n\times n$-matrix filled with natural numbers, 
+A *Spiral Matrix* is a square $n\times n$-matrix filled with natural numbers,
 starting from $1$ in the top-left corner, increasing in inward, clockwise spiral order, like these examples:
 $$
 \mathbf{S}_3=\left(\begin{array}{rrr}
@@ -26,7 +26,7 @@ $$
 $$
 
 Even though one can define a spiral matrix for each size $n$, your task is to implement a function generating
-a spiral $n\times n$-matrix only for odd $n$. Note that such matrices can be generated recursively because 
+a spiral $n\times n$-matrix only for odd $n$. Note that such matrices can be generated recursively because
 the spiral matrix $\mathbf{S}_n$ of size $n\times n$ can be constructed from the spiral matrix $\mathbf{S}_{n-2}$
 of size $(n-2)\times(n-2)$ as follows:
 
@@ -39,16 +39,16 @@ $$
     3n-1 &  &  &   & 2n-2\\
     3n-2 & 3n-3 & \cdots & 2n & 2n-1
   \end{array}
-\right)  
+\right)
 $$
 where $\mathbf{B}$ is basically the matrix $\mathbf{S}_{n-2}$ whose all elements are increased by $4n-4$.
 
 ## Racket
 
 In Racket, implement a function `(spiral-matrix n)` that accepts a positive odd integer
-and returns the spiral matrix $\mathbf{S}_n$ of size `n`. 
+and returns the spiral matrix $\mathbf{S}_n$ of size `n`.
 A matrix is represented as a list of its rows, e.g. $\mathbf{S}_3$ is represented as
-```scheme
+```racket
 '((1 2 3)
   (8 9 4)
   (7 6 5))
@@ -56,7 +56,7 @@ A matrix is represented as a list of its rows, e.g. $\mathbf{S}_3$ is represente
 
 Your file is to be called `spiral-matrix.rkt` and must provide the function `spiral-matrix`.
 Hence, the head of your file should start with
-```scheme
+```racket
 #lang racket
 (provide spiral-matrix)
 
@@ -65,9 +65,9 @@ Hence, the head of your file should start with
 
 ### Hint
 To generate a sequences of numbers, you may use the function `(range start end step)` generating
-a sequence of numbers starting at `start` and whose successive elements are computed by adding 
-`step` until `end`. Note that the element `end` is excluded. E.g. 
-```scheme
+a sequence of numbers starting at `start` and whose successive elements are computed by adding
+`step` until `end`. Note that the element `end` is excluded. E.g.
+```racket
 > (range 5 0 -1)
 '(5 4 3 2 1)
 ```
@@ -75,20 +75,20 @@ a sequence of numbers starting at `start` and whose successive elements are comp
 ### Examples
 The following shows the behaviour of the `spiral-matrix` function.
 
-```scheme
+```racket
 > (spiral-matrix 3)
 '((1 2 3)
   (8 9 4)
   (7 6 5))
 ```
 
-```scheme
+```racket
 > (spiral-matrix 1)
 '((1))
 ```
 
-::: details Racket Solution
-```scheme
+::: details Exam Solution
+```racket
 #lang racket
 
 (provide spiral-matrix)
@@ -124,17 +124,17 @@ The following shows the behaviour of the `spiral-matrix` function.
 ## Haskell
 
 In Haskell, implement a function `spiralMatrix :: Int -> Matrix` that accepts a positive odd integer
-$n$ and returns the spiral matrix $\mathbf{S}_n$ of size $n$. 
-A matrix is represented as a list of its rows by data type 
+$n$ and returns the spiral matrix $\mathbf{S}_n$ of size $n$.
+A matrix is represented as a list of its rows by data type
 `type Matrix = [[Int]]`, e.g. $\mathbf{S}_3$ is represented as
-```scheme
+```racket
 [[1, 2, 3]
 ,[8, 9, 4]
 ,[7, 6, 5]]
 ```
 
 
-Your task is to be called `SpiralMatrix.rkt` and must export the `spiralMatrix` 
+Your task is to be called `SpiralMatrix.rkt` and must export the `spiralMatrix`
 function.
 Hence, the head of your file should read
 
@@ -146,18 +146,18 @@ type Matrix = [[Int]]
 ```
 
 ### Hint
-You may find the function `zipWith3 f xs ys zs` useful which processes three lists 
-`xs`, `ys`, `zs` simultaneously applying the ternary function `f` to 
+You may find the function `zipWith3 f xs ys zs` useful which processes three lists
+`xs`, `ys`, `zs` simultaneously applying the ternary function `f` to
 the triples of corresponding elements, e.g.,
 ```haskell
 > zipWith3 (\c1 c2 c3 -> [c1,c2,c3]) "abcd" "blaa" "haha"
-["abh","bla","cah","daa"]  
+["abh","bla","cah","daa"]
 ```
 
 Generating a sequence of numbers in Haskell can be done by `[start,start+step..end]`, e.g.,
 ```haskell
 > [5,4..1]
-[5,4,3,2,1]    
+[5,4,3,2,1]
 ```
 In comparison with the Scheme function `range`, the final number `end` is included
 in the generated sequence.
@@ -177,7 +177,7 @@ The following shows the behaviour of the `spiralMatrix` function.
 [[1]]
 ```
 
-::: details Haskell Solution
+::: details Exam Solution
 ```haskell
 module Task4 ( spiralMatrix ) where
 type Matrix = [[Int]]
