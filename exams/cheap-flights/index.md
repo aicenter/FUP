@@ -78,7 +78,7 @@ partial solutions to extend the cheapest path.
 In Scheme you can `sort` a list with the help of a predicate function taking two arguments. In case
 of a list of lists (containing cost and path) you could do the following:
 ```racket
-> (define (cheaper? x y) (< (car x) (car y)))
+> (define (cheaper? x y) (< (cadr x) (cadr y)))
 > (sort '(((2 3) 2.0) ((2 1 3) 1.5)) cheaper?)
 '(((2 1 3) 1.5) ((2 3) 2.0))
 ```
