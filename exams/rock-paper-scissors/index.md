@@ -175,7 +175,7 @@ rps players strategies -- ["charlie"]
 
 ::: details Exam Solution
 ```haskell
-module Task4 (rps) where
+module RPS (rps) where
 import Data.List
 
 isFinished xs = null xs || any null xs

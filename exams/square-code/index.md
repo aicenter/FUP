@@ -135,7 +135,7 @@ The following shows the behaviour of the `encode` function.
 
 ::: details Exam Solution
 ```haskell
-module Task4 ( encode ) where
+module SquareCode ( encode ) where
 import Data.Char
 import Data.List
 

@@ -179,7 +179,7 @@ The following shows the behaviour of the `spiralMatrix` function.
 
 ::: details Exam Solution
 ```haskell
-module Task4 ( spiralMatrix ) where
+module SpiralMatrix ( spiralMatrix ) where
 type Matrix = [[Int]]
 
 matAdd xss n = (map . map) (+ n) xss
