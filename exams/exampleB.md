@@ -1,11 +1,34 @@
----
-title: "Exam Task: Spiral Matrix"
-subtitle: "From: Exam 5 - 2022"
-date: "2024-01-12"
-outline: deep
----
+# Example Exam B
 
-# Spiral Matrix
+::: tip
+We suggest not looking at the assignments before you have time to solve them.
+:::
+
+## 1. Entry Requirement
+**Sum integers using map and apply in Racket**
+
+The user will enter a single line of numbers separated by spaces to the standard input. Your task is parse them and print out their sum.
+
+Hint: `map`, `read-line`, `string-split`, `apply`
+
+Example:
+```
+1 2 3
+6
+```
+
+::: details Exam Solution
+```racket
+(let* ((line (read-line))
+       (words (string-split line))
+       (nums (map string->number words))
+       (sum (apply + nums)))
+  (displayln sum))
+```
+:::
+
+## 2. Racket Main Task (15 points)
+**[Spiral Matrix](/exams/tasklist.md#spiral-matrix)**
 
 A *Spiral Matrix* is a square $n\times n$-matrix filled with natural numbers,
 starting from $1$ in the top-left corner, increasing in inward, clockwise spiral order, like these examples:
@@ -43,7 +66,7 @@ $$
 $$
 where $\mathbf{B}$ is basically the matrix $\mathbf{S}_{n-2}$ whose all elements are increased by $4n-4$.
 
-## Racket
+### Implementation
 
 In Racket, implement a function `(spiral-matrix n)` that accepts a positive odd integer
 and returns the spiral matrix $\mathbf{S}_n$ of size `n`.
@@ -121,75 +144,79 @@ The following shows the behaviour of the `spiral-matrix` function.
 ```
 :::
 
-## Haskell
 
-In Haskell, implement a function `spiralMatrix :: Int -> Matrix` that accepts a positive odd integer
-$n$ and returns the spiral matrix $\mathbf{S}_n$ of size $n$.
-A matrix is represented as a list of its rows by data type
-`type Matrix = [[Int]]`, e.g. $\mathbf{S}_3$ is represented as
+## 3. Haskell Main Task (15 points)
+**Photographing [Skyscrapers](/exams/tasklist.md#photographing-skyscrapers)**
+
+#
+
+You are an avid photographer that is obsessed with regular structures and you want to take pictures
+of cities that are built on regular grids. It turns out that you are also really into roof tops so
+you want to see as many of them in your pictures as possible. Naturally, you wonder from which side
+of a given city (North/South/East/West) you should be taking the picture. Luckily a befriended
+architect gave you maps of the cities you want to photograph. The maps are very simplified and can
+be represented as lists of lists of integers, so for example in Scheme:
+
 ```racket
-[[1, 2, 3]
-,[8, 9, 4]
-,[7, 6, 5]]
+;    north
+(define city
+  '((3 0 3 7 3)
+    (2 5 5 1 2)
+    (6 5 3 3 2)
+    (3 3 5 4 9)
+    (3 5 3 9 0)))
+;    south
 ```
+Every number represents the height of a building.
 
+A roof is *visible* if all other roofs between it and the edge of the grid are *smaller* than it.
+Only consider roofs in the same row or column. The first roof at the edge of a grid is always
+visible.
 
-Your task is to be called `SpiralMatrix.rkt` and must export the `spiralMatrix`
-function.
-Hence, the head of your file should read
+### Implementation
+
+In Haskell, write a function `bestView city` that outputs the direction with the most roofs visible,
+along with the number of roofs visible from that direction. The direction should be one of four
+characters: `'N'`, `'S'`, `'E'`, or `'W'`. The result should be a pair in the format `(direction,
+number)`.
 
 ```haskell
-module SpiralMatrix ( spiralMatrix ) where
-type Matrix = [[Int]]
+city = [[3, 3, 3],
+        [1, 2, 3],
+        [1, 2, 3]]
 
--- your code goes here
+-- 'N' has 3 roofs, 'S' has 5, 'E' has 3, and 'W' is the best with 7
+bestView city -- ('W', 7)
 ```
 
-### Hint
-You may find the function `zipWith3 f xs ys zs` useful which processes three lists
-`xs`, `ys`, `zs` simultaneously applying the ternary function `f` to
-the triples of corresponding elements, e.g.,
+Your file should be called `Skyscrapers.hs` and should export the `bestView` function.
 ```haskell
-> zipWith3 (\c1 c2 c3 -> [c1,c2,c3]) "abcd" "blaa" "haha"
-["abh","bla","cah","daa"]
-```
+module Skyscrapers (bestView) where
 
-Generating a sequence of numbers in Haskell can be done by `[start,start+step..end]`, e.g.,
-```haskell
-> [5,4..1]
-[5,4,3,2,1]
-```
-In comparison with the Scheme function `range`, the final number `end` is included
-in the generated sequence.
-
-### Examples
-The following shows the behaviour of the `spiralMatrix` function.
-
-```haskell
-> spiralMatrix 3
-[[1,2,3]
-,[8,9,4]
-,[7,6,5]]
-```
-
-```haskell
-> spiralMatrix 1
-[[1]]
+bestView :: [[Int]] -> (Char, Int)
+bestView city = ... -- Implement me!
 ```
 
 ::: details Exam Solution
 ```haskell
-module SpiralMatrix ( spiralMatrix ) where
-type Matrix = [[Int]]
+ module Skyscrapers (bestView) where
 
-matAdd xss n = (map . map) (+ n) xss
+import Data.List
 
-wrap x ys z = x:ys++[z]
+roofs xss = sum $ inner <$> xss
+  where
+    inner xs = length (group $ scanl1 max xs)
 
-spiralMatrix 1 = [[1]]
-spiralMatrix n = extendV $ extendH $ matAdd smaller (4*n-4) where
-        smaller = spiralMatrix (n - 2)
-        extendH x = zipWith3 wrap [4*n-4,4*n-5..3*n-1] x [n+1..2*n-2]
-        extendV x = wrap [1..n] x [3*n-2,3*n-3..2*n-1]
+morph 'N' = transpose
+morph 'S' = fmap reverse . transpose
+morph 'E' = fmap reverse
+morph _ = id
+
+bestView :: [[Int]] -> (Char, Int)
+bestView city =
+  let dirs = "NSEW"
+      views = roofs . (`morph` city) <$> dirs
+      opts = zip dirs views
+  in last $ sortOn snd opts
 ```
 :::
