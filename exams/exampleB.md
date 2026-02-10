@@ -5,25 +5,25 @@ We suggest not looking at the assignments before you have time to solve them.
 :::
 
 ## 1. Entry Requirement
-**Sum integers using map and apply in Racket**
+**Parse numbers from a string and sum them in Racket**
 
-The user will enter a single line of numbers separated by spaces to the standard input. Your task is parse them and print out their sum.
+Write a function `string-sum` which accepts a string containing numbers separated by spaces. The function must parse the numbers and compute their sum.
 
-Hint: `map`, `read-line`, `string-split`, `apply`
+Hint: `string->number`, `string-split`
 
 Example:
 ```
-1 2 3
+(string-sum "1 2 3")
 6
 ```
 
 ::: details Exam Solution
 ```racket
-(let* ((line (read-line))
-       (words (string-split line))
-       (nums (map string->number words))
-       (sum (apply + nums)))
-  (displayln sum))
+(define (string-sum txt)
+  (let* ((words (string-split line))
+         (nums (map string->number words)))
+    (apply + nums))
+
 ```
 :::
 

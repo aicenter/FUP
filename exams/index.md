@@ -15,7 +15,7 @@ Please make sure you know your lab computer password. You can [change it here](h
 The *programming* exam starts with a simple task in either Racket or Haskell which will serve as an entry requirement for the main part.
 After the simple task, You must solve one Racket assignment (15 points) and one Haskell assignment (15 points).
 
-An [example exam](/exams/exampleA.md) could look like:
+An example exam ([example A](/exams/exampleA.md), [example B](/exams/exampleB.md)) could look like:
  1. Entry requirement: Check if a word from the standard input is a palindrome in Haskell,
  2. Racket main task: Check if an [$N^2$-Knights](/exams/tasklist.md#knights) board is valid,
  3. Haskell main task: Pretty-print [Binary Numbers](/exams/tasklist.md#pretty-printing-of-binary-numbers).
