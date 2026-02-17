@@ -38,7 +38,7 @@ Our grading scale is as follows:
 | Tomáš Votroubek  | <votroto1@fel.cvut.cz>    |          | Lecturer & Instructor |
 | Jiří Němeček     | <nemecj38@fel.cvut.cz>    |          | Instructor            |
 | Matěj Zorek      | <zorekmat@fel.cvut.cz>    |          | Instructor            |
-| Shenyuan Ma      | <ma.shenyuan@fel.cvut.cz> |          | Instructor            |
+| Adam Dziwoki     | <dziwoada@fel.cvut.cz>    |          | Instructor            |
 
 Consulting hours are not explicitly scheduled; please contact us via email to make an appointment.
 
