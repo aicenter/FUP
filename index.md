@@ -18,7 +18,7 @@ hero:
       link: https://cw.felk.cvut.cz/brute
     - theme: alt
       text: Forum
-      link: https://cw.felk.cvut.cz/forum/forum-1912.html
+      link: https://cw.felk.cvut.cz/forum/forum-1955.html
 
 features:
   - title: Lectures
