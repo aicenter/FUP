@@ -83,7 +83,6 @@ consisting of numbers 1,2,3,4,5,6,7 with 4 being the active number.
 (move 'right t) => '(tape (4 3 2 1) 5 (6 7))
 ```
 
-<!--
 ::: details Solution
 ```racket
 (define (change op t)
@@ -101,7 +100,6 @@ consisting of numbers 1,2,3,4,5,6,7 with 4 being the active number.
      (tape (cons val left) (car right) (cdr right))]))
 ```
 :::
--->
 
 ## Task 2
 Modify the implementation of the interpreter from the lecture so that it uses your purely functional tape.
@@ -201,6 +199,85 @@ For your convenience, my complete implementation is shown below.
   (tape 'reset)              ; fill tape with zeros
   (eval-prg prg input)       ; evaluate program
   (printf "done~n"))
+```
+:::
+
+::: details Final solution
+```racket
+#lang racket
+
+;;; Task 1 - make purely functional tape
+(struct tape (left val right) #:transparent)
+
+(define (fresh-tape size)
+  (tape '() 0 (make-list (- size 1) 0)))
+
+(define (change op t)
+  (tape (tape-left t)
+        (op (tape-val t) 1)
+        (tape-right t)))
+
+(define (move dir t)
+  (match (cons dir t)
+    [(cons 'left (tape '() _ _)) (error "Outside tape")] 
+    [(cons 'right (tape _ _ '())) (error "Outside tape")]
+    [(cons 'left (tape left val right)) (tape (cdr left) (car left) (cons val right))] 
+    [(cons 'right (tape left val right)) (tape (cons val left) (car right) (cdr right))]))
+
+;;; Task 2 - modify the interpreter of Brainf*ck from the lecture to be purely functional
+; Sample program adding two numbers
+(define add-prg
+  '(@ > @ [- < + >] < *)
+  )
+
+; Sample program multiplying two numbers
+(define mul-prg
+  '(@ > @ < [- > [- > + > + < <] > [- < + >] < <] > > > *)
+  )
+
+; constant for the size of the tape
+(define SIZE 10)
+
+(define (eval-comma prg input t)
+  (define new-tape
+    (match (cons input t)
+      [(cons '() _) (error "Empty input")]
+      [(cons (list val z ...) (tape left _ right)) (tape left val right)]))
+  (eval-prg prg (cdr input) new-tape))
+  
+(define (eval-cmd cmd prg input t)
+  (let ([new-t
+         (match cmd
+           ['+ (change + t)]
+           ['- (change - t)]
+           ['< (move 'left t)]
+           ['> (move 'right t)]
+           ['* (printf "~a " (tape-val t)) t]
+           [_ (error "Unknown command")])])
+    (eval-prg prg input new-t)))
+
+(define (eval-cycle cycle prg input t)
+  (if (= (tape-val t) 0)
+      (eval-prg prg input t)
+      (begin
+        (let* ([cycle-result (eval-prg cycle input t)]
+               [new-input (car cycle-result)]
+               [new-t (cadr cycle-result)])
+          (eval-cycle cycle prg new-input new-t)))))
+
+(define (eval-prg prg input t)
+  (displayln t)
+  (match prg
+    [(list) (list input t)]                
+    [(list '@ rest ...) (eval-comma rest input t)]
+    [(list (? list? cmd) rest ...) (eval-cycle cmd rest input t)]
+    [(list cmd rest ...) (eval-cmd cmd rest input t)]))
+
+(define (run-prg prg input)
+  (eval-prg prg input (fresh-tape SIZE))
+  (printf "done~n"))
+
+(run-prg add-prg '(12 5))
 ```
 :::
 
