@@ -14,13 +14,13 @@ pointer pointing to an active number. Brainf\*ck programs specify computations o
 | ------ | ---------- | ------- |
 | <      | <          | move pointer to the left by one step |
 | >      | >          | move pointer to the right by one step |
-| +      | +          | increase the active number determined by pointer by one |
-| -      | -          | decrease the active number determined by pointer by one |
+| +      | +          | increase the active number determined by the pointer by one |
+| -      | -          | decrease the active number determined by the pointer by one |
 | ,      | @          | read one number from input and store it  |
 | .      | *          | display the active number|
 | [ `code`] | [ `code` ] | while the active number is not zero, execute `code` |
 
-As I explained in the lecture, Racket can represent any tree structure as data. Thus we don't need
+As I explained in the lecture, Racket can represent any tree structure as data. Thus, we don't need
 to write a parser and represent Brainf*ck directly as a list of commands where nested lists recursively represent cycles. The only limitation with this approach is the special meaning of symbols `,`
 and `.`
 in Racket. So we replace them with symbols `@ *`
@@ -39,16 +39,16 @@ containing a mutable fixed-size vector representing the tape and a number repres
 The goal of this lab is to modify my implementation from the lecture so that it is purely functional.
 This means you must replace the tape object with a purely functional data structure. Next, the implementation of the interpreter
 has to be modified a bit. My implementation creates a global tape that the interpreter modifies during the computation.
-However, this is not a purely functional code. Thus the tape has to be a part of the state of the computation included among interpreter's
+However, this is not a purely functional code. Thus, the tape has to be a part of the state of the computation included among interpreter's
 accumulators.
 
 ## Task 1
 Create a purely functional representation of the tape of a fixed size with a pointer. I will provide detailed hints on how to proceed.
 Define a structure `tape` consisting of three components
 `left, val, right`
-where `left` is the list representing numbers on the tape stored left from the pointer,
+where `left` is the list representing numbers on the tape stored to the left of the pointer,
 `val`
-represents the active number and `right` is the list representing the number on the right.
+represents the active number, and `right` is the list representing the number on the right.
 
 ```racket
 (struct tape (left val right) #:transparent)
@@ -107,8 +107,8 @@ consisting of numbers 1,2,3,4,5,6,7 with 4 being the active number.
 Modify the implementation of the interpreter from the lecture so that it uses your purely functional tape.
 
 ::: tip Hint
-The implementation from the lecture uses a global mutable tape which is defined once and then only reset when executing a program.
-Apart from the tape, the interpreter keeps its state in accumulators `prg`
+The implementation from the lecture uses a global mutable tape, which is defined once and then only reset when executing a program.
+Apart from the tape, the interpreter keeps its state in the accumulators `prg`
 containing remaining commands and `input` storing the remaining input. You have to add one more accumulator tracking the tape.
 :::
 
@@ -122,21 +122,21 @@ For your convenience, my complete implementation is shown below.
 #lang racket
 
 ;;; Brainf*ck - interpreter
-;;; As the symbols ., have their specific meaning in Racket, we replace them by the symbols *@
+;;; As the symbols ., have their specific meaning in Racket, we replace them with the symbols *@
 
 ;;; Sample Brainf*ck programs
-; program reading non-negative numbers on the first two positions and displaying their sum
+; program reading non-negative numbers in the first two positions and displaying their sum
 (define add-prg
   '(@ > @ [- < + >] < *))
 
-; program reading non-negative numbers on the first two positions and displaying their product
+; program reading non-negative numbers in the first two positions and displaying their product
 (define mul-prg
   '(@ > @ < [- > [- > + > + < <] > [- < + >] < <] > > > *))
 
-; constant defining the size of tape
+; a constant defining the size of the tape
 (define SIZE 10)
 
-; constructor of the object tape of a given size
+; a constructor of the object tape of a given size
 (define (make-tape size)
   (define tape (make-vector size 0))   ; initialize fresh tape
   (define ptr 0)                       ; pointer points to the first element
@@ -171,7 +171,7 @@ For your convenience, my complete implementation is shown below.
     (else ((tape 'comma) (car input))
           (eval-prg prg (cdr input)))))  ; recursive call processing further commands
 
-; evaluates all the commands beside comma
+; evaluates all the commands beside the comma
 (define (eval-cmd cmd prg input)
   (match cmd
     ['+ (tape 'plus)]
@@ -183,22 +183,22 @@ For your convenience, my complete implementation is shown below.
   (eval-prg prg input))   ; recursive call processing further commands
 
 (define (eval-cycle cycle prg input)
-  (if (= (tape 'dot) 0)                         ; is cycle is finished?
-      (eval-prg prg input)                      ; if yes, recursive call preocessing further commands
+  (if (= (tape 'dot) 0)                         ; is the cycle finished?
+      (eval-prg prg input)                      ; if yes, recursive call processing further commands
       (let ([new-input (eval-prg cycle input)]) ; otherwise evaluate cycle code
         (eval-cycle cycle prg new-input))))     ; and execute the cycle again
 
 (define (eval-prg prg input)
   (displayln (tape 'tape))
   (match prg
-    [(list) input]                ; are all commands processed? if yes, return remaining input
+    [(list) input]                ; are all commands processed? If yes, return the remaining input
     [(list '@ rest ...) (eval-comma rest input)]
     [(list (? list? cmd) rest ...) (eval-cycle cmd rest input)]
     [(list cmd rest ...) (eval-cmd cmd rest input)]))
 
 ; executes the given program with the given input
 (define (run-prg prg input)
-  (tape 'reset)              ; fill tape by zeros
+  (tape 'reset)              ; fill tape with zeros
   (eval-prg prg input)       ; evaluate program
   (printf "done~n"))
 ```
