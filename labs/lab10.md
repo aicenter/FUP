@@ -308,7 +308,6 @@ of `xs` together with subsequences of `xs` extended by `x`. To produce the sorte
 
 ::: details Solution { hideme }
 ```haskell
-merge :: (a -> Int) -> [a] -> [a] -> [a]
 merge _ [] ys = ys
 merge _ xs [] = xs
 merge f p@(x:xs) q@(y:ys) | f x < f y = x:merge f xs q
